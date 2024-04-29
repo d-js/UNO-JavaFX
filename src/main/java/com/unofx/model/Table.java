@@ -106,12 +106,13 @@ public class Table
 	}
 	
 	/* Metodo da chiamare tutte le volte che un player ha giocato una carta per capire se ha vinto */
-	public void control_winner()
+	public boolean control_winner()
 	{
 		if(this.currentPlayer.getHand() == null)
 		{
-			this.announce_winner(currentPlayer);
+			return true;
 		}
+		return false;
 	}
 
 	/* Annuncia il vincitore*/
@@ -275,12 +276,11 @@ public class Table
 		this.currentCard = e;
 	}
 
-	public Object lastUserCard() {
+	public String lastUserCardName() {
 		return null;
 	}
 
-	public String lastUserCardName() {
-		return null;
+	public void playTurn(int i, Colour c) {
 	}
 }
 

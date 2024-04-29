@@ -32,6 +32,7 @@ public class Controller {
     private Scene scene;
     private Stage stage;
     private Parent root;
+
     private int count = 0;
     @FXML
     private HBox userHand = new HBox();
@@ -93,6 +94,19 @@ public class Controller {
         Table.getInstance().start_game(4, false);
         List<String> user_card_list= Table.getInstance().get_user_info_card();
         this.set_start_card(user_card_list);
+
+        /*
+        while(Table.getInstance().control_winner() == false)
+        {
+            if(Table.getInstance().is_my_turn() == true)
+            {
+                this.show_user_hand();
+                Table.getInstance().play_card(1, null);
+                this.hide_user_hand();
+            }
+            else{}
+
+        }*/
     }
 
     public void set_start_card(List<String> e) throws IOException {
