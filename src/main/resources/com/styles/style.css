@@ -1,0 +1,84 @@
+.genericfield{
+    -fx-border-radius: 15px;
+    -fx-border-width: 5px;
+    -fx-background-radius: 15px;
+    -fx-border-style: solid;
+}
+
+.side_anchorpane{
+    -fx-background-color:#432616;
+    -fx-border-radius: 2px;
+    -fx-background-radius: 2px;
+    -fx-border-style: solid;
+}
+.gamemode_anchorpane{
+    -fx-background-image: url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/SelecGameMode.png');
+    -fx-image-size: contain;
+}
+
+.playpane{
+    -fx-background-image: url('');
+    -fx-image-size: contain;
+}
+
+.item_pane_blue{
+    -fx-background-image: url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/plus2.png');
+    -fx-image-size: contain;
+    -fx-background-size: contain;
+}
+
+.item_pane_red{
+    -fx-background-image: url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/change.png');
+    -fx-image-size: contain;
+    -fx-background-size: contain;
+}
+
+.item_pane_green{
+    -fx-background-image: url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/9.png');
+    -fx-image-size: contain;
+    -fx-background-size: contain;
+}
+
+.item_pane_yellow{
+    -fx-background-image: url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/block.png');
+    -fx-image-size: contain;
+    -fx-background-size: contain;
+}
+
+.item_pane_back_card{
+    -fx-background-image: url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/back.png');
+    -fx-image-size: contain;
+    -fx-background-size: contain;
+}
+
+.item_pane_plus_four{
+    -fx-background-image: url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/plus4.png');
+    -fx-background-size: contain;
+}
+
+.game_pad_image{
+    -fx-image:url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/omino2.png');
+    -fx-background-size: contain;
+    -fx-background-repeat: false;
+}
+
+.game_mode_button{
+    -fx-background-image:url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/omino2.png');
+    -fx-background-color:#0047ab;
+    -fx-border-radius: 15px;
+    -fx-border-width: 5px;
+    -fx-background-radius: 15px;
+    -fx-border-style: solid;
+}
+
+.title_pane{
+    -fx-background-image:url('file:/home/diego/IdeaProjects/UNOfx/src/main/resources/com/images/SELECT_GAMEMODE.png');
+    -fx-background-size: contain;
+    -fx-background-repeat: false;
+    -fx-border-image-repeat: false;
+    -fx-image-size: contain;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px;
+    -fx-border-style: solid;
+    -fx-border-width:2
+}
