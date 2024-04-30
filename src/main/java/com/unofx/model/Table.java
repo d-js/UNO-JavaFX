@@ -24,6 +24,13 @@ public class Table
 		return INSTANCE;
 	}
 
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public List<Player> getSitDownPlayer() {
+		return sitDownPlayer;
+	}
 
 	public String getUsername() {
 		return user.getUsername();

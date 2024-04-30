@@ -1,30 +1,25 @@
 package com.unofx;
 
-import com.unofx.model.Colour;
-import com.unofx.model.Event;
+import com.unofx.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
-import com.unofx.model.Table;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Controller {
     @FXML
@@ -95,18 +90,27 @@ public class Controller {
         List<String> user_card_list= Table.getInstance().get_user_info_card();
         this.set_start_card(user_card_list);
 
-        /*
         while(Table.getInstance().control_winner() == false)
         {
-            if(Table.getInstance().is_my_turn() == true)
+            for(Player p : Table.getInstance().getSitDownPlayer())
             {
-                this.show_user_hand();
-                Table.getInstance().play_card(1, null);
-                this.hide_user_hand();
-            }
-            else{}
+                //TODO ismyturn deve controllare se il currentplayer corrisponde al player user
+                if(Table.getInstance().is_my_turn() == true)
+                {
+                    //TODO gioca la carta l'utente
+                    this.show_user_hand();
 
-        }*/
+                    this.hide_user_hand();
+                }
+                else
+                {
+                    //TODO gioca la carta il bot, non bisogna passare nessun parametro
+                    //TODO gestire tutto il turno nel metodo playcard in modo che al passaggio al player successivo
+                    // la classe sia pronta a far giocare il player successivo
+                    Table.getInstance().play_card(1, null);
+                }
+            }
+        }
     }
 
     public void set_start_card(List<String> e) throws IOException {
@@ -168,7 +172,6 @@ public class Controller {
         this.currentCard.getChildren().add(iw);
     }
 
-    
 
     public void draw(String cardPath) throws IOException
     {
@@ -182,11 +185,81 @@ public class Controller {
         i.setFitWidth(75);
         addButton.setGraphic(i);
 
+        // Definisco le azioni che deve eseguire il bottone
         addButton.setOnAction(e -> {
-            //TODO solo se la carta può essere giocata, aggiunge la carta al pane di carte scoperte, gioca la carta
-            this.set_currentCard(cardPath);
-            this.userHand.getChildren().remove(addButton);
+
+            AtomicReference<Event> verify_played_card = null;
+            if(cardPath.toUpperCase().contains(Caction.DRAWFOUR.getAction()) ||
+               cardPath.toUpperCase().contains(Caction.CHANGECOLOR.getAction()))
+            {
+                // Creo un Alert per la scelta del colore che l'utente potra' selezionare
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("CHANGECOLOR");
+                alert.setHeaderText(null);
+                alert.setContentText("Seleziona un colore:");
+
+                // Aggiunta dei pulsanti al popup
+                // TODO aggiungere al posto della scritta rappresentatne il colore la foto del colore selezionabile
+                alert.getButtonTypes().setAll(new ButtonType("BLUE"), new ButtonType("RED"), new ButtonType("GREEN"), new ButtonType("YELLOW"));
+
+                // Mostra il popup e attendi la selezione dell'utente
+                alert.showAndWait().ifPresent(buttonType -> {
+                    if (buttonType.getText() == "BLUE") {
+
+                        verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.BLUE));
+
+                    } else if (buttonType.getText() == "GREEN") {
+
+                        verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.GREEN));
+
+                    } else if (buttonType.getText() == "YELLOW") {
+
+                        verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.YELLOW));
+
+                    } else if (buttonType.getText() == "RED") {
+
+                        verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.RED));
+                    }
+                });
+
+
+            }
+            else
+            {
+                verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), null));
+            }
+
+
+            if(verify_played_card.get() == Event.ALLDONE)
+            {
+                this.set_currentCard(cardPath);
+                this.userHand.getChildren().remove(addButton);
+
+            } else if (verify_played_card.get() == Event.CHANGECARD) {
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("CARTA NON VALIDA");
+                alert.setHeaderText(null);
+                alert.setContentText("La carta selezionata non rientra nei parametri per essere giocata al momento," +
+                        " rileggi le regole per capire le carte che si possono giocare in base alla carta corrente del tavolo.");
+
+                // Mostra il popup e attendi la sua chiusura
+                alert.showAndWait();
+            }
+            else
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("BLOCCATO");
+                alert.setHeaderText(null);
+                alert.setContentText("Salti questo turno, il giocatore prima di te ti ha bloccato.");
+
+                // Mostra il popup
+                alert.show();
+            }
+
         });
+
 
         // Aggiungi il bottone "Aggiungi Bottone" al pannello
         this.userHand.getChildren().add(addButton);
