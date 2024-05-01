@@ -85,11 +85,13 @@ public class Controller {
 
         Table.getInstance().set_deck();
         Table.getInstance().deck.set_initial_card();
-        Table.getInstance().set_player_list(8);
-        Table.getInstance().start_game(4, false);
+        Table.getInstance().set_player_list(4);
+        Table.getInstance().setCurrentPlayer();
+        Table.getInstance().give_start_card();
         List<String> user_card_list= Table.getInstance().get_user_info_card();
         this.set_start_card(user_card_list);
 
+        /*
         while(Table.getInstance().control_winner() == false)
         {
             for(Player p : Table.getInstance().getSitDownPlayer())
@@ -110,11 +112,20 @@ public class Controller {
                     Table.getInstance().play_card(1, null);
                 }
             }
-        }
+        }*/
     }
 
-    public void set_start_card(List<String> e) throws IOException {
-        for (String s: e) {
+    public void set_start_card(List<String> e) throws IOException
+    {
+        // Setto la carta iniziale sia nel model che nella vista
+        Card c = Table.getInstance().deck.drawOut();
+        Table.getInstance().setCurrentCard(c);
+        Table.getInstance().deck.playCard(c);
+        this.set_currentCard(this.generate_imagePath(c.getName()));
+
+        // Do le carte a tutti i giocatori, mostro nella vista solamente quelle dei player giocanti tralasciando i bot
+        for (String s: e)
+        {
             draw(generate_imagePath(s));
         }
     }
@@ -126,10 +137,13 @@ public class Controller {
     }
 
 
-    public int countButtons(){
+    public int countButtons()
+    {
         int count = 0;
-        for (Node node : this.root.getChildrenUnmodifiable()) {
-            if (node instanceof Button) {
+        for (Node node : this.root.getChildrenUnmodifiable())
+        {
+            if (node instanceof Button)
+            {
                 count++;
             }
         }
@@ -137,14 +151,16 @@ public class Controller {
     }
 
     @FXML
-    public void on_start(MouseEvent mouseEvent) throws IOException {
+    public void on_start(MouseEvent mouseEvent) throws IOException
+    {
         initialize("game_pane.fxml", mouseEvent);
         update();
         this.start_game();
     }
 
     @FXML
-    public void on_nickname(InputMethodEvent _inputMethodEvent) {
+    public void on_nickname(InputMethodEvent _inputMethodEvent)
+    {
         String nickname = _inputMethodEvent.getCommitted();
         Table.getInstance().set_username(nickname);
         System.out.println(nickname);
@@ -155,7 +171,8 @@ public class Controller {
     public void on_deck_click(MouseEvent mouseEvent) throws IOException
     {
         List<String> user_card_list= Table.getInstance().get_user_info_card();
-        for (String s: user_card_list) {
+        for (String s: user_card_list)
+        {
             draw(generate_imagePath(s));
         }
     }
@@ -172,7 +189,6 @@ public class Controller {
         this.currentCard.getChildren().add(iw);
     }
 
-
     public void draw(String cardPath) throws IOException
     {
         System.out.println(cardPath);
@@ -186,9 +202,10 @@ public class Controller {
         addButton.setGraphic(i);
 
         // Definisco le azioni che deve eseguire il bottone
-        addButton.setOnAction(e -> {
+        addButton.setOnAction(e ->
+        {
 
-            AtomicReference<Event> verify_played_card = null;
+            AtomicReference<Event> verify_played_card = new AtomicReference<>(); ;
             if(cardPath.toUpperCase().contains(Caction.DRAWFOUR.getAction()) ||
                cardPath.toUpperCase().contains(Caction.CHANGECOLOR.getAction()))
             {
@@ -200,26 +217,32 @@ public class Controller {
                 alert.setContentText("Seleziona un colore:");
 
                 // Aggiunta dei pulsanti al popup
-                // TODO aggiungere al posto della scritta rappresentatne il colore la foto del colore selezionabile
+                // TODO aggiungere al posto della scritta reppresentante il colore la foto del colore selezionabile
                 alert.getButtonTypes().setAll(new ButtonType("BLUE"), new ButtonType("RED"), new ButtonType("GREEN"), new ButtonType("YELLOW"));
 
                 // Mostra il popup e attendi la selezione dell'utente
-                alert.showAndWait().ifPresent(buttonType -> {
+                alert.showAndWait().ifPresent(buttonType ->
+                {
                     if (buttonType.getText() == "BLUE") {
 
                         verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.BLUE));
 
-                    } else if (buttonType.getText() == "GREEN") {
+                    }
+                    else if (buttonType.getText() == "GREEN") {
 
                         verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.GREEN));
 
-                    } else if (buttonType.getText() == "YELLOW") {
+                    }
+                    else if (buttonType.getText() == "YELLOW")
+                    {
 
                         verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.YELLOW));
 
-                    } else if (buttonType.getText() == "RED") {
+                    }
+                    else if (buttonType.getText() == "RED")
+                    {
 
-                        verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.RED));
+                        verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), Colour.RED));
                     }
                 });
 
@@ -227,7 +250,8 @@ public class Controller {
             }
             else
             {
-                verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), null));
+                System.out.println(this.cardList.indexOf(addButton));
+                verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), null));
             }
 
 
@@ -247,7 +271,7 @@ public class Controller {
                 // Mostra il popup e attendi la sua chiusura
                 alert.showAndWait();
             }
-            else
+            else if(verify_played_card.get() == Event.BLOCKED)
             {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("BLOCCATO");

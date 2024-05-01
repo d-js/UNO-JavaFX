@@ -60,14 +60,16 @@ public class Deck
 	{
 		if(this.coverDeck.stream().count() == 0)
 			this.drawDown();
+
 		if(this.coverDeck.stream().findFirst().isPresent()) {
 			Card e = this.coverDeck.stream().findFirst().get();
 			coverDeck.remove(e);
 			return (e);
 		}
 		else
+		{
 			return null;
-
+		}
 
 	}
 

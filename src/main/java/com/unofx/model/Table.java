@@ -59,7 +59,7 @@ public class Table
 	}
 	
 	/* Distribuisci le carte per iniziare la partita*/
-	private void give_start_card()
+	public void give_start_card()
 	{
 		for(Player e : this.sitDownPlayer)
 		{
@@ -109,9 +109,16 @@ public class Table
 		this.deck.playCard(currentCard);
 		this.set_player_list(numberOfPlayer);
 		this.give_start_card();
-		
 	}
-	
+
+	public void setCurrentPlayer() {
+		this.currentPlayer = this.sitDownPlayer.stream().findFirst().get();
+	}
+
+	public void setCurrentCard(Card currentCard) {
+		this.currentCard = currentCard;
+	}
+
 	/* Metodo da chiamare tutte le volte che un player ha giocato una carta per capire se ha vinto */
 	public boolean control_winner()
 	{
