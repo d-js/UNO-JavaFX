@@ -225,18 +225,18 @@ public class Controller {
                 {
                     if (buttonType.getText() == "BLUE") {
 
-                        verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.BLUE));
+                        verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), Colour.BLUE));
 
                     }
                     else if (buttonType.getText() == "GREEN") {
 
-                        verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.GREEN));
+                        verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), Colour.GREEN));
 
                     }
                     else if (buttonType.getText() == "YELLOW")
                     {
 
-                        verify_played_card.set(Table.getInstance().play_card(this.cardList.indexOf(addButton), Colour.YELLOW));
+                        verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), Colour.YELLOW));
 
                     }
                     else if (buttonType.getText() == "RED")
@@ -250,7 +250,6 @@ public class Controller {
             }
             else
             {
-                System.out.println(this.cardList.indexOf(addButton));
                 verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), null));
             }
 
