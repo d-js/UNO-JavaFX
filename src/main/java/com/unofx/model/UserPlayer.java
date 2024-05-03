@@ -61,6 +61,14 @@ public class UserPlayer implements Player
 		this.block = false;
 	}
 
+	// TODO idea se serve fare un metodo per ricavare la carta vedendo se il getname e' contenuto nel filepath passato dalla view
+	public Card getCardFromSpec(int index)
+	{
+		Card e = this.hand.get(index);
+		this.hand.remove(e);
+		return e;
+	}
+
 
 	public List<String> get_info_hand()
 	{

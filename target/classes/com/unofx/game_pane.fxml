@@ -8,7 +8,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="side_anchorpane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.unofx.Controller">
    <children>
       <Button fx:id="deck" layoutX="679.0" layoutY="396.0" mnemonicParsing="false" onMouseClicked="#on_deck_click" prefHeight="288.0" prefWidth="281.0" styleClass="button_mazzo_centrale" text="draw" />
-      <Pane fx:id="currentCard" layoutX="1021.0" layoutY="401.0" prefHeight="279.0" prefWidth="281.0" styleClass="genericfield" />
-      <HBox fx:id="userHand" layoutX="38.0" layoutY="920.0" prefHeight="130.0" prefWidth="1827.0" styleClass="genericfield" />
+      <Pane fx:id="currentCardView" layoutX="1021.0" layoutY="401.0" prefHeight="279.0" prefWidth="281.0" styleClass="genericfield" />
+      <HBox fx:id="userHandView" layoutX="38.0" layoutY="920.0" prefHeight="130.0" prefWidth="1827.0" styleClass="genericfield" />
    </children>
 </AnchorPane>

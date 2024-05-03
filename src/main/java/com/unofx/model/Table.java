@@ -24,6 +24,12 @@ public class Table
 		return INSTANCE;
 	}
 
+	public String getLastUserCard()
+	{
+		return this.currentPlayer.get_info_hand().get(this.currentPlayer.get_info_hand().size() - 1);
+	}
+
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -86,7 +92,11 @@ public class Table
 		}
 		return null;
 	}
-	
+
+	public Card getCurrentCard() {
+		return currentCard;
+	}
+
 	/* Metodo per impostare il nome nel caso lo volesse fare l'utente*/
 	public void set_username(String username)
 	{
@@ -158,9 +168,8 @@ public class Table
 
 
 	// TODO se ritorna false stampare un avviso che dice che la carta non può essere giocata (nella grafica)
-	public Event play_card(int index_card, Colour color_choice)
+	public Event play_card(Card e)
 	{
-		Card e = this.select_card(index_card);
 		
 		/* controllo se la carta può essere giocata */
 		if (e instanceof NormalCard && this.currentCard instanceof NormalCard) {
@@ -199,8 +208,8 @@ public class Table
 		/* SE LA CARTA E NERA */
 		if(e.getColor() == Colour.BLACK)
 		{
-			this.change_current_color(color_choice);
-			if(((ActionCard)e).getAction() == Caction.DRAWFOUR) {
+			this.change_current_color(((ActionCard)e).getChoosenColour());
+			if((e.getAction() == Caction.DRAWFOUR)) {
 				this.currentPlayer.drawCard(this.deck.drawOut());
 				this.currentPlayer.drawCard(this.deck.drawOut());
 				this.currentPlayer.drawCard(this.deck.drawOut());

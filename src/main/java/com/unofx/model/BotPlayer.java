@@ -1,8 +1,11 @@
 package com.unofx.model;
 
+import java.net.CookieHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class BotPlayer implements Player
 {
@@ -25,10 +28,18 @@ public class BotPlayer implements Player
 	}
 
 	@Override
-	public Card playCard(int index) 
+	public Card playCard(int index)
 	{
-		Card selectedCard = hand.get(index);
-		hand.remove(index);
+		Random rdn = new Random();
+		Card selectedCard = hand.get(rdn.nextInt(hand.size()));
+		System.out.println("La carta giocata dal bot e': " + selectedCard.getName());
+		if(selectedCard.getAction() == Caction.CHANGECOLOR ||
+			selectedCard.getAction() == Caction.DRAWFOUR)
+		{
+			Colour randomColour = Colour.values()[rdn.nextInt(Colour.values().length)];
+			((ActionCard)selectedCard).setChoosenColour(randomColour);
+		}
+		hand.remove(selectedCard);
 		return selectedCard;
 	}
 	@Override
@@ -58,6 +69,7 @@ public class BotPlayer implements Player
 
 	@Override
 	public List<String> get_info_hand() {
-		return null;
+
+		return this.hand.stream().map(e -> e.getName()).collect(Collectors.toList());
 	}
 }

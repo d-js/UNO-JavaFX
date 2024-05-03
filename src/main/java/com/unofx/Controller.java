@@ -3,6 +3,7 @@ package com.unofx;
 import com.unofx.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -17,37 +18,105 @@ import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
-public class Controller {
-    @FXML
-    private Label welcomeText;
+public class Controller implements Initializable
+{
+    // View scene var
     private Scene scene;
     private Stage stage;
     private Parent root;
 
-    private int count = 0;
+    // View game var
     @FXML
-    private HBox userHand = new HBox();
+    private Pane currentCardView = new Pane();
     @FXML
-    private Pane currentCard = new Pane();
+    private HBox userHandView = new HBox();
 
-    private List<Button> cardList = new ArrayList<>();
-    private String imagesPath = "/home/diego/IdeaProjects/UNOfx/src/main/resources/com/cardImages/";
+    //TODO fare file .env (come si usa e dove crearlo)
+    private String imagesPath = "/home/diego/IdeaProjects/unoFX/src/main/resources/com/cardImages/";
 
+    // Not useful
+    public List<Card> updated_cardlist = new ArrayList<>();
 
-    public void initialize(String _fxmlScene, MouseEvent mouseEvent) throws IOException
+    public void initializeScene(String _fxmlScene, MouseEvent mouseEvent) throws IOException
     {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(_fxmlScene));
         this.root = fxmlLoader.load();
         stage = (Stage) ((Button) mouseEvent.getSource()).getScene().getWindow();
         this.scene = new Scene(root);
+        // Set userhand information
+        this.userHandView.setPadding(new Insets(10));
+        this.userHandView.setSpacing(5);
+        this.userHandView.setMaxWidth(this.userHandView.getWidth());
+
+
+        // Creazione di uno ScrollPane per contenere l'HBox
+        ScrollPane scrollPane = new ScrollPane();
+        // Imposta la politica di scroll orizzontale
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        // Imposta il contenuto dello ScrollPane all'HBox
+        scrollPane.setContent(userHandView);
+        scrollPane.setMaxWidth(Double.MAX_VALUE);
 
     }
 
-    public void update() {
+    public void inizializeTable() throws IOException
+    {
+
+        Table.getInstance().set_deck();
+        Table.getInstance().deck.set_initial_card();
+        Table.getInstance().set_player_list(4);
+        Table.getInstance().setCurrentPlayer();
+        Table.getInstance().give_start_card();
+        List<String> user_card_list= Table.getInstance().get_user_info_card();
+        this.set_user_card(user_card_list);
+
+        Card c = Table.getInstance().deck.drawOut();
+        Table.getInstance().setCurrentCard(c);
+        Table.getInstance().deck.playCard(c);
+        this.set_currentCard(this.generate_imagePath(c.getName()));
+
+    }
+
+    public void startBots()
+    {
+        for(Player p : Table.getInstance().getSitDownPlayer())
+        {
+            if(p instanceof BotPlayer)
+            {
+                Card e;
+                do {
+
+                    e = p.playCard(0); // l'index per il bot non verra' considerato per la selezione della carta
+
+                }while(Table.getInstance().play_card(e) == Event.CHANGECARD);
+
+                this.set_currentCard(e.getName());
+            }
+        }
+    }
+
+    public void update_hand()
+    {
+        this.updated_cardlist = Table.getInstance().getCurrentPlayer().getHand();
+
+        List<String> nameCardList = this.updated_cardlist.stream().map(e -> e.getName()).collect(Collectors.toList());
+
+        try {
+            this.set_user_card(nameCardList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update()
+    {
         this.stage.setScene(this.scene);
         this.stage.setFullScreen(true);
         try
@@ -76,53 +145,36 @@ public class Controller {
         }
     }
 
+    public void start_game() throws IOException
+    {
 
-    public void start_game() throws IOException {
-        // TODO settare il metodo inizialize
-        this.userHand.setPadding(new Insets(10));
-        this.userHand.setSpacing(5);
-        this.userHand.setMaxWidth(this.userHand.getWidth());
+        this.inizializeTable();
+        Pane n = new Pane();
 
-        Table.getInstance().set_deck();
-        Table.getInstance().deck.set_initial_card();
-        Table.getInstance().set_player_list(4);
-        Table.getInstance().setCurrentPlayer();
-        Table.getInstance().give_start_card();
-        List<String> user_card_list= Table.getInstance().get_user_info_card();
-        this.set_start_card(user_card_list);
-
-        /*
-        while(Table.getInstance().control_winner() == false)
+        while(!Table.getInstance().control_winner())
         {
+            while(Table.getInstance().getCurrentPlayer() instanceof UserPlayer)
+            {
+                this.show_user_hand();
+            }
+
             for(Player p : Table.getInstance().getSitDownPlayer())
             {
-                //TODO ismyturn deve controllare se il currentplayer corrisponde al player user
-                if(Table.getInstance().is_my_turn() == true)
-                {
-                    //TODO gioca la carta l'utente
-                    this.show_user_hand();
-
-                    this.hide_user_hand();
-                }
-                else
-                {
-                    //TODO gioca la carta il bot, non bisogna passare nessun parametro
-                    //TODO gestire tutto il turno nel metodo playcard in modo che al passaggio al player successivo
-                    // la classe sia pronta a far giocare il player successivo
-                    Table.getInstance().play_card(1, null);
-                }
+                p.playCard(9);
+                this.set_currentCard(Table.getInstance().getCurrentCard().getName());
             }
-        }*/
+
+            this.update_hand();
+        }
     }
 
-    public void set_start_card(List<String> e) throws IOException
+    public void endTurn()
     {
-        // Setto la carta iniziale sia nel model che nella vista
-        Card c = Table.getInstance().deck.drawOut();
-        Table.getInstance().setCurrentCard(c);
-        Table.getInstance().deck.playCard(c);
-        this.set_currentCard(this.generate_imagePath(c.getName()));
+        this.hide_user_hand();
+    }
 
+    public void set_user_card(List<String> e) throws IOException
+    {
         // Do le carte a tutti i giocatori, mostro nella vista solamente quelle dei player giocanti tralasciando i bot
         for (String s: e)
         {
@@ -135,7 +187,6 @@ public class Controller {
         cardName = cardName.replaceFirst(cardName.substring(0, 1), cardName.substring(0, 1).toUpperCase());
         return "file:" + this.imagesPath + cardName + ".png";
     }
-
 
     public int countButtons()
     {
@@ -153,7 +204,7 @@ public class Controller {
     @FXML
     public void on_start(MouseEvent mouseEvent) throws IOException
     {
-        initialize("game_pane.fxml", mouseEvent);
+        initializeScene("game_pane.fxml", mouseEvent);
         update();
         this.start_game();
     }
@@ -170,11 +221,12 @@ public class Controller {
     @FXML
     public void on_deck_click(MouseEvent mouseEvent) throws IOException
     {
-        List<String> user_card_list= Table.getInstance().get_user_info_card();
-        for (String s: user_card_list)
-        {
-            draw(generate_imagePath(s));
-        }
+        Card e = Table.getInstance().deck.drawOut();
+        Table.getInstance().getSitDownPlayer().stream().forEach(p -> {
+            if(p instanceof UserPlayer)
+                p.drawCard(e);
+        });
+        draw(generate_imagePath(e.getName()));
     }
 
 
@@ -183,10 +235,10 @@ public class Controller {
         Image i = new Image(_file_path);
         ImageView iw = new ImageView();
         iw.setImage(i);
-        iw.setFitWidth(currentCard.getWidth());
-        iw.setFitHeight(currentCard.getHeight());
+        iw.setFitWidth(currentCardView.getWidth());
+        iw.setFitHeight(currentCardView.getHeight());
 
-        this.currentCard.getChildren().add(iw);
+        this.currentCardView.getChildren().add(iw);
     }
 
     public void draw(String cardPath) throws IOException
@@ -225,24 +277,29 @@ public class Controller {
                 {
                     if (buttonType.getText() == "BLUE") {
 
-                        verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), Colour.BLUE));
+                        Card c = Table.getInstance().getCurrentPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                        ((ActionCard)c).setChoosenColour(Colour.BLUE);
+                        verify_played_card.set(Table.getInstance().play_card(c));
 
                     }
                     else if (buttonType.getText() == "GREEN") {
 
-                        verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), Colour.GREEN));
-
+                        Card c = Table.getInstance().getCurrentPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                        ((ActionCard)c).setChoosenColour(Colour.GREEN);
+                        verify_played_card.set(Table.getInstance().play_card(c));
                     }
                     else if (buttonType.getText() == "YELLOW")
                     {
-
-                        verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), Colour.YELLOW));
+                        Card c = Table.getInstance().getCurrentPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                        ((ActionCard)c).setChoosenColour(Colour.YELLOW);
+                        verify_played_card.set(Table.getInstance().play_card(c));
 
                     }
                     else if (buttonType.getText() == "RED")
                     {
-
-                        verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), Colour.RED));
+                        Card c = Table.getInstance().getCurrentPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                        ((ActionCard)c).setChoosenColour(Colour.RED);
+                        verify_played_card.set(Table.getInstance().play_card(c));
                     }
                 });
 
@@ -250,14 +307,15 @@ public class Controller {
             }
             else
             {
-                verify_played_card.set(Table.getInstance().play_card(this.userHand.getChildren().indexOf(addButton), null));
+                Card c = Table.getInstance().getCurrentPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                verify_played_card.set(Table.getInstance().play_card(c));
             }
 
 
             if(verify_played_card.get() == Event.ALLDONE)
             {
                 this.set_currentCard(cardPath);
-                this.userHand.getChildren().remove(addButton);
+                this.userHandView.getChildren().remove(addButton);
 
             } else if (verify_played_card.get() == Event.CHANGECARD) {
 
@@ -281,10 +339,18 @@ public class Controller {
                 alert.show();
             }
 
+            this.endTurn();
         });
 
 
         // Aggiungi il bottone "Aggiungi Bottone" al pannello
-        this.userHand.getChildren().add(addButton);
+        this.userHandView.getChildren().add(addButton);
+
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }
