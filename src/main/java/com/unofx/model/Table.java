@@ -45,6 +45,7 @@ public class Table
 	/* Metodo per costruire la lista di giocatori della partita*/
 	public void set_player_list(int numberOfPlayer)
 	{
+		/*
 		// controllo se il giocatore ha inserito un nome utente
 		if(this.user.getUsername() != null)
 		{
@@ -62,6 +63,11 @@ public class Table
 			this.sitDownPlayer.add(new BotPlayer("bot" + numberOfPlayer));
 			numberOfPlayer--;
 		}
+		*/
+		 this.sitDownPlayer.add(new UserPlayer("Marco"));
+		 this.sitDownPlayer.add(new BotPlayer("bot1"));
+		this.sitDownPlayer.add(new BotPlayer("bot2"));
+		this.sitDownPlayer.add(new BotPlayer("bot3"));
 	}
 	
 	/* Distribuisci le carte per iniziare la partita*/
@@ -170,6 +176,17 @@ public class Table
 	// TODO se ritorna false stampare un avviso che dice che la carta non può essere giocata (nella grafica)
 	public Event play_card(Card e)
 	{
+
+		// controllo se il player è bloccato
+		if(this.currentPlayer.is_blocked()){
+			this.currentPlayer.removeBlock();
+			this.next_turn();
+			return Event.BLOCKED;
+		}
+
+		// controllo se è il mio turno
+		if(!this.is_my_turn())
+			return Event.BLOCKED;
 		
 		/* controllo se la carta può essere giocata */
 		if (e instanceof NormalCard && this.currentCard instanceof NormalCard) {
@@ -192,16 +209,7 @@ public class Table
 					action_current.getColor() == Colour.BLACK)
 				return Event.CHANGECARD;
 		}
-		// controllo se il player è bloccato
-		if(this.currentPlayer.is_blocked()){
-			this.currentPlayer.removeBlock();
-			this.next_turn();
-			return Event.BLOCKED;
-		}
 
-		// controllo se è il mio turno
-		if(!this.is_my_turn())
-			return Event.BLOCKED;
 		
 		/* Se sono qui significa che la carta può essere giocata */
 		

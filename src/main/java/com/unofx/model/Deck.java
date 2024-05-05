@@ -97,6 +97,12 @@ public class Deck
 		Card e = this.drawOut();
 		this.playCard(e);
 	}
+
+	public Card getLastUncover()
+	{
+		return this.uncoverDeck.get(this.uncoverDeck.size() - 1);
+	}
+
 	public void delete()
 	{
 		this.coverDeck.removeAll(coverDeck);
