@@ -70,8 +70,12 @@ public class GameController implements Initializable {
         this.hide_user_hand();
         while(Table.getInstance().getCurrentPlayer() instanceof BotPlayer)
         {
-            Card e = Table.getInstance().getCurrentPlayer().playCard(0);
-            Table.getInstance().play_card(e);
+            Event tempEvent = Event.CHANGECARD;
+            while(tempEvent == Event.CHANGECARD)
+            {
+                Card e = Table.getInstance().getCurrentPlayer().playCard(0);
+                tempEvent = Table.getInstance().play_card(e);
+            }
             this.update_view();
             if(Table.getInstance().control_winner())
             {
