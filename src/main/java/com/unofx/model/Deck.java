@@ -34,8 +34,8 @@ public class Deck
 				coverDeck.add(new ActionCard(Caction.BLOCKTURN,c));
 				coverDeck.add(new ActionCard(Caction.CHANGELAP,c));
 				coverDeck.add(new ActionCard(Caction.CHANGELAP,c));
-				coverDeck.add(new ActionCard(Caction.DROWTWO,c));
-				coverDeck.add(new ActionCard(Caction.DROWTWO,c));
+				coverDeck.add(new ActionCard(Caction.DRAWTWO,c));
+				coverDeck.add(new ActionCard(Caction.DRAWTWO,c));
 
     		    for(Number e : Number.values())
     		    {

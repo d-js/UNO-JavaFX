@@ -53,6 +53,7 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        this.currentCardView.layout();
         this.scene = Controller.scene;
         this.stage = Controller.stage;
         this.root = Controller.root;
@@ -61,28 +62,16 @@ public class GameController implements Initializable {
         this.userHandView.setMaxWidth(1000);
 
         // Inizia la partita
-        this.cicleTurns();
-    }
-
-    public void cicleTurns()
-    {
-        while(!Table.getInstance().control_winner())
-        {
-            this.hide_user_hand();
-            if(Table.getInstance().getCurrentPlayer() instanceof UserPlayer)
-            {
-                this.show_user_hand();
-            }
-            Table.getInstance().getCurrentPlayer().playCard(0);
-        }
+        this.cicleBotTurns();
     }
 
     public void cicleBotTurns()
     {
+        this.update_view();
         this.hide_user_hand();
         while(Table.getInstance().getCurrentPlayer() instanceof BotPlayer)
         {
-            Table.getInstance().getCurrentPlayer().playCard(9);
+            Table.getInstance().getCurrentPlayer().playCard(0);
             this.update_view();
             if(Table.getInstance().control_winner())
             {
@@ -100,19 +89,6 @@ public class GameController implements Initializable {
         // todo controllare se il player ha vinto
     }
 
-
-    public void inizializeTable() throws IOException
-    {
-
-        List<String> user_card_list= Table.getInstance().get_user_info_card();
-        this.updateHand(user_card_list);
-
-        Card c = Table.getInstance().deck.drawOut();
-        Table.getInstance().setCurrentCard(c);
-        Table.getInstance().deck.playCard(c);
-        this.update_view();
-
-    }
 
     public void initializeScene(String _fxmlScene, MouseEvent mouseEvent) throws IOException
     {
@@ -132,24 +108,6 @@ public class GameController implements Initializable {
                 p.drawCard(e);
         });
         draw(generate_imagePath(e.getName()));
-    }
-
-    public void startBots()
-    {
-        for(Player p : Table.getInstance().getSitDownPlayer())
-        {
-            if(p instanceof BotPlayer)
-            {
-                Card e;
-                do {
-
-                    e = p.playCard(0); // l'index per il bot non verra' considerato per la selezione della carta
-
-                }while(Table.getInstance().play_card(e) == Event.CHANGECARD);
-
-                this.setCurrentCardImage(e.getName());
-            }
-        }
     }
 
 

@@ -6,7 +6,7 @@ public enum Caction {
 	BLOCKTURN("BLOCKTURN"),
 	CHANGECOLOR("CHANGECOLOR"),
 	DRAWFOUR("DRAWFOUR"),
-	DROWTWO("DRAWTWO");
+	DRAWTWO("DRAWTWO");
 
 	private String action;
 	Caction(String action)

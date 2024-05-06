@@ -8,7 +8,7 @@ public interface Card
 
 	default Caction getAction()
 	{
-		Caction c = Caction.DROWTWO;
+		Caction c = Caction.DRAWTWO;
 		return c;
 	}
 

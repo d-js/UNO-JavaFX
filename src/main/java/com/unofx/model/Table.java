@@ -1,5 +1,7 @@
 package com.unofx.model;
 
+import javafx.scene.control.Tab;
+
 import java.util.*;
 
 public class Table
@@ -218,17 +220,17 @@ public class Table
 		{
 			this.change_current_color(((ActionCard)e).getChoosenColour());
 			if((e.getAction() == Caction.DRAWFOUR)) {
-				this.currentPlayer.drawCard(this.deck.drawOut());
-				this.currentPlayer.drawCard(this.deck.drawOut());
-				this.currentPlayer.drawCard(this.deck.drawOut());
-				this.currentPlayer.drawCard(this.deck.drawOut());
+				this.nextPlayer().drawCard(this.deck.drawOut());
+				this.nextPlayer().drawCard(this.deck.drawOut());
+				this.nextPlayer().drawCard(this.deck.drawOut());
+				this.nextPlayer().drawCard(this.deck.drawOut());
 			}
 		}
 		/* SE LA CARTA NON E NERA */
-		else if(e.getAction() == Caction.DROWTWO)
+		else if(e.getAction() == Caction.DRAWTWO)
 		{
-			this.currentPlayer.drawCard(this.deck.drawOut());
-			this.currentPlayer.drawCard(this.deck.drawOut());
+			this.nextPlayer().drawCard(this.deck.drawOut());
+			this.nextPlayer().drawCard(this.deck.drawOut());
 		}
 		else if(e.getAction() == Caction.BLOCKTURN)
 		{
@@ -248,13 +250,21 @@ public class Table
 	{
 		this.currentColor = color;
 	}
+
+	// Return the instance of the next player in turns order
+	private Player nextPlayer()
+	{
+		return this.sitDownPlayer.get(Table.CurrentIndexPlayer +1);
+	}
+
+
 	
 	/* Cambia giro, inverte l'ordine dei giocatori nella lista*/
 	public void lap_change()
 	{
 		// prendo la persona prima e la rimetto al posto giusto dopo aver invertito il giro
 		Player p = this.sitDownPlayer.get(CurrentIndexPlayer);
-		
+		//TODO error in line 268
 		Collections.reverse(sitDownPlayer);
 		Table.CurrentIndexPlayer = this.sitDownPlayer.indexOf(p);
 	}
@@ -262,23 +272,33 @@ public class Table
 	/* Blocca il turno del giocatore successivo*/
 	public void block_turn()
 	{
-		CurrentIndexPlayer = this.control_index(CurrentIndexPlayer + 1);
-		this.sitDownPlayer.get(CurrentIndexPlayer + 1).setBlock();
+		this.sitDownPlayer.get(this.control_index(CurrentIndexPlayer + 1)).setBlock();
 	}
 	
 	/* Passa al turno al player successivo*/
 	public void next_turn()
 	{
 		/* continuo ad incrementare fino quando il giocatore successivo non è blocked */
-		Table.CurrentIndexPlayer++;
-		CurrentIndexPlayer = this.control_index(CurrentIndexPlayer);
+		if(Table.CurrentIndexPlayer < (this.sitDownPlayer.size() -1))
+		{
+			while(this.sitDownPlayer.get(CurrentIndexPlayer).is_blocked())
+				Table.CurrentIndexPlayer++;
+			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer);
+		}
+		else
+		{
+			Table.CurrentIndexPlayer = 0;
+			while(this.sitDownPlayer.get(CurrentIndexPlayer).is_blocked())
+				Table.CurrentIndexPlayer++;
+			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer);
+		}
 	}
 		
 	/* Verifico che l'indice passato per parametro rimanga entro il max e il min */
 	public int control_index(int index)
 	{
 		int verified_index;
-		if(index <= this.sitDownPlayer.size())
+		if(index <= (this.sitDownPlayer.size() - 1))
 		{
 			verified_index = index;
 		}
