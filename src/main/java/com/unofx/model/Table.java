@@ -33,7 +33,7 @@ public class Table
 
 
 	public Player getCurrentPlayer() {
-		return currentPlayer;
+		return this.currentPlayer;
 	}
 
 	public List<Player> getSitDownPlayer() {
@@ -130,7 +130,7 @@ public class Table
 	}
 
 	public void setCurrentPlayer() {
-		this.currentPlayer = this.sitDownPlayer.stream().findFirst().get();
+		this.currentPlayer = this.sitDownPlayer.get(0);
 	}
 
 	public void setCurrentCard(Card currentCard) {
@@ -178,7 +178,6 @@ public class Table
 	// TODO se ritorna false stampare un avviso che dice che la carta non può essere giocata (nella grafica)
 	public Event play_card(Card e)
 	{
-
 		// controllo se il player è bloccato
 		if(this.currentPlayer.is_blocked()){
 			this.currentPlayer.removeBlock();
@@ -187,8 +186,8 @@ public class Table
 		}
 
 		// controllo se è il mio turno
-		if(!this.is_my_turn())
-			return Event.BLOCKED;
+		//if(!this.is_my_turn())
+		//	return Event.BLOCKED;
 		
 		/* controllo se la carta può essere giocata */
 		if (e instanceof NormalCard && this.currentCard instanceof NormalCard) {
@@ -240,6 +239,10 @@ public class Table
 		{
 			this.lap_change();
 		}
+
+		//Annuncio il vincitore
+		if(this.control_winner())
+			this.announce_winner(this.currentPlayer);
 
 		this.next_turn();
 		this.replace_current_card(e);

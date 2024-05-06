@@ -53,7 +53,6 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        this.currentCardView.layout();
         this.scene = Controller.scene;
         this.stage = Controller.stage;
         this.root = Controller.root;
@@ -71,7 +70,8 @@ public class GameController implements Initializable {
         this.hide_user_hand();
         while(Table.getInstance().getCurrentPlayer() instanceof BotPlayer)
         {
-            Table.getInstance().getCurrentPlayer().playCard(0);
+            Card e = Table.getInstance().getCurrentPlayer().playCard(0);
+            Table.getInstance().play_card(e);
             this.update_view();
             if(Table.getInstance().control_winner())
             {
@@ -162,8 +162,8 @@ public class GameController implements Initializable {
         Image i = new Image(_file_path);
         ImageView iw = new ImageView();
         iw.setImage(i);
-        iw.setFitWidth(currentCardView.getWidth());
-        iw.setFitHeight(currentCardView.getHeight());
+        iw.setFitWidth(currentCardView.getPrefWidth());
+        iw.setFitHeight(currentCardView.getPrefHeight());
 
         this.currentCardView.getChildren().add(iw);
     }
@@ -284,6 +284,7 @@ public class GameController implements Initializable {
 
                 // Mostra il popup
                 alert.show();
+                this.cicleBotTurns();
             }
 
         });
