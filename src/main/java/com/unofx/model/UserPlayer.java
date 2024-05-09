@@ -2,10 +2,7 @@ package com.unofx.model;
 
 import com.almasb.fxgl.entity.action.Action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UserPlayer implements Player 
 {
@@ -18,7 +15,7 @@ public class UserPlayer implements Player
 	{
 		this.block = false;
 		this.username = username;
-		this.hand = new ArrayList<>(); //meglio fare una linkedlist, in questo modo quando si elimina una carte le carte si riassegnano automaticamente l'indice corretto
+		this.hand = new LinkedList<>(); //meglio fare una linkedlist, in questo modo quando si elimina una carte le carte si riassegnano automaticamente l'indice corretto
 	}
 
 	@Override

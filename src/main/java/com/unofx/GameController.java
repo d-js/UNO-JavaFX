@@ -1,6 +1,7 @@
 package com.unofx;
 
 import com.unofx.model.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -64,33 +65,42 @@ public class GameController implements Initializable {
         this.cicleBotTurns();
     }
 
-    public void cicleBotTurns()
-    {
-        this.update_view();
-        this.hide_user_hand();
-        while(Table.getInstance().getCurrentPlayer() instanceof BotPlayer)
-        {
+    public void cicleBotTurns() {
+
+        update_view();
+        hide_user_hand();
+
+        while (Table.getInstance().getCurrentPlayer() instanceof BotPlayer) {
             Event tempEvent = Event.CHANGECARD;
-            while(tempEvent == Event.CHANGECARD)
-            {
-                Card e = Table.getInstance().getCurrentPlayer().playCard(0);
-                tempEvent = Table.getInstance().play_card(e);
+            while (tempEvent == Event.CHANGECARD) {
+                System.out.println("Gioca la carta: " + Table.getInstance().getCurrentPlayer());
+                Card card = Table.getInstance().getCurrentPlayer().playCard(0);
+                tempEvent = Table.getInstance().play_card(card);
             }
-            this.update_view();
-            if(Table.getInstance().control_winner())
-            {
+            System.out.println("Aggiorno la vista");
+            update_view();
+
+            if (Table.getInstance().control_winner()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("PARTITA CONCLUSA");
                 alert.setHeaderText(null);
-                alert.setContentText("Il player " + Table.getInstance().getCurrentPlayer().getUsername() + "Ha vinto la partita.");
+                alert.setContentText("Il player " + Table.getInstance().getCurrentPlayer().getUsername() + " ha vinto la partita.");
 
                 // Mostra il popup e attendi la sua chiusura
                 alert.showAndWait();
             }
         }
-        this.update_view();
-        this.show_user_hand();
-        // todo controllare se il player ha vinto
+        if (!Table.getInstance().getCurrentPlayer().is_blocked())
+        {
+            update_view();
+            System.out.println("Mostro la mano");
+            show_user_hand();
+        }
+        else
+        {
+            Table.getInstance().next_turn();
+            this.cicleBotTurns();
+        }
     }
 
 
@@ -111,54 +121,62 @@ public class GameController implements Initializable {
             if(p instanceof UserPlayer)
                 p.drawCard(e);
         });
+        this.deck.setDisable(true);
         draw(generate_imagePath(e.getName()));
     }
 
 
-
     public void update_view()
     {
-        this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
+        Platform.runLater(() -> {
+            this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
 
-        List<Card> updated_cardlist = Table.getInstance().getCurrentPlayer().getHand();
+            List<Card> updated_cardlist = Table.getInstance().getCurrentPlayer().getHand();
+            List<String> nameCardList = updated_cardlist.stream().map(e -> e.getName()).collect(Collectors.toList());
 
-
-        List<String> nameCardList = updated_cardlist.stream().map(e -> e.getName()).collect(Collectors.toList());
-
-        this.updateHand(nameCardList);
+            this.updateHand(nameCardList);
+        });
     }
 
     private void updateHand(List<String> nameCardList)
     {
-        this.userHandView.getChildren().clear();
+        Platform.runLater(() -> {
+            this.userHandView.getChildren().clear();
 
-        for(String cardName : nameCardList){
-            try {
-                this.draw(this.generate_imagePath(cardName));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            for (String cardName : nameCardList) {
+                try {
+                    this.draw(this.generate_imagePath(cardName));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
+        });
     }
 
 
     public void hide_user_hand()
     {
-        for(Node n: this.userHandView.getChildren())
-        {
-            n.setDisable(true);
-        }
-        this.deck.setDisable(true);
+        Platform.runLater(() -> {
+            for (Node n : this.userHandView.getChildren()) {
+                if (n instanceof Button) {
+                    ((Button) n).setDisable(true);
+                }
+            }
+            this.deck.setDisable(true);
+        });
     }
 
     // Rendi usabili le carte dell'utente
     public void show_user_hand()
     {
-        for(Node n: this.userHandView.getChildren())
-        {
-            n.setDisable(false);
-        }
-        this.deck.setDisable(false);
+        Platform.runLater(() -> {
+            for (Node n : this.userHandView.getChildren()) {
+                if (n instanceof Button) {
+                    ((Button) n).setDisable(false);
+                }
+            }
+            this.deck.setDisable(false);
+        });
     }
 
     public void setCurrentCardImage(String _file_path)
@@ -264,7 +282,6 @@ public class GameController implements Initializable {
 
             if(verify_played_card.get() == Event.ALLDONE)
             {
-                this.setCurrentCardImage(cardPath);
                 this.userHandView.getChildren().remove(addButton);
                 this.cicleBotTurns();
 

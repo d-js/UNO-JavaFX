@@ -47,8 +47,16 @@ public class Table
 	/* Metodo per costruire la lista di giocatori della partita*/
 	public void set_player_list(int numberOfPlayer)
 	{
-		/*
+
 		// controllo se il giocatore ha inserito un nome utente
+
+
+		while(numberOfPlayer > 0)
+		{
+			this.sitDownPlayer.add(new BotPlayer("bot" + numberOfPlayer));
+			numberOfPlayer--;
+		}
+
 		if(this.user.getUsername() != null)
 		{
 			this.sitDownPlayer.add(this.user);
@@ -58,18 +66,6 @@ public class Table
 		{
 			this.sitDownPlayer.add(new UserPlayer("user"));
 		}
-		numberOfPlayer--;
-
-		while(numberOfPlayer > 0)
-		{
-			this.sitDownPlayer.add(new BotPlayer("bot" + numberOfPlayer));
-			numberOfPlayer--;
-		}
-		*/
-		 this.sitDownPlayer.add(new UserPlayer("Marco"));
-		 this.sitDownPlayer.add(new BotPlayer("bot1"));
-		this.sitDownPlayer.add(new BotPlayer("bot2"));
-		this.sitDownPlayer.add(new BotPlayer("bot3"));
 	}
 	
 	/* Distribuisci le carte per iniziare la partita*/
@@ -116,18 +112,7 @@ public class Table
 	{
 		this.deck = new Deck();
 	}
-	
-	/* Costruisce il tavolo e inizia la partita */
-	// TODO modificare il metodo in base a se la partita è a squadre o meno
-	public void start_game(int numberOfPlayer, boolean squad)
-	{
 
-		this.set_deck();
-		this.currentCard = this.deck.drawOut();
-		this.deck.playCard(currentCard);
-		this.set_player_list(numberOfPlayer);
-		this.give_start_card();
-	}
 
 	public void setCurrentPlayer() {
 		this.currentPlayer = this.sitDownPlayer.get(0);
@@ -175,9 +160,9 @@ public class Table
 	}
 
 
-	// TODO se ritorna false stampare un avviso che dice che la carta non può essere giocata (nella grafica)
 	public Event play_card(Card e)
 	{
+		System.out.println(this.getCurrentPlayer());
 		// controllo se il player è bloccato
 		if(this.currentPlayer.is_blocked()){
 			this.currentPlayer.removeBlock();
@@ -254,10 +239,13 @@ public class Table
 		this.currentColor = color;
 	}
 
+
+	//TODO fare il metodo pesca che pesca la carta e passa il turno
+
 	// Return the instance of the next player in turns order
 	private Player nextPlayer()
 	{
-		return this.sitDownPlayer.get(Table.CurrentIndexPlayer +1);
+		return this.sitDownPlayer.get(this.control_index(CurrentIndexPlayer + 1));
 	}
 
 
@@ -279,22 +267,39 @@ public class Table
 	}
 	
 	/* Passa al turno al player successivo*/
+	// TODO non funziona
 	public void next_turn()
 	{
-		/* continuo ad incrementare fino quando il giocatore successivo non è blocked */
-		if(Table.CurrentIndexPlayer < (this.sitDownPlayer.size() -1))
-		{
-			while(this.sitDownPlayer.get(CurrentIndexPlayer).is_blocked())
-				Table.CurrentIndexPlayer++;
-			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer);
+		int nextPlayerIndex = (Table.CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
+
+		while (this.sitDownPlayer.get(nextPlayerIndex).is_blocked()) {
+			nextPlayerIndex = (nextPlayerIndex + 1) % this.sitDownPlayer.size(); // Avanza fino a trovare un giocatore non bloccato
 		}
-		else
+
+		Table.CurrentIndexPlayer = nextPlayerIndex; // Imposta l'indice del nuovo giocatore corrente
+		this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer); // Imposta il nuovo giocatore corrente
+	}
+
+	public void incrementIndex()
+	{
+		int i = 0;
+		Table.getInstance().set_player_list(8);
+		Table.getInstance().set_deck();
+		Table.getInstance().give_start_card();
+		this.setCurrentPlayer();
+
+		while(i < 18)
 		{
-			Table.CurrentIndexPlayer = 0;
-			while(this.sitDownPlayer.get(CurrentIndexPlayer).is_blocked())
-				Table.CurrentIndexPlayer++;
+			//Table.getInstance().play_card(new NormalCard(Number.EIGHT, Colour.BLUE));
+			Table.getInstance().next_turn();
 			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer);
+			System.out.println(this.getCurrentPlayer());
+			i++;
 		}
+	}
+
+	public static void main(String[] args) {
+		Table.getInstance().incrementIndex();
 	}
 		
 	/* Verifico che l'indice passato per parametro rimanga entro il max e il min */
