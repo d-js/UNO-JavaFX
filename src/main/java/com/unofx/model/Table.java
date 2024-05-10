@@ -1,7 +1,5 @@
 package com.unofx.model;
 
-import javafx.scene.control.Tab;
-
 import java.util.*;
 
 public class Table
@@ -14,6 +12,7 @@ public class Table
 	private Player currentPlayer;
 	private UserPlayer user = new UserPlayer("diego");
 	private List<Player> sitDownPlayer = new LinkedList<>();
+	private UserPlayer User;
 	
 	private Random rdn = new Random();
 
@@ -31,6 +30,13 @@ public class Table
 		return this.currentPlayer.get_info_hand().get(this.currentPlayer.get_info_hand().size() - 1);
 	}
 
+	public UserPlayer getUserPlayer() {
+		return user;
+	}
+
+	public void setUser(UserPlayer user) {
+		this.user = user;
+	}
 
 	public Player getCurrentPlayer() {
 		return this.currentPlayer;
@@ -86,6 +92,7 @@ public class Table
 
 	public List<String> get_user_info_card()
 	{
+		// TODO memorizzare nel table l'istanza dell'user
 		for(Player e : this.sitDownPlayer)
 		{
 			if(e instanceof UserPlayer)
@@ -125,7 +132,7 @@ public class Table
 	/* Metodo da chiamare tutte le volte che un player ha giocato una carta per capire se ha vinto */
 	public boolean control_winner()
 	{
-		if(this.currentPlayer.getHand() == null)
+		if(this.currentPlayer.getHand().stream().count() == 0)
 		{
 			return true;
 		}
@@ -142,59 +149,28 @@ public class Table
 		System.out.println(winner + " vince.");
 	}
 
-	/* TODO passo -1 se il player corrente è un bot */
-	private Card select_card(int index)
-	{
-		Card selected_card;
-		if(this.currentPlayer instanceof BotPlayer)
-		{
-			int rand = 0; //rdn.nextInt(0, this.currentPlayer.getHand().size());
-			selected_card = this.currentPlayer.playCard(rand);
-		}
-		else 
-		{
-			selected_card = this.currentPlayer.playCard(index);
-		}
-		
-		return selected_card;
-	}
 
-
-	public Event play_card(Card e)
+	public void play_card(Card e)
 	{
-		System.out.println(this.getCurrentPlayer());
+		System.out.println("\n\n\nCARTA CORRENTE: " + this.getCurrentCard().getName().toUpperCase() + " | COLORE CORRENTE: " + this.getCurrentColor() + "\n");
+
+		System.out.println("E IL TURNO DI: " + this.currentPlayer.getUsername().toUpperCase());
+		System.out.println(this.currentPlayer.getUsername().toUpperCase() + " GIOCA " + e.getName().toUpperCase());
 		// controllo se il player è bloccato
 		if(this.currentPlayer.is_blocked()){
 			this.currentPlayer.removeBlock();
-			this.next_turn();
-			return Event.BLOCKED;
+
+			//TODO da modificare
+			e = currentCard;
 		}
+
+
 
 		// controllo se è il mio turno
 		//if(!this.is_my_turn())
 		//	return Event.BLOCKED;
 		
-		/* controllo se la carta può essere giocata */
-		if (e instanceof NormalCard && this.currentCard instanceof NormalCard) {
-			NormalCard normal_played = (NormalCard)e;
-			NormalCard normal_current = (NormalCard)this.currentCard;
-			// Controllo se la carta può essere giocata
-			if(normal_played.getNumber() != normal_current.getNumber() &&
-					normal_played.getColor() != this.currentColor)
-				return Event.CHANGECARD;
-		}
 
-		if(e instanceof ActionCard && this.currentCard instanceof ActionCard) {
-			ActionCard action_played = (ActionCard)this.currentCard;
-			ActionCard action_current = (ActionCard)this.currentCard;
-			// Controllo se la carta può essere giocata
-			if(action_played.getColor() != this.currentColor &&
-					action_played.getAction() != action_current.getAction())
-				return Event.CHANGECARD;
-			else if(action_played.getColor() == Colour.BLACK &&
-					action_current.getColor() == Colour.BLACK)
-				return Event.CHANGECARD;
-		}
 
 		
 		/* Se sono qui significa che la carta può essere giocata */
@@ -218,20 +194,17 @@ public class Table
 		}
 		else if(e.getAction() == Caction.BLOCKTURN)
 		{
-			this.block_turn();
+			this.nextPlayer().setBlock();
 		}
 		else if(e.getAction() == Caction.CHANGELAP)
 		{
 			this.lap_change();
 		}
 
-		//Annuncio il vincitore
-		if(this.control_winner())
-			this.announce_winner(this.currentPlayer);
-
 		this.next_turn();
 		this.replace_current_card(e);
-		return Event.ALLDONE;
+		this.change_current_color(e.getColor());
+
 	}
 	/* Modifica il colore corrente */
 	private void change_current_color(Colour color)
@@ -242,10 +215,13 @@ public class Table
 
 	//TODO fare il metodo pesca che pesca la carta e passa il turno
 
-	// Return the instance of the next player in turns order
+	// Return the instance of the next player in turns order`
 	private Player nextPlayer()
 	{
-		return this.sitDownPlayer.get(this.control_index(CurrentIndexPlayer + 1));
+		//return this.sitDownPlayer.get(this.control_index(CurrentIndexPlayer + 1));
+		//int nextIndex = (CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
+		//return this.sitDownPlayer.get(nextIndex); // Restituisce il giocatore successivo
+		return this.sitDownPlayer.get(this.control_index(this.sitDownPlayer.indexOf(this.currentPlayer) + 1));
 	}
 
 
@@ -254,11 +230,18 @@ public class Table
 	public void lap_change()
 	{
 		// prendo la persona prima e la rimetto al posto giusto dopo aver invertito il giro
+		/*
 		Player p = this.sitDownPlayer.get(CurrentIndexPlayer);
 		//TODO error in line 268
 		Collections.reverse(sitDownPlayer);
 		Table.CurrentIndexPlayer = this.sitDownPlayer.indexOf(p);
+		*/
+
+
+		Collections.reverse(this.sitDownPlayer);
+
 	}
+
 	
 	/* Blocca il turno del giocatore successivo*/
 	public void block_turn()
@@ -270,37 +253,26 @@ public class Table
 	// TODO non funziona
 	public void next_turn()
 	{
-		int nextPlayerIndex = (Table.CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
-
-		while (this.sitDownPlayer.get(nextPlayerIndex).is_blocked()) {
-			nextPlayerIndex = (nextPlayerIndex + 1) % this.sitDownPlayer.size(); // Avanza fino a trovare un giocatore non bloccato
-		}
-
-		Table.CurrentIndexPlayer = nextPlayerIndex; // Imposta l'indice del nuovo giocatore corrente
-		this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer); // Imposta il nuovo giocatore corrente
-	}
-
-	public void incrementIndex()
-	{
-		int i = 0;
-		Table.getInstance().set_player_list(8);
-		Table.getInstance().set_deck();
-		Table.getInstance().give_start_card();
-		this.setCurrentPlayer();
-
-		while(i < 18)
+		if(!this.sitDownPlayer.isEmpty())
 		{
-			//Table.getInstance().play_card(new NormalCard(Number.EIGHT, Colour.BLUE));
-			Table.getInstance().next_turn();
-			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer);
-			System.out.println(this.getCurrentPlayer());
-			i++;
+			int nextPlayerIndex = (Table.CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
+
+			while (this.sitDownPlayer.get(nextPlayerIndex).is_blocked()) {
+				nextPlayerIndex = (nextPlayerIndex + 1) % this.sitDownPlayer.size(); // Avanza fino a trovare un giocatore non bloccato
+			}
+
+			Table.CurrentIndexPlayer = nextPlayerIndex; // Imposta l'indice del nuovo giocatore corrente
+			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer); // Imposta il nuovo giocatore corrente
+		}
+		else
+		{
+			System.out.println("La lista di giocatori e' vuota, non si sa come");
 		}
 	}
 
-	public static void main(String[] args) {
-		Table.getInstance().incrementIndex();
-	}
+
+
+
 		
 	/* Verifico che l'indice passato per parametro rimanga entro il max e il min */
 	public int control_index(int index)
@@ -341,5 +313,36 @@ public class Table
 
 	public void playTurn(int i, Colour c) {
 	}
+
+
+	// AREA TEST
+
+	public void incrementIndex()
+	{
+		int i = 0;
+		Table.getInstance().set_player_list(8);
+		Table.getInstance().set_deck();
+		Table.getInstance().give_start_card();
+		this.setCurrentPlayer();
+
+		while(i < 18)
+		{
+			//Table.getInstance().play_card(new NormalCard(Number.EIGHT, Colour.BLUE));
+			Table.getInstance().next_turn();
+			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer);
+			System.out.println(this.getCurrentPlayer());
+			i++;
+		}
+	}
+
+	public static void main(String[] args) {
+		Table.getInstance().incrementIndex();
+	}
+
+	public Colour getCurrentColor() {
+		return this.currentColor;
+	}
+
+	// AREA TEST
 }
 

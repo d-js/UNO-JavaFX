@@ -10,6 +10,7 @@ module com.unofx {
     requires org.kordamp.bootstrapfx.core;
     //requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires jdk.compiler;
 
     opens com.unofx to javafx.fxml;
     exports com.unofx;

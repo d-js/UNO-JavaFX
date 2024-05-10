@@ -8,8 +8,8 @@ import java.util.List;
 public class Deck 
 {
 	//Valutare se sono utili due mazzi creati nella classe mazzo
-	private List<Card> coverDeck;
-	private List<Card> uncoverDeck;
+	private final List<Card> coverDeck;
+	private final List<Card> uncoverDeck;
 
 
 	//Creazione di un mazzo da gioco
@@ -39,8 +39,10 @@ public class Deck
 
     		    for(Number e : Number.values())
     		    {
-					coverDeck.add(new NormalCard(e,c));
-					coverDeck.add(new NormalCard(e,c));
+					if(e != Number.ZERO) {
+						coverDeck.add(new NormalCard(e, c));
+						coverDeck.add(new NormalCard(e, c));
+					}
     		    }
 		    }
 		    else
@@ -76,8 +78,8 @@ public class Deck
 	//Ripristina il mazzo mescolalo e pesca una carta
 	public void drawDown()
 	{
-		this.uncoverDeck.addAll(this.uncoverDeck);
-		this.uncoverDeck.removeAll(this.uncoverDeck);
+		this.coverDeck.addAll(this.uncoverDeck);
+		this.uncoverDeck.clear();
 		this.shuffle();
 	}
 	
@@ -92,20 +94,21 @@ public class Deck
 		Collections.shuffle(coverDeck);
 	}
 
-	public void set_initial_card()
+	public Card set_initial_card()
 	{
 		Card e = this.drawOut();
 		this.playCard(e);
+		return e;
 	}
 
 	public Card getLastUncover()
 	{
-		return this.uncoverDeck.get(this.uncoverDeck.size() - 1);
+		return this.uncoverDeck.get(this.uncoverDeck.size() -1);
 	}
 
 	public void delete()
 	{
-		this.coverDeck.removeAll(coverDeck);
-		this.uncoverDeck.removeAll(uncoverDeck);
+		this.coverDeck.clear();
+		this.uncoverDeck.clear();
 	}
 }

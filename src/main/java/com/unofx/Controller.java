@@ -71,14 +71,12 @@ public class Controller implements Initializable
 
     public void inizializeTable() throws IOException
     {
-
         Table.getInstance().set_deck();
-        Table.getInstance().deck.set_initial_card();
+        Table.getInstance().setCurrentCard(Table.getInstance().deck.set_initial_card());
         Table.getInstance().setCurrentCard(Table.getInstance().deck.getLastUncover());
         Table.getInstance().set_player_list(4);
         Table.getInstance().setCurrentPlayer();
         Table.getInstance().give_start_card();
-
     }
 
     @FXML
