@@ -1,6 +1,7 @@
 package com.unofx.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class Deck
 	//Pesca la prima carta del mazzo
 	public Card drawOut()
 	{
-		if(this.coverDeck.stream().count() == 0)
+		if(this.coverDeck.isEmpty())
 			this.drawDown();
 
 		if(this.coverDeck.stream().findFirst().isPresent()) {
@@ -103,12 +104,16 @@ public class Deck
 
 	public Card getLastUncover()
 	{
-		return this.uncoverDeck.get(this.uncoverDeck.size() -1);
+		return this.uncoverDeck.get(this.uncoverDeck.size() - 1);
 	}
 
 	public void delete()
 	{
 		this.coverDeck.clear();
 		this.uncoverDeck.clear();
+	}
+
+	public List<Card> getCoverDeck() {
+		return this.coverDeck;
 	}
 }

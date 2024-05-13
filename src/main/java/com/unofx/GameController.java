@@ -66,14 +66,14 @@ public class GameController implements Initializable {
         this.userHandView.setMaxWidth(1000);
 
         this.update_view();
-        this.hide_user_hand();
+        this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
         this.show_user_hand();
         // Inizia la partita
-        //this.cicleBotTurns();
+        this.cicleBotTurns();
     }
 
     public void cicleBotTurns() {
-        this.update_view();
+
         this.deck.setDisable(false);
         hide_user_hand();
 
@@ -91,33 +91,20 @@ public class GameController implements Initializable {
 
             // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
 
-        while (Table.getInstance().getCurrentPlayer() instanceof BotPlayer) {
-            try {
-                Thread.sleep(150);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        while (!Table.getInstance().control_winner()) {
 
             // Controllo se il giocatore corrente è un bot e se la partita non è ancora conclusa
-            if (!(Table.getInstance().getCurrentPlayer() instanceof BotPlayer) || Table.getInstance().control_winner())
+            if (!(Table.getInstance().getCurrentPlayer() instanceof BotPlayer))
             {
-                if(Table.getInstance().control_winner())
-                {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("FINE");
-                    alert.setHeaderText(null);
-                    alert.setContentText("partita conclusa");
 
-                    // Mostra il popup e attendi la sua chiusura
-                    alert.showAndWait();
-                    this.stage.close();
-                }
                 this.show_user_hand();
                 break; // Esce dal ciclo se il giocatore corrente non è un bot o se la partita è finita
             }
 
             // Gioca una carta
+            System.out.println("LA SUA MANO: " + Table.getInstance().getCurrentPlayer().get_info_hand());
             Card card = Table.getInstance().getCurrentPlayer().playCard(0);
+
             Table.getInstance().play_card(card);
 
 
@@ -125,16 +112,23 @@ public class GameController implements Initializable {
             this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
         }
 
+        if(Table.getInstance().control_winner())
+        {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("FINE");
+            alert.setHeaderText("qualcuno ha vinto");
+            alert.setContentText("partita conclusa");
+
+            // Mostra il popup e attendi la sua chiusura
+            alert.showAndWait();
+        }
     }
 
     @FXML
     public void on_deck_click(MouseEvent mouseEvent) throws IOException
     {
         Card e = Table.getInstance().deck.drawOut();
-        Table.getInstance().getSitDownPlayer().stream().forEach(p -> {
-            if(p instanceof UserPlayer)
-                p.drawCard(e);
-        });
+        Table.getInstance().getUserPlayer().drawCard(e);
         this.deck.setDisable(true);
         draw(generate_imagePath(e.getName()));
     }
@@ -144,7 +138,7 @@ public class GameController implements Initializable {
     {
         Platform.runLater(() -> {
 
-            List<String> nameCardList = Table.getInstance().get_user_info_card();
+            List<String> nameCardList = Table.getInstance().getUserPlayer().getHand().stream().map(Card::getName).collect(Collectors.toList());
             //List<String> nameCardList = updated_cardlist.stream().map(Card::getName).collect(Collectors.toList());
 
             this.updateHand(nameCardList);
@@ -225,6 +219,11 @@ public class GameController implements Initializable {
         addButton.setGraphic(i);
         addButton.setText(cardPath);
 
+        addButton.setDisable(!((Button) addButton).getText().toLowerCase().contains(Table.getInstance().getCurrentCard().getColor().getColour().toLowerCase()) &&
+                !((Button) addButton).getText().toLowerCase().contains(Table.getInstance().getCurrentCard().getAction().getAction().toLowerCase()) &&
+                !((Button) addButton).getText().toLowerCase().contains(Caction.CHANGECOLOR.getAction().toLowerCase()) &&
+                !((Button) addButton).getText().toLowerCase().contains(Caction.DRAWFOUR.getAction().toLowerCase()));
+
         // Definisco le azioni che deve eseguire il bottone
         addButton.setOnAction(e ->
         {
@@ -293,5 +292,11 @@ public class GameController implements Initializable {
         // Aggiungi il bottone "Aggiungi Bottone" al pannello
         this.userHandView.getChildren().add(addButton);
 
+    }
+
+    public void on_pass(MouseEvent mouseEvent)
+    {
+        Table.getInstance().next_turn();
+        this.cicleBotTurns();
     }
 }

@@ -10,5 +10,6 @@
       <Button fx:id="deck" layoutX="679.0" layoutY="396.0" mnemonicParsing="false" onMouseClicked="#on_deck_click" prefHeight="288.0" prefWidth="281.0" styleClass="button_mazzo_centrale" text="draw" />
       <Pane fx:id="currentCardView" layoutX="1021.0" layoutY="401.0" prefHeight="279.0" prefWidth="281.0" styleClass="genericfield" />
       <HBox fx:id="userHandView" layoutX="38.0" layoutY="920.0" prefHeight="130.0" prefWidth="1827.0" styleClass="genericfield" />
+      <Button fx:id="pass" layoutX="300.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#on_pass" prefHeight="100.0" prefWidth="150.0" styleClass="button_mazzo_centrale" text="passa" />
    </children>
 </AnchorPane>

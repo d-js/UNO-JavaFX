@@ -25,10 +25,6 @@ public class Table
 		return INSTANCE;
 	}
 
-	public String getLastUserCard()
-	{
-		return this.currentPlayer.get_info_hand().get(this.currentPlayer.get_info_hand().size() - 1);
-	}
 
 	public UserPlayer getUserPlayer() {
 		return user;
@@ -90,19 +86,6 @@ public class Table
 		}
 	}
 
-	public List<String> get_user_info_card()
-	{
-		// TODO memorizzare nel table l'istanza dell'user
-		for(Player e : this.sitDownPlayer)
-		{
-			if(e instanceof UserPlayer)
-			{
-				return e.get_info_hand();
-			}
-
-		}
-		return null;
-	}
 
 	public Card getCurrentCard() {
 		return currentCard;
@@ -132,9 +115,12 @@ public class Table
 	/* Metodo da chiamare tutte le volte che un player ha giocato una carta per capire se ha vinto */
 	public boolean control_winner()
 	{
-		if(this.currentPlayer.getHand().stream().count() == 0)
+		for(Player cPlayer : this.sitDownPlayer)
 		{
-			return true;
+			if(cPlayer.getHand().isEmpty())
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -155,6 +141,7 @@ public class Table
 		System.out.println("\n\n\nCARTA CORRENTE: " + this.getCurrentCard().getName().toUpperCase() + " | COLORE CORRENTE: " + this.getCurrentColor() + "\n");
 
 		System.out.println("E IL TURNO DI: " + this.currentPlayer.getUsername().toUpperCase());
+
 		System.out.println(this.currentPlayer.getUsername().toUpperCase() + " GIOCA " + e.getName().toUpperCase());
 		// controllo se il player è bloccato
 		if(this.currentPlayer.is_blocked()){
@@ -164,7 +151,7 @@ public class Table
 			e = currentCard;
 		}
 
-
+		this.deck.playCard(e);
 
 		// controllo se è il mio turno
 		//if(!this.is_my_turn())
@@ -186,14 +173,14 @@ public class Table
 				this.nextPlayer().drawCard(this.deck.drawOut());
 			}
 		}
+
 		/* SE LA CARTA NON E NERA */
 		else if(e.getAction() == Caction.DRAWTWO)
 		{
 			this.nextPlayer().drawCard(this.deck.drawOut());
 			this.nextPlayer().drawCard(this.deck.drawOut());
 		}
-		else if(e.getAction() == Caction.BLOCKTURN)
-		{
+		else if(e.getAction() == Caction.BLOCKTURN) {
 			this.nextPlayer().setBlock();
 		}
 		else if(e.getAction() == Caction.CHANGELAP)
@@ -201,10 +188,9 @@ public class Table
 			this.lap_change();
 		}
 
-		this.next_turn();
 		this.replace_current_card(e);
 		this.change_current_color(e.getColor());
-
+		this.next_turn();
 	}
 	/* Modifica il colore corrente */
 	private void change_current_color(Colour color)
@@ -218,9 +204,6 @@ public class Table
 	// Return the instance of the next player in turns order`
 	private Player nextPlayer()
 	{
-		//return this.sitDownPlayer.get(this.control_index(CurrentIndexPlayer + 1));
-		//int nextIndex = (CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
-		//return this.sitDownPlayer.get(nextIndex); // Restituisce il giocatore successivo
 		return this.sitDownPlayer.get(this.control_index(this.sitDownPlayer.indexOf(this.currentPlayer) + 1));
 	}
 
@@ -229,17 +212,7 @@ public class Table
 	/* Cambia giro, inverte l'ordine dei giocatori nella lista*/
 	public void lap_change()
 	{
-		// prendo la persona prima e la rimetto al posto giusto dopo aver invertito il giro
-		/*
-		Player p = this.sitDownPlayer.get(CurrentIndexPlayer);
-		//TODO error in line 268
-		Collections.reverse(sitDownPlayer);
-		Table.CurrentIndexPlayer = this.sitDownPlayer.indexOf(p);
-		*/
-
-
 		Collections.reverse(this.sitDownPlayer);
-
 	}
 
 	
@@ -250,7 +223,7 @@ public class Table
 	}
 	
 	/* Passa al turno al player successivo*/
-	// TODO non funziona
+
 	public void next_turn()
 	{
 		if(!this.sitDownPlayer.isEmpty())
@@ -319,19 +292,13 @@ public class Table
 
 	public void incrementIndex()
 	{
-		int i = 0;
-		Table.getInstance().set_player_list(8);
-		Table.getInstance().set_deck();
-		Table.getInstance().give_start_card();
-		this.setCurrentPlayer();
-
-		while(i < 18)
+		this.set_deck();
+		this.deck.set_initial_card();
+		while(true)
 		{
-			//Table.getInstance().play_card(new NormalCard(Number.EIGHT, Colour.BLUE));
-			Table.getInstance().next_turn();
-			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer);
-			System.out.println(this.getCurrentPlayer());
-			i++;
+			Card e = this.deck.drawOut();
+			this.deck.playCard(e);
+			System.out.println("PESCATO: " + e.getName().toUpperCase());
 		}
 	}
 

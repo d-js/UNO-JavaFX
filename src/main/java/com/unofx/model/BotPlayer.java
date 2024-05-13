@@ -30,6 +30,7 @@ public class BotPlayer implements Player
 	@Override
 	public Card playCard(int index)
 	{
+
 		Iterator<Card> iterator = this.hand.iterator();
 		while (iterator.hasNext()) {
 			Card c = iterator.next();
@@ -44,8 +45,13 @@ public class BotPlayer implements Player
 		}
 		System.out.println("Nessuna carta corrisponde ai criteri di giocabilita'");
 		return null;
-
     }
+
+	public List<String> infoHand()
+	{
+		List<String> thishand = this.hand.stream().map(Card::getName).collect(Collectors.toList());
+		return thishand;
+	}
 
 
 	public Boolean isCardValid(Card e)
