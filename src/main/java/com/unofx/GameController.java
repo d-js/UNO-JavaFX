@@ -49,6 +49,9 @@ public class GameController implements Initializable {
     @FXML
     private Button deck = new Button();
 
+    @FXML
+    private Button pass = new Button();
+
     private List<Card> currentUserHand = new ArrayList<>();
 
     private String imagesPath = "/home/diego/IdeaProjects/unoFX/src/main/resources/com/cardImages/";
@@ -93,6 +96,8 @@ public class GameController implements Initializable {
 
         while (!Table.getInstance().control_winner()) {
 
+            this.pass.setDisable(true);
+
             // Controllo se il giocatore corrente è un bot e se la partita non è ancora conclusa
             if (!(Table.getInstance().getCurrentPlayer() instanceof BotPlayer))
             {
@@ -118,10 +123,17 @@ public class GameController implements Initializable {
             alert.setTitle("FINE");
             alert.setHeaderText("qualcuno ha vinto");
             alert.setContentText("partita conclusa");
-
             // Mostra il popup e attendi la sua chiusura
             alert.showAndWait();
         }
+    }
+
+    public void initializeScene(String _fxmlScene) throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(_fxmlScene));
+        this.root = fxmlLoader.load();
+        this.scene = new Scene(root);
+
     }
 
     @FXML
@@ -170,6 +182,18 @@ public class GameController implements Initializable {
                 }
             }
         });
+    }
+
+    public void update()
+    {
+        this.stage.setScene(this.scene);
+        this.stage.setFullScreen(true);
+        try
+        {
+            stage.show();
+        }catch(Exception e) {
+            System.out.println("error on update");
+        }
     }
 
     // Rendi usabili le carte che puo giocare, all'utente
@@ -291,6 +315,7 @@ public class GameController implements Initializable {
 
         // Aggiungi il bottone "Aggiungi Bottone" al pannello
         this.userHandView.getChildren().add(addButton);
+        this.pass.setDisable(false);
 
     }
 

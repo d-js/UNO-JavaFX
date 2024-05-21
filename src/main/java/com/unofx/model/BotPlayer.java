@@ -35,6 +35,7 @@ public class BotPlayer implements Player
 		while (iterator.hasNext()) {
 			Card c = iterator.next();
 			if (this.isCardValid(c)) {
+				//TODO gioca direttamente la carta, richiamo da qui il metodo del table
 				System.out.println(Table.getInstance().getCurrentColor() + Table.getInstance().getCurrentCard().getName());
 				iterator.remove();
 				return c;
@@ -61,7 +62,7 @@ public class BotPlayer implements Player
 			NormalCard normal_played = (NormalCard) e;
 			NormalCard normal_current = (NormalCard) Table.getInstance().getCurrentCard();
 			// Controllo se la carta può essere giocata
-			if (normal_played.getNumber() != normal_current.getNumber() && normal_played.getColor() != Table.getInstance().getCurrentColor())
+			if (normal_played.getNumber() != normal_current.getNumber() && normal_played.getColor().getColour() != Table.getInstance().getCurrentColor().getColour())
 				return false;
 		}
 
@@ -69,11 +70,11 @@ public class BotPlayer implements Player
 			ActionCard action_played = (ActionCard)Table.getInstance().getCurrentCard();
 			ActionCard action_current = (ActionCard)Table.getInstance().getCurrentCard();
 			// Controllo se la carta può essere giocata
-			if(action_played.getColor() != Table.getInstance().getCurrentColor() &&
-					action_played.getAction() != action_current.getAction())
+			if(action_played.getColor().getColour() != Table.getInstance().getCurrentColor().getColour() &&
+					action_played.getAction().getAction() != action_current.getAction().getAction())
 				return false;
-			else if(action_played.getColor() == Colour.BLACK &&
-					action_current.getColor() == Colour.BLACK)
+			else if(action_played.getColor().getColour() == Colour.BLACK.getColour() &&
+					action_current.getColor().getColour() == Colour.BLACK.getColour())
 				return false;
 		}
 		return true;
@@ -83,6 +84,7 @@ public class BotPlayer implements Player
 	@Override
 	public void drawCard(Card e)
 	{
+		System.out.println("Pesco una carta");
 		hand.add(e);
 	}
 

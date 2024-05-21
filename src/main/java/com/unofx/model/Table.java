@@ -142,6 +142,12 @@ public class Table
 
 		System.out.println("E IL TURNO DI: " + this.currentPlayer.getUsername().toUpperCase());
 
+		if(e == null)
+		{
+			e = this.currentCard;
+
+		}
+
 		System.out.println(this.currentPlayer.getUsername().toUpperCase() + " GIOCA " + e.getName().toUpperCase());
 		// controllo se il player è bloccato
 		if(this.currentPlayer.is_blocked()){
