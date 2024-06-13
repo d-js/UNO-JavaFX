@@ -54,7 +54,7 @@ public class GameController implements Initializable {
 
     private List<Card> currentUserHand = new ArrayList<>();
 
-    private String imagesPath = "/home/diego/IdeaProjects/unoFX/src/main/resources/com/cardImages/";
+    private String imagesPath = "/Users/giova/IdeaProjects/unoFX/src/main/resources/com/cardImages/";
 
 
 
@@ -107,10 +107,9 @@ public class GameController implements Initializable {
             }
 
             // Gioca una carta
-            System.out.println("LA SUA MANO: " + Table.getInstance().getCurrentPlayer().get_info_hand());
-            Card card = Table.getInstance().getCurrentPlayer().playCard(0);
+            Table.getInstance().getCurrentPlayer().playCard(0);
 
-            Table.getInstance().play_card(card);
+            //Table.getInstance().play_card(card);
 
 
             // Aggiorna l'immagine della carta corrente
@@ -271,29 +270,26 @@ public class GameController implements Initializable {
                 {
                     if (buttonType.getText() == "BLUE") {
 
-                        Card c = Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
-                        ((ActionCard)c).setChoosenColour(Colour.BLUE);
-                        Table.getInstance().play_card(c);
+                        Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                        ((ActionCard)Table.getInstance().getCurrentCard()).setChoosenColour(Colour.BLUE);
 
                     }
                     else if (buttonType.getText() == "GREEN") {
 
-                        Card c = Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
-                        ((ActionCard)c).setChoosenColour(Colour.GREEN);
-                        Table.getInstance().play_card(c);
+                        Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                        ((ActionCard)Table.getInstance().getCurrentCard()).setChoosenColour(Colour.GREEN);
+
                     }
                     else if (buttonType.getText() == "YELLOW")
                     {
-                        Card c = Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
-                        ((ActionCard)c).setChoosenColour(Colour.YELLOW);
-                        Table.getInstance().play_card(c);
-
+                        Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                        ((ActionCard)Table.getInstance().getCurrentCard()).setChoosenColour(Colour.YELLOW);
                     }
                     else if (buttonType.getText() == "RED")
                     {
-                        Card c = Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
-                        ((ActionCard)c).setChoosenColour(Colour.RED);
-                        Table.getInstance().play_card(c);
+                        Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+                        ((ActionCard)Table.getInstance().getCurrentCard()).setChoosenColour(Colour.RED);
+
                     }
                 });
 
@@ -301,11 +297,9 @@ public class GameController implements Initializable {
             }
             else
             {
-                Card c = Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
-                Table.getInstance().play_card(c);
+                Table.getInstance().getUserPlayer().playCard(this.userHandView.getChildren().indexOf(addButton));
+
             }
-
-
             this.userHandView.getChildren().remove(addButton);
             this.cicleBotTurns();
 

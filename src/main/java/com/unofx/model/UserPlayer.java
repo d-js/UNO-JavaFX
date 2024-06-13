@@ -26,11 +26,11 @@ public class UserPlayer implements Player
 	
 	@Override
 	//Per rimuovere la carta giocata forse è meglio farsi ritornare l'indice dal pulsante e in base a quello eliminare e giocare la carta
-	public Card playCard(int index) 
+	public void playCard(int index)
 	{
 		Card selectedCard = hand.get(index);
 		hand.remove(index);
-		return selectedCard;
+		Table.getInstance().play_card(selectedCard);
 	}
 
 	@Override

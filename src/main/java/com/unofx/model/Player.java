@@ -7,7 +7,7 @@ public interface Player {
 	
     public String getUsername();
     
-    public Card playCard(int index);
+    public void playCard(int index);
     
     public void drawCard(Card e);
 

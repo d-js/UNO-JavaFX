@@ -1,6 +1,7 @@
 package com.unofx.model;
 
-import java.net.CookieHandler;
+import com.almasb.fxgl.entity.action.Action;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,25 +29,26 @@ public class BotPlayer implements Player
 
 
 	@Override
-	public Card playCard(int index)
+	public void playCard(int index)
 	{
-
 		Iterator<Card> iterator = this.hand.iterator();
+		boolean cardPlayed = false;
+
 		while (iterator.hasNext()) {
 			Card c = iterator.next();
 			if (this.isCardValid(c)) {
-				//TODO gioca direttamente la carta, richiamo da qui il metodo del table
-				System.out.println(Table.getInstance().getCurrentColor() + Table.getInstance().getCurrentCard().getName());
 				iterator.remove();
-				return c;
+				Table.getInstance().play_card(c);
+				cardPlayed = true;
+				break; // Esci dal ciclo dopo aver giocato una carta
 			}
-
-			if(this.hand.indexOf(c) == this.hand.size()-1)
-				this.drawCard(Table.getInstance().deck.drawOut());
 		}
-		System.out.println("Nessuna carta corrisponde ai criteri di giocabilita'");
-		return null;
-    }
+
+		// Se nessuna carta corrisponde ai criteri di giocabilità
+		if (!cardPlayed) {
+			Table.getInstance().play_card(null);
+		}
+	}
 
 	public List<String> infoHand()
 	{
@@ -54,37 +56,83 @@ public class BotPlayer implements Player
 		return thishand;
 	}
 
-
-	public Boolean isCardValid(Card e)
-	{
-		/* controllo se la carta può essere giocata */
-		if (e instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof NormalCard) {
-			NormalCard normal_played = (NormalCard) e;
-			NormalCard normal_current = (NormalCard) Table.getInstance().getCurrentCard();
-			// Controllo se la carta può essere giocata
-			if (normal_played.getNumber() != normal_current.getNumber() && normal_played.getColor().getColour() != Table.getInstance().getCurrentColor().getColour())
-				return false;
+	public boolean isCardValid(Card cardToPlay) {
+		if (cardToPlay == null || Table.getInstance().getCurrentCard() == null) {
+			return false; // Gestione dei casi di input non validi
 		}
 
-		if(e instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof ActionCard) {
-			ActionCard action_played = (ActionCard)Table.getInstance().getCurrentCard();
-			ActionCard action_current = (ActionCard)Table.getInstance().getCurrentCard();
-			// Controllo se la carta può essere giocata
-			if(action_played.getColor().getColour() != Table.getInstance().getCurrentColor().getColour() &&
-					action_played.getAction().getAction() != action_current.getAction().getAction())
-				return false;
-			else if(action_played.getColor().getColour() == Colour.BLACK.getColour() &&
-					action_current.getColor().getColour() == Colour.BLACK.getColour())
-				return false;
+		Card currentCard = Table.getInstance().getCurrentCard();
+		Colour currentColor = Table.getInstance().getCurrentColor();
+
+		if (cardToPlay instanceof NormalCard && currentCard instanceof NormalCard) {
+			NormalCard normalCardToPlay = (NormalCard) cardToPlay;
+			NormalCard normalCurrentCard = (NormalCard) currentCard;
+			// Una carta normale può essere giocata se ha un numero diverso e un colore diverso dalla carta corrente
+			return normalCardToPlay.getNumber() != normalCurrentCard.getNumber()
+					&& !normalCardToPlay.getColor().getColour().equals(currentColor.getColour());
+		} else if (cardToPlay instanceof ActionCard && currentCard instanceof ActionCard) {
+			ActionCard actionCardToPlay = (ActionCard) cardToPlay;
+			ActionCard actionCurrentCard = (ActionCard) currentCard;
+			// Una carta di azione può essere giocata se ha un colore diverso dalla carta corrente
+			// e un'azione diversa dalla carta corrente, oppure se entrambe le carte sono nere
+			return !actionCardToPlay.getColor().getColour().equals(currentColor.getColour())
+					&& !actionCardToPlay.getAction().getAction().equals(actionCurrentCard.getAction().getAction())
+					|| (actionCardToPlay.getColor().getColour().equals(Colour.BLACK.getColour())
+					&& actionCurrentCard.getColor().getColour().equals(Colour.BLACK.getColour()));
+		} else if (cardToPlay instanceof NormalCard && currentCard instanceof ActionCard) {
+			NormalCard normalCardToPlay = (NormalCard) cardToPlay;
+			// Una carta normale può essere giocata se ha un colore diverso dalla carta di azione corrente
+			return !normalCardToPlay.getColor().getColour().equals(currentColor.getColour());
+		} else if (cardToPlay instanceof ActionCard && currentCard instanceof NormalCard) {
+			ActionCard actionCardToPlay = (ActionCard) cardToPlay;
+			// Una carta di azione può essere giocata se ha un colore diverso dalla carta normale corrente
+			return !actionCardToPlay.getColor().getColour().equals(currentColor.getColour());
 		}
-		return true;
+
+		return false; // Caso non gestito
 	}
+	/*public Boolean isCardValid(Card cardToPlay) {
+		if (cardToPlay == null || Table.getInstance().getCurrentCard() == null) {
+			return false; // Gestione dei casi di input non validi
+		}
+
+		if (cardToPlay instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof NormalCard) {
+			return isNormalCardValidAgainstNormalCard((NormalCard) cardToPlay, (NormalCard) Table.getInstance().getCurrentCard());
+		} else if (cardToPlay instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof ActionCard) {
+			return isActionCardValidAgainstActionCard((ActionCard) cardToPlay, (ActionCard) Table.getInstance().getCurrentCard());
+		} else if (cardToPlay instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof ActionCard) {
+			return isNormalCardValidAgainstActionCard((NormalCard) cardToPlay, (ActionCard) Table.getInstance().getCurrentCard());
+		} else if (cardToPlay instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof NormalCard) {
+			return isActionCardValidAgainstNormalCard((ActionCard) cardToPlay, (NormalCard) Table.getInstance().getCurrentCard());
+		}
+
+		return false; // Caso non gestito
+	}
+
+	private boolean isNormalCardValidAgainstNormalCard(NormalCard cardToPlay, NormalCard currentCard) {
+		return (cardToPlay.getNumber() != currentCard.getNumber()) &&
+				!cardToPlay.getColor().getColour().equals(Table.getInstance().getCurrentColor().getColour());
+	}
+
+	private boolean isActionCardValidAgainstActionCard(ActionCard cardToPlay, ActionCard currentCard) {
+		return !cardToPlay.getColor().getColour().equals(Table.getInstance().getCurrentColor().getColour()) &&
+				!cardToPlay.getAction().getAction().equals(currentCard.getAction().getAction()) ||
+				(cardToPlay.getColor().getColour().equals(Colour.BLACK.getColour()) &&
+						currentCard.getColor().getColour().equals(Colour.BLACK.getColour()));
+	}
+
+	private boolean isNormalCardValidAgainstActionCard(NormalCard cardToPlay, ActionCard currentCard) {
+		return !cardToPlay.getColor().getColour().equals(Table.getInstance().getCurrentColor().getColour());
+	}
+
+	private boolean isActionCardValidAgainstNormalCard(ActionCard cardToPlay, NormalCard currentCard) {
+		return !cardToPlay.getColor().getColour().equals(Table.getInstance().getCurrentColor().getColour());
+	}*/
 
 
 	@Override
 	public void drawCard(Card e)
 	{
-		System.out.println("Pesco una carta");
 		hand.add(e);
 	}
 

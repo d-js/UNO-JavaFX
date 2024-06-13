@@ -8,7 +8,7 @@ public class Table
 	private static int CurrentIndexPlayer = 0;
 	public Deck deck;
 	private Card currentCard;
-	private Colour currentColor;
+	private Colour currentColor = Colour.BLUE;
 	private Player currentPlayer;
 	private UserPlayer user = new UserPlayer("diego");
 	private List<Player> sitDownPlayer = new LinkedList<>();
@@ -103,13 +103,13 @@ public class Table
 		this.deck = new Deck();
 	}
 
-
 	public void setCurrentPlayer() {
 		this.currentPlayer = this.sitDownPlayer.get(0);
 	}
 
-	public void setCurrentCard(Card currentCard) {
+	public void setCurrentCardInformation(Card currentCard) {
 		this.currentCard = currentCard;
+		this.currentColor = currentCard.getColor();
 	}
 
 	/* Metodo da chiamare tutte le volte che un player ha giocato una carta per capire se ha vinto */
@@ -138,65 +138,58 @@ public class Table
 
 	public void play_card(Card e)
 	{
-		System.out.println("\n\n\nCARTA CORRENTE: " + this.getCurrentCard().getName().toUpperCase() + " | COLORE CORRENTE: " + this.getCurrentColor() + "\n");
+		System.out.println(this.currentPlayer.getUsername().toUpperCase() + " STA GIOCANDO...\n");
+		System.out.println("La carta sul tavolo e' " + this.currentCard.getName());
 
-		System.out.println("E IL TURNO DI: " + this.currentPlayer.getUsername().toUpperCase());
-
-		if(e == null)
-		{
+		if (e == null) {
+			System.out.println(this.currentPlayer.getUsername() + " non ha una carta giocabile.'");
 			e = this.currentCard;
-
+		} else {
+			System.out.println(this.currentPlayer.getUsername() + " gioca " + e.getName());
 		}
 
-		System.out.println(this.currentPlayer.getUsername().toUpperCase() + " GIOCA " + e.getName().toUpperCase());
-		// controllo se il player è bloccato
-		if(this.currentPlayer.is_blocked()){
-			this.currentPlayer.removeBlock();
+		System.out.println("La mano rimanente di " + this.currentPlayer.getUsername() + this.currentPlayer.get_info_hand());
 
-			//TODO da modificare
-			e = currentCard;
-		}
-
-		this.deck.playCard(e);
-
-		// controllo se è il mio turno
-		//if(!this.is_my_turn())
-		//	return Event.BLOCKED;
-		
-
-
-		
-		/* Se sono qui significa che la carta può essere giocata */
-		
-		/* SE LA CARTA E NERA */
-		if(e.getColor() == Colour.BLACK)
-		{
-			this.change_current_color(((ActionCard)e).getChoosenColour());
-			if((e.getAction() == Caction.DRAWFOUR)) {
-				this.nextPlayer().drawCard(this.deck.drawOut());
-				this.nextPlayer().drawCard(this.deck.drawOut());
-				this.nextPlayer().drawCard(this.deck.drawOut());
-				this.nextPlayer().drawCard(this.deck.drawOut());
+		// Gestione delle carte di azione
+		if (e instanceof ActionCard) {
+			ActionCard actionCard = (ActionCard) e;
+			switch (actionCard.getAction()) {
+				case DRAWTWO:
+					nextPlayer().drawCard(deck.drawOut());
+					nextPlayer().drawCard(deck.drawOut());
+					break;
+				case DRAWFOUR:
+					//TODO il colore selzionato nei +4 e è2 non e' dinamico ma pre il momento ritorna sempre BLUE, (da cambiare)
+					actionCard.setChoosenColour(Colour.BLUE); // Implementa un metodo per scegliere il colore
+					currentColor = actionCard.getChoosenColour();
+					nextPlayer().drawCard(deck.drawOut());
+					nextPlayer().drawCard(deck.drawOut());
+					nextPlayer().drawCard(deck.drawOut());
+					nextPlayer().drawCard(deck.drawOut());
+					break;
+				case BLOCKTURN:
+					nextPlayer().setBlock();
+					break;
+				case CHANGELAP:
+					lap_change();
+					break;
+				case CHANGECOLOR:
+					currentColor = Colour.BLUE; // Implementa un metodo per scegliere il colore
+					break;
+				// Aggiungi altri casi per le altre azioni, se presenti
 			}
 		}
 
-		/* SE LA CARTA NON E NERA */
-		else if(e.getAction() == Caction.DRAWTWO)
-		{
-			this.nextPlayer().drawCard(this.deck.drawOut());
-			this.nextPlayer().drawCard(this.deck.drawOut());
-		}
-		else if(e.getAction() == Caction.BLOCKTURN) {
-			this.nextPlayer().setBlock();
-		}
-		else if(e.getAction() == Caction.CHANGELAP)
-		{
-			this.lap_change();
+		// Controllo se il player è bloccato
+		if (this.currentPlayer.is_blocked()) {
+			this.currentPlayer.removeBlock();
+			e = currentCard;
 		}
 
-		this.replace_current_card(e);
-		this.change_current_color(e.getColor());
-		this.next_turn();
+		deck.playCard(e);
+		setCurrentCardInformation(e);
+		next_turn();
+		System.out.println("\n\n");
 	}
 	/* Modifica il colore corrente */
 	private void change_current_color(Colour color)
