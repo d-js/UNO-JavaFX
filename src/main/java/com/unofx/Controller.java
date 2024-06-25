@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class Controller implements Initializable
     public void update()
     {
         this.stage.setScene(this.scene);
-        this.stage.setFullScreen(true);
+
         try
         {
             stage.show();
@@ -71,8 +72,13 @@ public class Controller implements Initializable
 
     public void inizializeTable() throws IOException
     {
+        // TODO valutare se spostare il possibile nel table
         Table.getInstance().set_deck();
         Card e = Table.getInstance().deck.set_initial_card();
+        if(e.getColor() == Colour.BLACK)
+        {
+            ((ActionCard)e).setColour(Colour.fromValue(new Random().nextInt(3)));
+        }
         Table.getInstance().setCurrentCardInformation(e);
         Table.getInstance().set_player_list(4);
         Table.getInstance().setCurrentPlayer();

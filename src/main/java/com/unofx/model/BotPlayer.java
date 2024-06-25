@@ -1,7 +1,5 @@
 package com.unofx.model;
 
-import com.almasb.fxgl.entity.action.Action;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,6 +9,7 @@ public class BotPlayer implements Player
 	private List<Card> hand;
 	public boolean block;
 	private Random rdn;
+	private boolean one = false;
 
 
 	public BotPlayer(String username)
@@ -27,9 +26,19 @@ public class BotPlayer implements Player
 		return this.username;
 	}
 
+	public boolean isOne() {
+		return one;
+	}
 
-	@Override
-	public void playCard(int index)
+	public void setOneTrue() {
+		this.one = true;
+	}
+
+	public void setOneFalse() {
+		this.one = false;
+	}
+	
+	public void playCard(int i)
 	{
 		Iterator<Card> iterator = this.hand.iterator();
 		boolean cardPlayed = false;
@@ -38,96 +47,97 @@ public class BotPlayer implements Player
 			Card c = iterator.next();
 			if (this.isCardValid(c)) {
 				iterator.remove();
+				if(c.getColor() == Colour.BLACK)
+					((ActionCard)c).setColour(Colour.fromValue(new Random().nextInt(3)));
 				Table.getInstance().play_card(c);
 				cardPlayed = true;
+				if(this.getHand().stream().count() == 1)
+					rdn = new Random();
+				int condition = rdn.nextInt(5);
+					if(condition % 2 == 0 || condition % 3 == 0)
+						this.setOneTrue();
+
 				break; // Esci dal ciclo dopo aver giocato una carta
 			}
 		}
 
 		// Se nessuna carta corrisponde ai criteri di giocabilità
-		if (!cardPlayed) {
+		if (!cardPlayed && i == 0) {
+			this.drawCard(Table.getInstance().deck.drawOut());
+			this.playCard(1);
+		}
+
+		if (!cardPlayed && i == 1) {
 			Table.getInstance().play_card(null);
 		}
 	}
 
-	public List<String> infoHand()
-	{
-		List<String> thishand = this.hand.stream().map(Card::getName).collect(Collectors.toList());
-		return thishand;
-	}
+	public Boolean isCardValid(Card cardToPlay) {
 
-	public boolean isCardValid(Card cardToPlay) {
+		// Gestione dei casi di input non validi
 		if (cardToPlay == null || Table.getInstance().getCurrentCard() == null) {
-			return false; // Gestione dei casi di input non validi
+			return false;
 		}
 
-		Card currentCard = Table.getInstance().getCurrentCard();
-		Colour currentColor = Table.getInstance().getCurrentColor();
-
-		if (cardToPlay instanceof NormalCard && currentCard instanceof NormalCard) {
-			NormalCard normalCardToPlay = (NormalCard) cardToPlay;
-			NormalCard normalCurrentCard = (NormalCard) currentCard;
-			// Una carta normale può essere giocata se ha un numero diverso e un colore diverso dalla carta corrente
-			return normalCardToPlay.getNumber() != normalCurrentCard.getNumber()
-					&& !normalCardToPlay.getColor().getColour().equals(currentColor.getColour());
-		} else if (cardToPlay instanceof ActionCard && currentCard instanceof ActionCard) {
-			ActionCard actionCardToPlay = (ActionCard) cardToPlay;
-			ActionCard actionCurrentCard = (ActionCard) currentCard;
-			// Una carta di azione può essere giocata se ha un colore diverso dalla carta corrente
-			// e un'azione diversa dalla carta corrente, oppure se entrambe le carte sono nere
-			return !actionCardToPlay.getColor().getColour().equals(currentColor.getColour())
-					&& !actionCardToPlay.getAction().getAction().equals(actionCurrentCard.getAction().getAction())
-					|| (actionCardToPlay.getColor().getColour().equals(Colour.BLACK.getColour())
-					&& actionCurrentCard.getColor().getColour().equals(Colour.BLACK.getColour()));
-		} else if (cardToPlay instanceof NormalCard && currentCard instanceof ActionCard) {
-			NormalCard normalCardToPlay = (NormalCard) cardToPlay;
-			// Una carta normale può essere giocata se ha un colore diverso dalla carta di azione corrente
-			return !normalCardToPlay.getColor().getColour().equals(currentColor.getColour());
-		} else if (cardToPlay instanceof ActionCard && currentCard instanceof NormalCard) {
-			ActionCard actionCardToPlay = (ActionCard) cardToPlay;
-			// Una carta di azione può essere giocata se ha un colore diverso dalla carta normale corrente
-			return !actionCardToPlay.getColor().getColour().equals(currentColor.getColour());
-		}
-
-		return false; // Caso non gestito
-	}
-	/*public Boolean isCardValid(Card cardToPlay) {
-		if (cardToPlay == null || Table.getInstance().getCurrentCard() == null) {
-			return false; // Gestione dei casi di input non validi
-		}
-
-		if (cardToPlay instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof NormalCard) {
+		if (cardToPlay instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof NormalCard)
+		{
 			return isNormalCardValidAgainstNormalCard((NormalCard) cardToPlay, (NormalCard) Table.getInstance().getCurrentCard());
-		} else if (cardToPlay instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof ActionCard) {
+		}
+		else if (cardToPlay instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof ActionCard)
+		{
 			return isActionCardValidAgainstActionCard((ActionCard) cardToPlay, (ActionCard) Table.getInstance().getCurrentCard());
-		} else if (cardToPlay instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof ActionCard) {
+		}
+		else if (cardToPlay instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof ActionCard)
+		{
 			return isNormalCardValidAgainstActionCard((NormalCard) cardToPlay, (ActionCard) Table.getInstance().getCurrentCard());
-		} else if (cardToPlay instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof NormalCard) {
+		}
+		else if (cardToPlay instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof NormalCard)
+		{
 			return isActionCardValidAgainstNormalCard((ActionCard) cardToPlay, (NormalCard) Table.getInstance().getCurrentCard());
 		}
 
 		return false; // Caso non gestito
 	}
 
-	private boolean isNormalCardValidAgainstNormalCard(NormalCard cardToPlay, NormalCard currentCard) {
-		return (cardToPlay.getNumber() != currentCard.getNumber()) &&
-				!cardToPlay.getColor().getColour().equals(Table.getInstance().getCurrentColor().getColour());
+	private Boolean isActionCardValidAgainstNormalCard(ActionCard cardToPlay, NormalCard currentCard)
+	{
+		if((cardToPlay.getColor() == Colour.BLACK) ||
+				(cardToPlay.getColor() == currentCard.getColor()))
+		{
+			return true;
+		}
+		return false;
 	}
 
-	private boolean isActionCardValidAgainstActionCard(ActionCard cardToPlay, ActionCard currentCard) {
-		return !cardToPlay.getColor().getColour().equals(Table.getInstance().getCurrentColor().getColour()) &&
-				!cardToPlay.getAction().getAction().equals(currentCard.getAction().getAction()) ||
-				(cardToPlay.getColor().getColour().equals(Colour.BLACK.getColour()) &&
-						currentCard.getColor().getColour().equals(Colour.BLACK.getColour()));
+	private Boolean isNormalCardValidAgainstActionCard(NormalCard cardToPlay, ActionCard currentCard)
+	{
+		if((cardToPlay.getColor() == currentCard.getColor()) ||
+				(currentCard.getColor() == Colour.BLACK && (currentCard.getChoice() == cardToPlay.getColor())))
+		{
+			return true;
+		}
+		return false;
 	}
 
-	private boolean isNormalCardValidAgainstActionCard(NormalCard cardToPlay, ActionCard currentCard) {
-		return !cardToPlay.getColor().getColour().equals(Table.getInstance().getCurrentColor().getColour());
+	private Boolean isActionCardValidAgainstActionCard(ActionCard cardToPlay, ActionCard currentCard)
+	{
+		if((cardToPlay.getColor() == Colour.BLACK && currentCard.getColor() != Colour.BLACK) ||
+				(cardToPlay.getColor() != Colour.BLACK && ((cardToPlay.getAction() == currentCard.getAction()) ||
+						(cardToPlay.getColor() == currentCard.getColor())) ||
+						(cardToPlay.getColor() == currentCard.getChoice())))
+		{
+			return true;
+		}
+		return false;
 	}
 
-	private boolean isActionCardValidAgainstNormalCard(ActionCard cardToPlay, NormalCard currentCard) {
-		return !cardToPlay.getColor().getColour().equals(Table.getInstance().getCurrentColor().getColour());
-	}*/
+	private Boolean isNormalCardValidAgainstNormalCard(NormalCard cardToPlay, NormalCard currentCard)
+	{
+		if(cardToPlay.getNumber() == currentCard.getNumber() || cardToPlay.getColor() == currentCard.getColor())
+			return true;
+
+		return false;
+	}
 
 
 	@Override

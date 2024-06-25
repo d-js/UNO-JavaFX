@@ -18,7 +18,6 @@ public class UnoApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("UNO");
         stage.setScene(scene);
-        stage.setFullScreen(true);
         stage.show();
     }
 

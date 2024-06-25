@@ -5,7 +5,7 @@ public class ActionCard implements Card
 	private String cardName;
 	private Caction action;
 	private Colour c;
-	private Colour choosenColour;
+	private Colour choice;
 	
 
 	public ActionCard(Caction action, Colour c) {
@@ -14,12 +14,12 @@ public class ActionCard implements Card
 		this.cardName = this.getAction().getAction().toLowerCase() + this.getColor().getColour().toLowerCase();
 	}
 
-	public Colour getChoosenColour() {
-		return choosenColour;
+	public Colour getChoice() {
+		return choice;
 	}
 
-	public void setChoosenColour(Colour choosenColour) {
-		this.choosenColour = choosenColour;
+	public void setColour(Colour choosenColour) {
+		this.choice = choosenColour;
 	}
 
 	public Caction getAction() {

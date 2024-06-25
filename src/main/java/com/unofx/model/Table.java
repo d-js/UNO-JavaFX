@@ -136,58 +136,63 @@ public class Table
 	}
 
 
-	public void play_card(Card e)
+	public synchronized void play_card(Card e)
 	{
 		System.out.println(this.currentPlayer.getUsername().toUpperCase() + " STA GIOCANDO...\n");
 		System.out.println("La carta sul tavolo e' " + this.currentCard.getName());
 
 		if (e == null) {
 			System.out.println(this.currentPlayer.getUsername() + " non ha una carta giocabile.'");
-			e = this.currentCard;
 		} else {
 			System.out.println(this.currentPlayer.getUsername() + " gioca " + e.getName());
 		}
 
 		System.out.println("La mano rimanente di " + this.currentPlayer.getUsername() + this.currentPlayer.get_info_hand());
 
-		// Gestione delle carte di azione
-		if (e instanceof ActionCard) {
-			ActionCard actionCard = (ActionCard) e;
-			switch (actionCard.getAction()) {
-				case DRAWTWO:
-					nextPlayer().drawCard(deck.drawOut());
-					nextPlayer().drawCard(deck.drawOut());
-					break;
-				case DRAWFOUR:
-					//TODO il colore selzionato nei +4 e è2 non e' dinamico ma pre il momento ritorna sempre BLUE, (da cambiare)
-					actionCard.setChoosenColour(Colour.BLUE); // Implementa un metodo per scegliere il colore
-					currentColor = actionCard.getChoosenColour();
-					nextPlayer().drawCard(deck.drawOut());
-					nextPlayer().drawCard(deck.drawOut());
-					nextPlayer().drawCard(deck.drawOut());
-					nextPlayer().drawCard(deck.drawOut());
-					break;
-				case BLOCKTURN:
-					nextPlayer().setBlock();
-					break;
-				case CHANGELAP:
-					lap_change();
-					break;
-				case CHANGECOLOR:
-					currentColor = Colour.BLUE; // Implementa un metodo per scegliere il colore
-					break;
-				// Aggiungi altri casi per le altre azioni, se presenti
-			}
-		}
-
 		// Controllo se il player è bloccato
 		if (this.currentPlayer.is_blocked()) {
 			this.currentPlayer.removeBlock();
-			e = currentCard;
+		}
+		else
+		{
+			// TODO i blocchi sono permanenti e l'utente non pesca le carte
+			// Gestione delle carte di azione
+			if (e instanceof ActionCard) {
+				ActionCard actionCard = (ActionCard) e;
+				switch (actionCard.getAction()) {
+					case DRAWTWO:
+						nextPlayer().drawCard(deck.drawOut());
+						nextPlayer().drawCard(deck.drawOut());
+						break;
+					case DRAWFOUR:
+						currentColor = actionCard.getChoice();
+						nextPlayer().drawCard(deck.drawOut());
+						nextPlayer().drawCard(deck.drawOut());
+						nextPlayer().drawCard(deck.drawOut());
+						nextPlayer().drawCard(deck.drawOut());
+						break;
+					case BLOCKTURN:
+						nextPlayer().setBlock();
+						break;
+					case CHANGELAP:
+						lap_change();
+						break;
+					case CHANGECOLOR:
+						currentColor = actionCard.getChoice(); // Implementa un metodo per scegliere il colore
+						break;
+					// Aggiungi altri casi per le altre azioni, se presenti
+				}
+			}
+			if(e != null)
+			{
+				deck.playCard(e);
+				setCurrentCardInformation(e);
+			}
 		}
 
-		deck.playCard(e);
-		setCurrentCardInformation(e);
+		this.controlIfOneCard();
+		this.getCurrentPlayer().setOneFalse();
+
 		next_turn();
 		System.out.println("\n\n");
 	}
@@ -197,21 +202,28 @@ public class Table
 		this.currentColor = color;
 	}
 
-
-	//TODO fare il metodo pesca che pesca la carta e passa il turno
-
 	// Return the instance of the next player in turns order`
 	private Player nextPlayer()
 	{
-		return this.sitDownPlayer.get(this.control_index(this.sitDownPlayer.indexOf(this.currentPlayer) + 1));
+		return sitDownPlayer.get(this.control_index(CurrentIndexPlayer + 1));
 	}
 
-
+	public boolean controlIfOneCard()
+	{
+		if(this.getCurrentPlayer().getHand().stream().count() == 1 &&
+			!this.getCurrentPlayer().isOne())
+		{
+			this.getCurrentPlayer().drawCard(this.deck.drawOut());
+			this.getCurrentPlayer().drawCard(this.deck.drawOut());
+		}
+		return false;
+	}
 	
 	/* Cambia giro, inverte l'ordine dei giocatori nella lista*/
 	public void lap_change()
 	{
 		Collections.reverse(this.sitDownPlayer);
+
 	}
 
 	
@@ -225,12 +237,20 @@ public class Table
 
 	public void next_turn()
 	{
+		List<Player> blocked_players = new ArrayList<>();
 		if(!this.sitDownPlayer.isEmpty())
 		{
 			int nextPlayerIndex = (Table.CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
 
 			while (this.sitDownPlayer.get(nextPlayerIndex).is_blocked()) {
+				blocked_players.add(this.sitDownPlayer.get(nextPlayerIndex));
 				nextPlayerIndex = (nextPlayerIndex + 1) % this.sitDownPlayer.size(); // Avanza fino a trovare un giocatore non bloccato
+			}
+
+			// libero i giocatori bloccati che hanno passato il blocco
+			for(Player e : blocked_players)
+			{
+				e.removeBlock();
 			}
 
 			Table.CurrentIndexPlayer = nextPlayerIndex; // Imposta l'indice del nuovo giocatore corrente
@@ -302,13 +322,43 @@ public class Table
 	}
 
 	public static void main(String[] args) {
-		Table.getInstance().incrementIndex();
+		Table.getInstance().setCurrentCardInformation(new NormalCard(Number.FIVE, Colour.GREEN));
+
+		System.out.println("COLORE CORRENTE:" + Table.getInstance().getCurrentColor() + "CARTA CORRENTE:" + Table.getInstance().getCurrentCard());
+
+		BotPlayer testbot = new BotPlayer("botest");
+		testbot.drawCard(new NormalCard(Number.FIVE, Colour.BLUE));
+		testbot.drawCard(new NormalCard(Number.EIGHT, Colour.GREEN));
+		testbot.drawCard(new NormalCard(Number.THREE, Colour.GREEN));
+		testbot.drawCard(new NormalCard(Number.ZERO, Colour.YELLOW));
+		testbot.drawCard(new NormalCard(Number.THREE, Colour.GREEN));
+		testbot.drawCard(new ActionCard(Caction.CHANGECOLOR, Colour.BLACK));
+		testbot.drawCard(new ActionCard(Caction.DRAWFOUR, Colour.BLACK));
+		testbot.drawCard(new ActionCard(Caction.DRAWTWO, Colour.RED));
+
+		for(Card e : testbot.getHand())
+		{
+			if(testbot.isCardValid(e))
+				System.out.println("La carta " + e.getName() + " puo essere giocata.");
+			else
+				System.out.println("Carta " + e.getName() + " NON VALIDA.");
+		}
+
 	}
 
 	public Colour getCurrentColor() {
 		return this.currentColor;
 	}
 
+	public List<BotPlayer> getBotPlayers()
+	{
+		return sitDownPlayer.stream()
+				.filter(e -> e instanceof BotPlayer)
+				.map(e -> (BotPlayer) e) // Cast esplicito a BotPlayer
+				.toList();
+	}
+
 	// AREA TEST
+
 }
 

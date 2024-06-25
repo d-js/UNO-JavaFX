@@ -1,14 +1,11 @@
 package com.unofx.model;
 
 import java.util.List;
-import java.util.Map;
 
 public interface Player {
 	
     public String getUsername();
-    
-    public void playCard(int index);
-    
+
     public void drawCard(Card e);
 
     public List<Card> getHand();
@@ -21,4 +18,9 @@ public interface Player {
 
     public List<String> get_info_hand();
 
+    public void setOneTrue();
+
+    public void setOneFalse();
+
+    public boolean isOne();
 }
