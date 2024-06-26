@@ -19,5 +19,7 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Button layoutX="284.0" layoutY="740.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="146.0" text="UNO" />
+      <Button layoutX="1624.0" layoutY="723.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="146.0" text="NEXT" />
    </children>
 </AnchorPane>
