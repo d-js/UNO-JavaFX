@@ -55,26 +55,22 @@ public class GameController implements Initializable {
 
     private List<Card> currentUserHand = new ArrayList<>();
 
-    private String imagesPath = dotenv.get("IMAGES_PATH");
-
-
+    //private String imagesPath = dotenv.get("IMAGES_PATH");    //  scommentare prima del push
+    private String imagesPath   =   "src/main/resources/com/cardImages/";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        this.scene = Controller.scene;
-        this.stage = Controller.stage;
-        this.root = Controller.root;
+        this.scene = ControllerScene.scene;
+        this.stage = ControllerScene.stage;
+        this.root = ControllerScene.root;
         this.userHandView.setPadding(new Insets(10));
         Platform.runLater(() -> {
             this.update_view();
             this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
             this.cicleBotTurns();
         });
-
-
         // Inizia la partita
-
     }
 
     // TODO problema di alcuni metodi, non funzionano con l'user
@@ -174,16 +170,12 @@ public class GameController implements Initializable {
         });
     }
 
-
-
     // TODO al momento il tasto per dire uno bisogna cliccarlo prima di giocare la carta
     @FXML
     public void on_one_card(MouseEvent mouseEvent) throws IOException
     {
         Table.getInstance().getUserPlayer().setOneTrue();
     }
-
-
 
     @FXML
     public void on_deck_click(MouseEvent mouseEvent) throws IOException
@@ -305,7 +297,9 @@ public class GameController implements Initializable {
     public String generate_imagePath(String cardName)
     {
         cardName = cardName.replaceFirst(cardName.substring(0, 1), cardName.substring(0, 1).toUpperCase());
+        //System.out.println(this.imagesPath);
         return "file:" + this.imagesPath + cardName + ".png";
+
     }
 
     private void simulateBotMoves() {
@@ -342,7 +336,10 @@ public class GameController implements Initializable {
         addButton.setAccessibleHelp(cardPath);
         addButton.setGraphic(i);
         addButton.setAccessibleText(cardPath);
-        addButton.setStyle("card-button");
+        //addButton.setStyle("card-button");
+        addButton.getStyleClass().add("card-button");
+
+
 
 
 

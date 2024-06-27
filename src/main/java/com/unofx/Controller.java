@@ -1,4 +1,4 @@
-package com.unofx;
+/*package com.unofx;
 
 import com.unofx.model.*;
 import javafx.fxml.FXML;
@@ -44,8 +44,6 @@ public class Controller implements Initializable
 
     }
 
-
-
     public void update()
     {
         this.stage.setScene(this.scene);
@@ -66,6 +64,13 @@ public class Controller implements Initializable
     public void on_start(MouseEvent mouseEvent) throws IOException
     {
         this.inizializeTable();
+        initializeScene("game_pane.fxml", mouseEvent);
+        update();
+    }
+
+    //  metodo change pane insert name
+    public void on_start_single_mode(MouseEvent mouseEvent) throws IOException
+    {
         initializeScene("game_pane.fxml", mouseEvent);
         update();
     }
@@ -100,4 +105,4 @@ public class Controller implements Initializable
     {
 
     }
-}
+}*/
