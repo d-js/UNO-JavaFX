@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="com.unofx.ControllerScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="681.0" layoutY="286.0" text="SELECT GAMAE MODE">
          <padding>
@@ -16,15 +16,16 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Button ellipsisString="" layoutX="589.0" layoutY="683.0" mnemonicParsing="false" prefHeight="138.0" prefWidth="184.0" text="Single mode">
+      <Button fx:id="start_button_single_mode" ellipsisString="" layoutX="650.0" layoutY="683.0" mnemonicParsing="false" onAction="#on_start_single_mode" prefHeight="138.0" prefWidth="184.0"  text="Single mode">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button ellipsisString="" layoutX="1147.0" layoutY="683.0" mnemonicParsing="false" prefHeight="138.0" prefWidth="184.0" text="Couple mode">
+      <Button fx:id="start_button_couple_mode" ellipsisString="" layoutX="1050.0" layoutY="683.0" mnemonicParsing="false" onAction="#on_start_couple_mode" prefHeight="138.0" prefWidth="184.0" text="Couple mode">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <Button fx:id="ruleButton" layoutX="850.0" layoutY="683.0" mnemonicParsing="false" onAction="#onRuleGame" prefHeight="138.0" prefWidth="184.0" text="RULE" />
    </children>
 </AnchorPane>

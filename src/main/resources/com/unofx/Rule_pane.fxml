@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<?import javafx.scene.control.Button?>
+<AnchorPane fx:id="rulePane" fx:controller="com.unofx.ControllerScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label alignment="CENTER" prefHeight="218.0" prefWidth="788.0" text="GAME RULE&#10;">
+            <font>
+                <Font size="48.0" />
+            </font>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+        </Label>
+        <Label layoutX="150.0" layoutY="200.0" lineSpacing="100.0" prefHeight="862.0" prefWidth="1883.0" text="1) You can play cards with the same number, the same color, or both combinations.&#10;2) You can play special cards, such as Reverse and Skip, if there is a card of the same color or another special card of the same type on the table.&#10;3) You can play the +4 Wild and Wild Color Change cards at any time.&#10;4) When you are down to one card, you must say &quot;UNO.&quot;&#10;5) If you don't have any playable cards during your turn, you must draw a card from the central deck and pass your turn.&#10;">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="backButton" layoutX="1600.0" layoutY="950.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="88.0" prefWidth="146.0" text="BACK" />
+    </children>
+</AnchorPane>

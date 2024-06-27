@@ -19,7 +19,7 @@
          </opaqueInsets>
       </Label>
       <TextField fx:id="playerNameField" layoutX="867.0" layoutY="474.0" prefHeight="51.0" prefWidth="189.0" />
-      <Button fx:id="startButton" layoutX="888.0" layoutY="685.0" mnemonicParsing="false" onAction="#onStartGame" prefHeight="88.0" prefWidth="146.0" text="START" />
-      <Button fx:id="backButton" layoutX="888.0" layoutY="785.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="88.0" prefWidth="146.0" text="BACK" />
+      <Button fx:id="startButton" layoutX="688.0" layoutY="685.0" mnemonicParsing="false" onAction="#onStartGame" prefHeight="88.0" prefWidth="146.0" text="START" />
+      <Button fx:id="backButton" layoutX="1088.0" layoutY="685.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="88.0" prefWidth="146.0" text="BACK" />
    </children>
 </AnchorPane>

@@ -28,6 +28,8 @@ public class ControllerScene implements Initializable{
     private TextField playerNameField;
     @FXML
     private Button startButton;
+    @FXML
+    private Button ruleButton;
     protected static Scene scene;
     protected static Stage stage;
     protected static Parent root;
@@ -51,10 +53,16 @@ public class ControllerScene implements Initializable{
     }
 
     @FXML
+    public void onRuleGame() {
+        loadScene("Rule_pane.fxml");
+    }
+
+    @FXML
     public void onStartGame() throws IOException {
         this.inizializeTable();
         loadScene("Game_single_mode_pane.fxml");
         String playerName = playerNameField.getText();
+        Table.getInstance().getUserPlayer().setUsername(playerName);
         if (!playerName.isEmpty()) {
             System.out.println("Starting game with player: " + playerName);
             // Implementa la logica per iniziare il gioco
@@ -71,7 +79,8 @@ public class ControllerScene implements Initializable{
             this.stage = (Stage) (start_button_single_mode != null ? start_button_single_mode.getScene().getWindow() :
                     (start_button_couple_mode != null ? start_button_couple_mode.getScene().getWindow() :
                             (startButton != null ? startButton.getScene().getWindow() :
-                            backButton.getScene().getWindow())));
+                                    (ruleButton != null ? ruleButton.getScene().getWindow() :
+                            backButton.getScene().getWindow()))));
             this.scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

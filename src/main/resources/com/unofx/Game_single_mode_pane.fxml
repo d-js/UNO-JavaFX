@@ -7,21 +7,20 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.layout.Pane?>
-<AnchorPane fx:id="gamepane" fx:controller="com.unofx.ControllerScene" id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="side_anchorpane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="gamepane" fx:controller="com.unofx.GameController"  id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="side_anchorpane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Button id="deck" layoutX="739.0" layoutY="405.0" mnemonicParsing="false" prefHeight="270.0" prefWidth="180.0" text="Draw" />
-        <Pane fx:id="currentCardView" layoutX="490.0" layoutY="167.0" prefHeight="196.0" prefWidth="136.0" styleClass="genericfield" />
-        <Pane fx:id="userHandView" layoutX="59.0" layoutY="473.0" prefHeight="113.0" prefWidth="812.0" />
-        <ImageView id="Left_bot" fitHeight="270.0" fitWidth="180.0" layoutX="59.0" layoutY="405.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
-        <ImageView id="Right_bot" fitHeight="270.0" fitWidth="180.0" layoutX="1681.0" layoutY="405.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0" />
-        <ImageView id="Top_bot" fitHeight="270.0" fitWidth="180.0" layoutX="887.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" />
-        <AnchorPane id="userHandView" layoutX="9.0" layoutY="823.0" prefHeight="200.0" prefWidth="1902.0" />
-        <Label id="Name_user" layoutX="855.0" layoutY="787.0" text="Name">
+        <Button fx:id="deck" id="deck" layoutX="739.0" layoutY="405.0" onMouseClicked="#on_deck_click" mnemonicParsing="false" prefHeight="196.0" prefWidth="136.0" text="Draw" />
+        <Pane fx:id="currentCardView" layoutX="990.0" layoutY="405.0" prefHeight="196.0" prefWidth="136.0" styleClass="genericfield" />
+        <Pane fx:id="left_bot" maxHeight="270" maxWidth="180" layoutX="59.0" layoutY="405.0"/>
+        <Pane fx:id="right_bot" maxHeight="270" maxWidth="180" layoutX="1681.0" layoutY="405.0"/>
+        <Pane fx:id="top_bot" maxHeight="270" maxWidth="180" layoutX="887.0" layoutY="14.0"/>
+        <AnchorPane fx:id="userHandView" id="userHandView" layoutX="420.0" layoutY="900.0" prefHeight="300.0" prefWidth="1500.0" />
+        <Label fx:id="Name_user" layoutX="855.0" layoutY="787.0" text="Name">
             <font>
                 <Font size="24.0" />
             </font>
         </Label>
-        <Button fx:id="uno" layoutX="284.0" layoutY="740.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="146.0" text="UNO" />
-        <Button fx:id="pass" layoutX="1624.0" layoutY="723.0" mnemonicParsing="false" prefHeight="81.0" prefWidth="146.0" text="NEXT" />
+        <Button fx:id="uno" layoutX="300.0" layoutY="740.0" onMouseClicked="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="UNO" />
+        <Button fx:id="pass" layoutX="500.0" layoutY="740.0" onMouseClicked="#on_one_card" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
     </children>
 </AnchorPane>

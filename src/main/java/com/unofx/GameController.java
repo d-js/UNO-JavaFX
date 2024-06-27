@@ -10,13 +10,11 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -53,6 +51,11 @@ public class GameController implements Initializable {
     @FXML
     private Button pass = new Button();
 
+    @FXML
+    private Label Name_user = new Label();
+
+    @FXML
+    private Pane gamepane = new Pane();
     private List<Card> currentUserHand = new ArrayList<>();
 
     //private String imagesPath = dotenv.get("IMAGES_PATH");    //  scommentare prima del push
@@ -68,8 +71,10 @@ public class GameController implements Initializable {
         Platform.runLater(() -> {
             this.update_view();
             this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
+            this.Name_user.setText("Players name: "+Table.getInstance().getUserPlayer().getUsername());
             this.cicleBotTurns();
         });
+
         // Inizia la partita
     }
 
