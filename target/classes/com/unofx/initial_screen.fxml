@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="com.unofx.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="insertname_anchorpane" stylesheets="@../../../../../../../Scaricati/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="com.unofx.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="insertname_anchorpane"  xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField fx:id="name_field" layoutX="770.0" layoutY="357.0" onInputMethodTextChanged="#on_nickname" prefHeight="64.0" prefWidth="381.0" />
       <Button fx:id="start_button" layoutX="811.0" layoutY="643.0" mnemonicParsing="false" onMouseClicked="#on_start" prefHeight="144.0" prefWidth="299.0" styleClass="game_mode_button" text="START">
