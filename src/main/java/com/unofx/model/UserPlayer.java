@@ -3,6 +3,7 @@ package com.unofx.model;
 import com.almasb.fxgl.entity.action.Action;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class UserPlayer implements Player 
 {
@@ -23,11 +24,16 @@ public class UserPlayer implements Player
 	{
 		return this.username;
 	}
+
+	public void setUsername(String username){
+		this.username = username;
+	}
+
 	
 	// TODO ricavare la carta in base al path dell'immagine passata
 	public void playCard(String path)
 	{
-		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).toList();
+		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).collect(Collectors.toList());
 		Card e = l.get(0);
 		this.hand.remove(e);
 		Table.getInstance().play_card(e);
@@ -80,7 +86,7 @@ public class UserPlayer implements Player
 
 	public boolean isPlayable(String path)
 	{
-		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).toList();
+		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).collect(Collectors.toList());
 
 		Card e = l.get(0);
 		return this.isCardValid(e);
