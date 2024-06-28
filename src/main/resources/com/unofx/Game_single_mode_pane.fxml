@@ -11,10 +11,10 @@
     <children>
         <Button fx:id="deck" id="deck" layoutX="739.0" layoutY="305.0" onMouseClicked="#on_deck_click" mnemonicParsing="false" prefHeight="396.0" prefWidth="236.0" />
         <Pane fx:id="currentCardView" layoutX="990.0" layoutY="405.0" prefHeight="196.0" prefWidth="136.0"/>
-        <Pane fx:id="left_bot" maxHeight="270" maxWidth="180" layoutX="59.0" layoutY="405.0"/>
-        <Pane fx:id="right_bot" maxHeight="270" maxWidth="180" layoutX="1681.0" layoutY="405.0"/>
-        <Pane fx:id="top_bot" maxHeight="270" maxWidth="180" layoutX="887.0" layoutY="14.0"/>
-        <AnchorPane fx:id="userHandView" id="userHandView" layoutX="420.0" layoutY="900.0" prefHeight="300.0" prefWidth="1500.0" />
+        <Pane fx:id="left_bot" prefHeight="270" prefWidth="180" layoutX="120.0" layoutY="400.0"/>
+        <Pane fx:id="right_bot" prefHeight="270" prefWidth="180" layoutX="1620.0" layoutY="400.0"/>
+        <Pane fx:id="top_bot" prefHeight="270" prefWidth="180" layoutX="875.0" layoutY="15.0"/>
+        <AnchorPane fx:id="userHandView" id="userHandView" layoutX="420.0" layoutY="900.0" prefHeight="300.0" prefWidth="1500.0"/>
         <Label fx:id="Name_user" layoutX="739.0" layoutY="787.0" prefHeight="70.0" text="Name">
             <font>
                 <Font size="24.0" />
@@ -23,7 +23,7 @@
                 <Insets left="100.0" right="100.0"/>
             </padding>
         </Label>
-        <Button fx:id="uno" layoutX="300.0" layoutY="740.0" onMouseClicked="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="UNO" />
-        <Button fx:id="pass" layoutX="500.0" layoutY="740.0" onMouseClicked="#on_one_card" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
+        <Button fx:id="uno" layoutX="300.0" layoutY="720.0" onMouseClicked="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="UNO" />
+        <Button fx:id="pass" layoutX="500.0" layoutY="720.0" onMouseClicked="#on_one_card" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
     </children>
 </AnchorPane>

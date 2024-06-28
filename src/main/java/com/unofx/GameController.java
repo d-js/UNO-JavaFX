@@ -320,22 +320,22 @@ public class GameController implements Initializable {
         ImageView i = new ImageView();
         //i.setId("card-image");
         i.setImage(new Image(cardPath));
-        i.setFitHeight(135/1.5);
-        i.setFitWidth(100/1.5);
+        i.setFitHeight(300/1.5);
+        i.setFitWidth(200/1.5);
         addButton.setId("card-button");
         addButton.setAccessibleHelp(cardPath);
         addButton.setGraphic(i);
         addButton.setAccessibleText(cardPath);
-        //addButton.setStyle("card-button");
+        addButton.setPrefHeight(300.0/1.5);
+        addButton.setPrefWidth(200.0/1.5);
         addButton.getStyleClass().add("card-button");
 
         // Gestore MOUSE_ENTERED
         addButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> {
             // Sposta il bottone in una nuova posizione Z (all'inizio della lista dei figli)
             addButton.toFront();
-
             TranslateTransition tt = new TranslateTransition(Duration.millis(100), addButton);
-            tt.setToY(-10); // Sposta verso l'alto di 10px
+            tt.setToY(-15); // Sposta verso l'alto di 10px
 
             tt.play();
         });
@@ -428,7 +428,7 @@ public class GameController implements Initializable {
         int numButtons = container.getChildren().size();
         double startX = 0; // Coordinata X di inizio
         double startY = 0; // Coordinata Y fissa per tutti i pulsanti
-        double spacing = 50; // Spaziatura orizzontale tra i pulsanti
+        double spacing = 80; // Spaziatura orizzontale tra i pulsanti
 
         for (int i = 0; i < numButtons; i++) {
             Button button = (Button) container.getChildren().get(i);
@@ -439,6 +439,7 @@ public class GameController implements Initializable {
             // Imposta la posizione del bottone
             button.setLayoutX(x);
             button.setLayoutY(startY);
+
         }
     }
 
