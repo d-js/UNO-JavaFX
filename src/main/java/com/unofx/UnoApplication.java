@@ -14,7 +14,7 @@ public class UnoApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         this.stage = primaryStage; // Inizializzazione dello stage
-        FXMLLoader fxmlLoader = new FXMLLoader(UnoApplication.class.getResource("initial_screen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(UnoApplication.class.getResource("Select_game_mode.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("UNO");
         stage.setScene(scene);
