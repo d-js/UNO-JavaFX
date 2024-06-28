@@ -31,6 +31,9 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class GameController implements Initializable {
 
+    public Pane top_bot;
+    public Pane right_bot;
+    public Pane left_bot;
     // View scene var
     private Scene scene;
     private Stage stage;
@@ -53,10 +56,6 @@ public class GameController implements Initializable {
 
     @FXML
     private Label Name_user = new Label();
-
-    @FXML
-    private Pane gamepane = new Pane();
-    private List<Card> currentUserHand = new ArrayList<>();
 
     //private String imagesPath = dotenv.get("IMAGES_PATH");    //  scommentare prima del push
     private String imagesPath   =   "src/main/resources/com/cardImages/";
@@ -99,27 +98,19 @@ public class GameController implements Initializable {
     public void cicleBotTurns()
     {
         // doppio runlater perche?
-
-            this.deck.setDisable(false);
-            Platform.runLater(this::hide_user_hand);
-
-            // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
-
-            cicleBotUntilUser();
-
-            if (Table.getInstance().control_winner()) {
-                this.showWinnerAlert();
-            }
-
+        this.deck.setDisable(false);
+        Platform.runLater(this::hide_user_hand);
+        // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
+        cicleBotUntilUser();
+        if (Table.getInstance().control_winner())
+            this.showWinnerAlert();
     }
 
     private void cicleBotUntilUser()
     {
         if (!Table.getInstance().control_winner())
         {
-
             this.pass.setDisable(true);
-
             // Controllo se il giocatore corrente è un bot e se la partita non è ancora conclusa
             if (!(Table.getInstance().getCurrentPlayer() instanceof BotPlayer))
             {
@@ -132,13 +123,11 @@ public class GameController implements Initializable {
             {
                 this.playBotMovesWithDelay(((BotPlayer) Table.getInstance().getCurrentPlayer()));
             }
-
         }
     }
 
     private void playBotMovesWithDelay(BotPlayer bot)
     {
-
         PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Ritardo di 5 secondi tra le mosse dei bot
         pause.setOnFinished(event -> {
             bot.playCard(0); // Esegui la mossa del bot (esempio: playCard(0) supponendo la prima carta)
@@ -146,7 +135,6 @@ public class GameController implements Initializable {
             cicleBotUntilUser();
         });
         pause.play();
-
     }
 
     private void updateViewAfterMove()
@@ -189,9 +177,7 @@ public class GameController implements Initializable {
         Table.getInstance().getUserPlayer().drawCard(e);
         this.deck.setDisable(true);
         draw(generate_imagePath(e.getName()));
-
     }
-
 
     public void update_view()
     {
@@ -255,7 +241,6 @@ public class GameController implements Initializable {
                 }
                 else
                     n.setDisable(true);
-
             }
         });
     }
@@ -344,10 +329,6 @@ public class GameController implements Initializable {
         //addButton.setStyle("card-button");
         addButton.getStyleClass().add("card-button");
 
-
-
-
-
         // Gestore MOUSE_ENTERED
         addButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> {
             // Sposta il bottone in una nuova posizione Z (all'inizio della lista dei figli)
@@ -358,9 +339,6 @@ public class GameController implements Initializable {
 
             tt.play();
         });
-
-
-
 
         // Gestore MOUSE_EXITED
         addButton.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
@@ -376,7 +354,6 @@ public class GameController implements Initializable {
 
             tt.play();
         });
-
 
         // Definisco le azioni che deve eseguire il bottone
         addButton.setOnAction(e ->
