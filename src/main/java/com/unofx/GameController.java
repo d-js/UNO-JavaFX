@@ -252,7 +252,6 @@ public class GameController implements Initializable {
 
     }
 
-
     public static String capitalize(String str)
     {
 
@@ -266,11 +265,6 @@ public class GameController implements Initializable {
         //the first char of the input string
         return str.replace(str.charAt(0), capitalFirstLetter);
     }
-
-
-
-
-
 
     public void setCurrentCardImage(String _file_path)
     {

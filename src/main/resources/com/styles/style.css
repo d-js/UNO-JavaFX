@@ -51,14 +51,14 @@
 #rulePane{
     -fx-background-image: url("PARQUET.png");
 }
-#select_pane,#insert_name_single{
+#select_pane,#insert_name_single,#insert_name_couple{
     -fx-background-image: url("GameMode.png");
 }
-#gamePaneSingle{
+#gamePaneSingle,#gamePaneCouple{
     -fx-background-image: url("PARQUET.png");
 }
 /* Stile base per tutti i pulsanti */
-#startButton,#backButton,#uno,#pass{
+#startButton,#backButton,#uno,#pass,#unoBot,#passBot{
     -fx-background-color: rgba(255, 255, 255, 0.64);
     -fx-border-right: 20;
     -fx-text-fill: #000000;
@@ -68,6 +68,18 @@
     -fx-background-radius: 5px;
     -fx-font-family: "Arial Rounded MT Bold";
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
+}
+#unoTop,#passTop{
+    -fx-background-color: rgba(255, 255, 255, 0.64);
+    -fx-border-right: 20;
+    -fx-text-fill: #000000;
+    -fx-font-size: 22px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
+    -fx-rotate: 180;
 }
 #uno,#pass{
     -fx-background-color: rgba(255, 255, 255, 0.72);
@@ -120,7 +132,7 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
 }
 
-#select_label,#label_insert_single,#ruleTitle{
+#select_label,#label_insert_single,#ruleTitle,#label_insert_couple{
     -fx-text-fill: #ffffff;
     -fx-font-size: 50px;
     -fx-background-color: rgba(255, 255, 255, 0.21);
@@ -132,12 +144,20 @@
     -fx-font-size: 20px;
     -fx-font-family: "Arial Rounded MT Bold";
 }
-#Name_user{
+#Name_user,#Name_user1{
     -fx-text-fill: #ffffff;
     -fx-font-size: 28px;
     -fx-font-family: "Arial Rounded MT Bold";
     -fx-background-color: rgba(255, 255, 255, 0.21);
     -fx-background-radius: 20px;
+}
+#Name_user2{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 28px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-background-color: rgba(255, 255, 255, 0.21);
+    -fx-background-radius: 20px;
+    -fx-rotate: 180;
 }
 #left_bot,#right_bot,#top_bot{
     -fx-background-image: url("back.png");

@@ -21,7 +21,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="start_button_couple_mode" ellipsisString="" layoutX="1085.0" layoutY="683.0" mnemonicParsing="false" onAction="#on_start_couple_mode" prefHeight="138.0" prefWidth="184.0" text="COUPLE MODE">
+      <Button fx:id="start_button_couple_mode" styleClass="start_button_couple_mode" ellipsisString="" layoutX="1085.0" layoutY="683.0" mnemonicParsing="false" onAction="#on_start_couple_mode" prefHeight="138.0" prefWidth="184.0" text="COUPLE MODE">
          <font>
             <Font size="18.0" />
          </font>

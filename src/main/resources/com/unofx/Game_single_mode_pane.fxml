@@ -23,7 +23,7 @@
                 <Insets left="100.0" right="100.0"/>
             </padding>
         </Label>
-        <Button fx:id="uno" layoutX="300.0" layoutY="720.0" onMouseClicked="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="UNO" />
-        <Button fx:id="pass" layoutX="500.0" layoutY="720.0" onMouseClicked="#on_one_card" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
+        <Button fx:id="uno" layoutX="300.0" layoutY="720.0" onMouseClicked="#on_one_card" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="UNO" />
+        <Button fx:id="pass" layoutX="500.0" layoutY="720.0" onMouseClicked="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
     </children>
 </AnchorPane>

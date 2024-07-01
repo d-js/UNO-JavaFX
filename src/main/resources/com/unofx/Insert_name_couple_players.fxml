@@ -8,9 +8,12 @@
 
 
 <?import javafx.scene.control.TextField?>
-<AnchorPane fx:controller="com.unofx.ControllerScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="insert_name_couple" fx:controller="com.unofx.ControllerScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label layoutX="843.0" layoutY="315.0" text="INSERT PLAYERS NAME" textAlignment="CENTER">
+        <Label fx:id="label_insert_couple" layoutX="600.0" layoutY="250.0" text="INSERT PLAYER NAME" textAlignment="CENTER">
+            <padding>
+                <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
+            </padding>
             <font>
                 <Font size="24.0" />
             </font>
@@ -18,9 +21,9 @@
                 <Insets />
             </opaqueInsets>
         </Label>
-        <TextField fx:id="playerNameField1" layoutX="867.0" layoutY="474.0" prefHeight="51.0" prefWidth="189.0" />
-        <TextField fx:id="playerNameField2" layoutX="867.0" layoutY="574.0" prefHeight="51.0" prefWidth="189.0" />
-        <Button fx:id="startButton" layoutX="888.0" layoutY="685.0" mnemonicParsing="false" onAction="#onStartGame" prefHeight="88.0" prefWidth="146.0" text="START" />
-        <Button fx:id="backButton" layoutX="1088.0" layoutY="685.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="88.0" prefWidth="146.0" text="BACK" />
+        <TextField fx:id="playerNameField1" layoutX="880.0" layoutY="574.0" prefHeight="55.0" prefWidth="200.0" />
+        <TextField fx:id="playerNameField2" layoutX="880.0" layoutY="674.0" prefHeight="55.0" prefWidth="200.0" />
+        <Button fx:id="startButton" layoutX="680.0" layoutY="785.0" mnemonicParsing="false" onAction="#onStartGameCouple" prefHeight="88.0" prefWidth="146.0" text="START" />
+        <Button fx:id="backButton" layoutX="1130.0" layoutY="785.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="88.0" prefWidth="146.0" text="BACK" />
     </children>
 </AnchorPane>
