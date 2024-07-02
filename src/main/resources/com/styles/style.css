@@ -48,7 +48,7 @@
     -fx-cursor: hand; /* Hand cursor on hover */
 }
 
-#rulePane{
+#rulePaneOne,#rulePaneTwo{
     -fx-background-image: url("PARQUET.png");
 }
 #select_pane,#insert_name_single,#insert_name_couple{
@@ -58,7 +58,7 @@
     -fx-background-image: url("PARQUET.png");
 }
 /* Stile base per tutti i pulsanti */
-#startButton,#backButton,#uno,#pass,#unoBot,#passBot{
+#startButton,#backButton,#uno,#pass,#unoBot,#passBot,#ruleButtonTwo{
     -fx-background-color: rgba(255, 255, 255, 0.64);
     -fx-border-right: 20;
     -fx-text-fill: #000000;
@@ -92,7 +92,7 @@
     -fx-font-family: "Arial Rounded MT Bold";
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
 }
-#start_button_single_mode,#start_button_couple_mode,#ruleButton{
+#start_button_single_mode,#start_button_couple_mode,#ruleButton,#ruleButtonTwo{
     -fx-background-color: rgba(255, 255, 255, 0.64);
     -fx-border-right: 20;
     -fx-text-fill: #000000;
@@ -131,13 +131,45 @@
     -fx-background-color: rgba(175, 175, 175, 0.64);
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
 }
+#ruleButtonTwo:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
 
-#select_label,#label_insert_single,#ruleTitle,#label_insert_couple{
+#select_label,#label_insert_single,#label_insert_couple{
     -fx-text-fill: #ffffff;
     -fx-font-size: 50px;
     -fx-background-color: rgba(255, 255, 255, 0.21);
     -fx-background-radius: 40px;
     -fx-font-family: "Arial Rounded MT Bold";
+}
+#ruleTitle{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 50px;
+    -fx-background-color: rgba(255, 255, 255, 0.21);
+    -fx-background-radius: 40px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-padding: 10px;
+}
+#imageRuleOne{
+    -fx-background-image: url("Image_rule.png");
+    -fx-background-color: transparent;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+#imageRuleTwo{
+    -fx-background-image: url("MazzoCentrale.png");
+    -fx-background-color: transparent;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
 }
 #ruleLabel{
     -fx-text-fill: #ffffff;

@@ -34,6 +34,8 @@ public class ControllerScene implements Initializable{
     private Button startButton;
     @FXML
     private Button ruleButton;
+    @FXML
+    private Button ruleButtonTwo;
     protected static Scene scene;
     protected static Stage stage;
     protected static Parent root;
@@ -58,7 +60,12 @@ public class ControllerScene implements Initializable{
 
     @FXML
     public void onRuleGame() {
-        loadScene("Rule_pane.fxml");
+        loadScene("Rule_pane_one.fxml");
+    }
+
+    @FXML
+    public void onButtonClickedRulePane2() {
+        loadScene("Rule_pane_two.fxml");
     }
 
     @FXML
@@ -103,10 +110,10 @@ public class ControllerScene implements Initializable{
             this.root = loader.load();
             //Parent root = loader.load();
             this.stage = (Stage) (start_button_single_mode != null ? start_button_single_mode.getScene().getWindow() :
-                    (start_button_couple_mode != null ? start_button_couple_mode.getScene().getWindow() :
-                            (startButton != null ? startButton.getScene().getWindow() :
-                                    (ruleButton != null ? ruleButton.getScene().getWindow() :
-                            backButton.getScene().getWindow()))));
+                                    (start_button_couple_mode != null ? start_button_couple_mode.getScene().getWindow() :
+                                        (startButton != null ? startButton.getScene().getWindow() :
+                                            (ruleButton != null ? ruleButton.getScene().getWindow() :
+                                                (ruleButtonTwo!= null ? ruleButtonTwo.getScene().getWindow() : backButton.getScene().getWindow())))));
             this.scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
