@@ -7,33 +7,49 @@
 
 <?import javafx.scene.layout.Pane?>
 <?import javafx.geometry.Insets?>
-<AnchorPane fx:id="gamePaneCouple" fx:controller="com.unofx.GameController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<AnchorPane fx:id="gamePaneCouple" fx:controller="com.unofx.CoupleGameContoller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Button fx:id="deck" id="deck" layoutX="739.0" layoutY="305.0" onMouseClicked="#on_deck_click" mnemonicParsing="false" prefHeight="396.0" prefWidth="236.0" />
         <Pane fx:id="currentCardView" layoutX="990.0" layoutY="405.0" prefHeight="196.0" prefWidth="136.0"/>
+        <Button fx:id="unoButton" layoutX="1200.0" layoutY="405.0" onAction="#on_one_card" mnemonicParsing="false" prefHeight="200.0" prefWidth="150.0" text="UNO" />
         <Pane fx:id="left_bot" prefHeight="270" prefWidth="180" layoutX="120.0" layoutY="400.0"/>
         <Pane fx:id="right_bot" prefHeight="270" prefWidth="180" layoutX="1620.0" layoutY="400.0"/>
-        <AnchorPane fx:id="userHandViewTop" id="userHandViewTop" layoutX="420.0" layoutY="50.0" prefHeight="300.0" prefWidth="1500.0"/>
-        <AnchorPane fx:id="userHandViewBot" id="userHandViewBot" layoutX="420.0" layoutY="900.0" prefHeight="300.0" prefWidth="1500.0"/>
-        <Button fx:id="unoTop" layoutX="1300.0" layoutY="270.0" onAction="#on_one_card" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="UNO" />
-        <Button fx:id="passTop" layoutX="1500.0" layoutY="270.0" onAction="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
-        <Label fx:id="Name_user1" layoutX="739.0" layoutY="787.0" prefHeight="70.0" text="Name">
-            <font>
-                <Font size="24.0" />
-            </font>
-            <padding>
-                <Insets left="100.0" right="100.0"/>
-            </padding>
-        </Label>
-        <Label fx:id="Name_user2" layoutX="739.0" layoutY="210.0" prefHeight="70.0" text="Name">
-            <font>
-                <Font size="24.0" />
-            </font>
-            <padding>
-                <Insets left="100.0" right="100.0"/>
-            </padding>
-        </Label>
-        <Button fx:id="unoBot" layoutX="300.0" layoutY="720.0" onAction="#on_one_card" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="UNO" />
-        <Button fx:id="passBot" layoutX="500.0" layoutY="720.0" onAction="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
+
+        <Pane fx:id="firstUserPart" layoutX="420.0" layoutY="700.0" prefWidth="1080.0" prefHeight="300.0">
+            <children>
+                <VBox alignment="CENTER" spacing="10.0">
+                    <HBox fx:id="firstUserHandView" prefHeight="150.0" prefWidth="900.0"/>
+                    <Button fx:id="firstPlayerPass" onAction="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="FOLD" />
+                    <Label fx:id="firstPlayerNameField" prefHeight="70.0" text="Name">
+                        <font>
+                            <Font size="24.0" />
+                        </font>
+                        <padding>
+                            <Insets left="10.0" right="10.0"/>
+                        </padding>
+                    </Label>
+                </VBox>
+            </children>
+        </Pane>
+
+        <Pane fx:id="secondUserPart" layoutX="420.0" layoutY="50.0" prefWidth="1080.0" prefHeight="300.0">
+            <children>
+                <VBox alignment="CENTER" spacing="10.0">
+                    <HBox fx:id="secondUserHandView" prefHeight="150.0" prefWidth="900.0"/>
+                    <Label fx:id="secondPlayerNameField" prefHeight="70.0" text="Name">
+                        <font>
+                            <Font size="24.0" />
+                        </font>
+                        <padding>
+                            <Insets left="10.0" right="10.0"/>
+                        </padding>
+                    </Label>
+                    <Button fx:id="secondPlayerPass" onAction="#on_pass" mnemonicParsing="false" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
+                </VBox>
+            </children>
+        </Pane>
+
     </children>
 </AnchorPane>

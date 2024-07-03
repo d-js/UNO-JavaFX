@@ -4,6 +4,7 @@ import com.unofx.model.*;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -27,11 +28,8 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class GameController implements Initializable {
+public class CoupleGameContoller implements Initializable {
 
-    public Pane top_bot;
-    public Pane right_bot;
-    public Pane left_bot;
     // View scene var
     private Scene scene;
     private Stage stage;
@@ -44,16 +42,31 @@ public class GameController implements Initializable {
     private Pane currentCardView = new Pane();
 
     @FXML
-    private Pane userHandView = new HBox();
+    private HBox firstUserHandView = new HBox();
+
+    @FXML
+    private HBox secondUserHandView = new HBox();
 
     @FXML
     private Button deck = new Button();
 
     @FXML
-    private Button pass = new Button();
+    private Button unoButton = new Button();
 
     @FXML
-    private Label Name_user = new Label();
+    private Button secondPlayerPass = new Button();
+
+
+    @FXML
+    private Button firstPlayerPass = new Button();
+
+
+    @FXML
+    private Label firstPlayerNameField = new Label();
+
+    @FXML
+    private Label secondPlayerNameField = new Label();
+
 
     //private String imagesPath = dotenv.get("IMAGES_PATH");    //  scommentare prima del push
     private String imagesPath   =   "src/main/resources/com/cardImages/";
@@ -64,11 +77,20 @@ public class GameController implements Initializable {
         this.scene = ControllerScene.scene;
         this.stage = ControllerScene.stage;
         this.root = ControllerScene.root;
-        this.userHandView.setPadding(new Insets(10));
+        this.firstUserHandView.setPadding(new Insets(15));
+        this.secondUserHandView.setPadding(new Insets(15));
+        //TODO ripartire da qui
+        this.firstPlayerNameField.setText(Table.getInstance().getAllUser().get(0).getUsername());
+        this.secondPlayerNameField.setText(Table.getInstance().getAllUser().get(1).getUsername());
+        this.firstUserHandView.setAccessibleText(this.firstPlayerNameField.getText());
+        this.secondUserHandView.setAccessibleText(this.secondPlayerNameField.getText());
+        //((Label)this.firstUserHandView.getChildren().get(2)).getText();
+        this.firstUserHandView.setPadding(new Insets(15));
+        this.secondUserHandView.setPadding(new Insets(15));
         Platform.runLater(() -> {
-            this.update_view();
+            this.updateCurrentUserHand(this.firstPlayerNameField.getText());
+            this.updateCurrentUserHand(this.secondPlayerNameField.getText());
             this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
-            this.Name_user.setText("Players name: "+Table.getInstance().getNextUserPlayer().getUsername());
             this.cicleBotTurns();
         });
 
@@ -88,7 +110,7 @@ public class GameController implements Initializable {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TODO QUANDO SCRIVO A VOLTE POTREBBE ESSERE IN BASE A SE LA CARTA E' QUELLA INIZIALE NEL TAVOLO OPPURE QUELLA GIOCATA DA UN BOT
     //  dato che per me compare sempre come prima carta
-    // TASTI UNO E NEXT INVERTITI
+    // TODO TASTI UNO E NEXT INVERTITI
 
     // TODO il cambio giro cambia giro ma fa riniziare a giocare a me
     // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
@@ -98,7 +120,7 @@ public class GameController implements Initializable {
     {
         // doppio runlater perche?
         this.deck.setDisable(false);
-        Platform.runLater(this::hide_user_hand);
+        Platform.runLater(this::hideAll);
         // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
         cicleBotUntilUser();
         if (Table.getInstance().control_winner())
@@ -109,13 +131,14 @@ public class GameController implements Initializable {
     {
         if (!Table.getInstance().control_winner())
         {
-            this.pass.setDisable(true);
+            this.firstPlayerPass.setDisable(true);
+            this.secondPlayerPass.setDisable(true);
             // Controllo se il giocatore corrente è un bot e se la partita non è ancora conclusa
             if (!(Table.getInstance().getCurrentPlayer() instanceof BotPlayer))
             {
                 Platform.runLater(() -> {
-                    this.update_view();
-                    this.show_user_hand();
+                    this.updateCurrentUserHand(Table.getInstance().getCurrentPlayer().getUsername());
+                    this.showCurrentUserHand();
                 });
             }
             else
@@ -163,41 +186,47 @@ public class GameController implements Initializable {
     }
 
     // TODO al momento il tasto per dire uno bisogna cliccarlo prima di giocare la carta
+    // TODO mettere il tasto UNO al centro del tavolo
     @FXML
-    public void on_one_card(MouseEvent mouseEvent) throws IOException
+    public void onOneCardButtonClick(MouseEvent mouseEvent) throws IOException
     {
-        Table.getInstance().getNextUserPlayer().setOneTrue();
+        Table.getInstance().getCurrentPlayer().setOneTrue();
     }
 
     @FXML
-    public void on_deck_click(MouseEvent mouseEvent) throws IOException
+    public void onDrawCard(MouseEvent mouseEvent) throws IOException
     {
         Card e = Table.getInstance().deck.drawOut();
-        Table.getInstance().getNextUserPlayer().drawCard(e);
+        Table.getInstance().getCurrentPlayer().drawCard(e);
         this.deck.setDisable(true);
-        draw(generate_imagePath(e.getName()));
+        draw(generate_imagePath(e.getName()), Table.getInstance().getCurrentPlayer().getUsername());
     }
 
-    public void update_view()
+
+    public void updateCurrentUserHand(String username)
     {
         Platform.runLater(() -> {
-
-            List<String> nameCardList = Table.getInstance().getNextUserPlayer().getHand().stream().map(Card::getName).collect(Collectors.toList());
-            // TODO fare sottrazione con la lista in questo oggetto per ottenere le carte che bisogna aggiungere
+            System.out.println(username);
+            List<String> nameCardList = Table.getInstance().getUserPlayerByUsername(username).getHand().stream().map(Card::getName).collect(Collectors.toList());
+            // TODO OTTIMIZZAZIONE fare sottrazione con la lista in questo oggetto per ottenere le carte che bisogna aggiungere
             //List<String> nameCardList = updated_cardlist.stream().map(Card::getName).collect(Collectors.toList());
 
-            this.updateHand(nameCardList);
+            // controllo che utente sta giocando e in base a cio aggiorno la vista
+            if(username.equals(this.firstPlayerNameField.getText()))
+                this.updateHand(this.firstUserHandView, nameCardList);
+            else
+                this.updateHand(this.secondUserHandView, nameCardList);
         });
     }
 
-    private void updateHand(List<String> nameCardList)
+    private void updateHand(Pane userHand, List<String> nameCardList)
     {
         Platform.runLater(() -> {
-            this.userHandView.getChildren().clear();
+            userHand.getChildren().clear();
 
             for (String cardName : nameCardList) {
                 try {
-                    this.draw(this.generate_imagePath(cardName));
+                    this.draw(this.generate_imagePath(cardName), Table.getInstance().getCurrentPlayer().getUsername());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -206,15 +235,49 @@ public class GameController implements Initializable {
     }
 
 
-    public void hide_user_hand()
+
+    public void hideAll()
     {
         Platform.runLater(() -> {
-            for (Node n : this.userHandView.getChildren()) {
-                if (n instanceof Button) {
+            for (Node n : this.firstUserHandView.getChildren())
+            {
+                if (n instanceof Button)
+                {
+                    ((Button) n).setDisable(true);
+                }
+            }
+            for (Node n : this.secondUserHandView.getChildren())
+            {
+                if (n instanceof Button)
+                {
                     ((Button) n).setDisable(true);
                 }
             }
         });
+    }
+
+    public void hideCurrentUserHand()
+    {
+        if(Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+        {
+            Platform.runLater(() -> {
+                for (Node n : this.firstUserHandView.getChildren()) {
+                    if (n instanceof Button) {
+                        ((Button) n).setDisable(true);
+                    }
+                }
+            });
+        } else if (Table.getInstance().getCurrentPlayer().getUsername().equals(this.secondPlayerNameField.getText())) {
+            Platform.runLater(() -> {
+                for (Node n : this.secondUserHandView.getChildren()) {
+                    if (n instanceof Button) {
+                        ((Button) n).setDisable(true);
+                    }
+                }
+            });
+        }
+        // se sono qui e' il turno dell'utente
+
     }
 
     public void update()
@@ -230,26 +293,48 @@ public class GameController implements Initializable {
     }
 
     // Rendi usabili le carte che puo giocare, all'utente
-    public void show_user_hand()
+    public void showCurrentUserHand()
     {
         Platform.runLater(() -> {
-            for (Node n : this.userHandView.getChildren()) {
-                if (n instanceof Button) {
-                    // TODO da rivedere
-                    n.setDisable(!this.playable((Button)n));
-                }
-                else
-                    n.setDisable(true);
-            }
+
+
         });
+
+
+        if(Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+        {
+            Platform.runLater(() -> {
+                for (Node n : this.firstUserHandView.getChildren()) {
+                    if (n instanceof Button) {
+                        // TODO OTTIMIZZAZIONE da rivedere
+                        n.setDisable(!this.playable((Button)n));
+                    }
+                    else
+                        n.setDisable(true);
+                }
+            });
+        } else if (Table.getInstance().getCurrentPlayer().getUsername().equals(this.secondPlayerNameField.getText())) {
+            Platform.runLater(() -> {
+                for (Node n : this.secondUserHandView.getChildren()) {
+                    if (n instanceof Button) {
+                        // TODO OTTIMIZZAZIONE da rivedere
+                        n.setDisable(!this.playable((Button)n));
+                    }
+                    else
+                        n.setDisable(true);
+                }
+            });
+        }
+        // se sono qui e' il turno dell'utente
     }
 
     // metodo che controlla se l'user puo giocare la carta
     private boolean playable(Button n)
     {
-        return Table.getInstance().getNextUserPlayer().isPlayable(n.getAccessibleText());
+        return Table.getInstance().getUserPlayerByUsername("diego").isPlayable(n.getAccessibleText());
 
     }
+
 
     public static String capitalize(String str)
     {
@@ -264,6 +349,7 @@ public class GameController implements Initializable {
         //the first char of the input string
         return str.replace(str.charAt(0), capitalFirstLetter);
     }
+
 
     public void setCurrentCardImage(String _file_path)
     {
@@ -285,27 +371,8 @@ public class GameController implements Initializable {
 
     }
 
-    private void simulateBotMoves() {
-        // Example delay between moves
-        int delay = 2000; // 2000 milliseconds = 2 seconds
 
-        // Simulate a bot move, and then schedule the next one
-        for (int i = 0; i < 5; i++) {
-            int moveNumber = i + 1;
-            PauseTransition pause = new PauseTransition(Duration.millis(delay * moveNumber));
-            pause.setOnFinished(event -> performBotMove(moveNumber));
-            pause.play();
-        }
-    }
-
-    private void performBotMove(int moveNumber) {
-        Platform.runLater(() -> {
-            // Code to perform the bot move
-            System.out.println("il bot aspetta" + moveNumber);
-        });
-    }
-
-    public void draw(String cardPath) throws IOException
+    public void draw(String cardPath, String username) throws IOException
     {
 
         // Crea il bottone per aggiungere altri bottoni
@@ -351,10 +418,12 @@ public class GameController implements Initializable {
         // Definisco le azioni che deve eseguire il bottone
         addButton.setOnAction(e ->
         {
+            UserPlayer current = (UserPlayer) Table.getInstance().getCurrentPlayer();
 
             if(cardPath.toUpperCase().contains(Caction.DRAWFOUR.getAction()) ||
                     cardPath.toUpperCase().contains(Caction.CHANGECOLOR.getAction()))
             {
+                
                 // Creo un Alert per la scelta del colore che l'utente potra' selezionare
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -369,26 +438,27 @@ public class GameController implements Initializable {
                 // Mostra il popup e attendi la selezione dell'utente
                 alert.showAndWait().ifPresent(buttonType ->
                 {
+                    
                     if (buttonType.getText() == "BLUE") {
-
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
+                        
+                        current.playCard(addButton.getAccessibleText());
                         ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.BLUE);
 
                     }
                     else if (buttonType.getText() == "GREEN") {
 
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
+                        current.playCard(addButton.getAccessibleText());
                         ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.GREEN);
 
                     }
                     else if (buttonType.getText() == "YELLOW")
                     {
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
+                        current.playCard(addButton.getAccessibleText());
                         ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.YELLOW);
                     }
                     else if (buttonType.getText() == "RED")
                     {
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
+                        current.playCard(addButton.getAccessibleText());
                         ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.RED);
 
                     }
@@ -398,22 +468,32 @@ public class GameController implements Initializable {
             }
             else
             {
-                Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
+                current.playCard(addButton.getAccessibleText());
 
             }
-            this.userHandView.getChildren().remove(addButton);
+            if(Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+                this.firstPlayerNameField.getChildrenUnmodifiable().remove(addButton);
+            else if (Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+                this.secondPlayerNameField.getChildrenUnmodifiable().remove(addButton);
+
             updateViewAfterMove();
             this.cicleBotTurns();
 
         });
 
+        if(Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+        {
+            this.firstUserHandView.getChildren().add(addButton);
+            addButton.setDisable(!this.playable(addButton));
+            this.firstPlayerPass.setDisable(false);
+        }
 
-        // Aggiungi il bottone "Aggiungi Bottone" al pannello
-
-        this.userHandView.getChildren().add(addButton);
-        this.arrangeButtonsInLine(this.userHandView);
-        addButton.setDisable(!this.playable(addButton));
-        this.pass.setDisable(false);
+        else if (Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+        {
+            this.firstUserHandView.getChildren().add(addButton);
+            addButton.setDisable(!this.playable(addButton));
+            this.firstPlayerPass.setDisable(false);
+        }
 
     }
 
@@ -436,9 +516,21 @@ public class GameController implements Initializable {
         }
     }
 
+    @FXML
+    public void on_deck_click(MouseEvent mouseEvent) throws IOException
+    {
+        Card e = Table.getInstance().deck.drawOut();
+        Table.getInstance().getNextUserPlayer().drawCard(e);
+        this.deck.setDisable(true);
+        draw(generate_imagePath(e.getName()), firstUserHandView.getAccessibleText());
+    }
+
     public void on_pass(MouseEvent mouseEvent)
     {
         Table.getInstance().next_turn();
         this.cicleBotTurns();
+    }
+
+    public void on_one_card(ActionEvent actionEvent) {
     }
 }

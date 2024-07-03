@@ -1,54 +1,293 @@
 #card-button {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #000000;
-    -fx-border-width: 2px;
-    -fx-border-radius: 15;
-    -fx-background-radius: 15;  /* Angoli arrotondati */
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;  /* Angoli arrotondati */
     -fx-padding: 0;  /* Rimuove il padding */
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #000000;
     -fx-cursor: hand;
     -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.8), 10, 0.0, 0, 5);
     -fx-transition: transform 0.2s, -fx-background-color 0.2s, -fx-border-color 0.2s;
 }
-
 /* Effetto hover */
 #card-button:hover {
-    -fx-background-color: #e6e6e6;
-    -fx-border-color: #ff0000;
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.8);
+    -fx-background-radius: 3;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2;
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
-
-    /*-fx-transform: translateY(-10px);  Sposta il bottone verso l'alto di 10px */
 }
-
 /* Effetto click */
 #card-button:pressed {
-    -fx-background-color: #cccccc;
-    -fx-border-color: #ff0000;
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.8);
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
 
+#firstUserPart {
+    -fx-background-color: #f1faee;
+    -fx-padding: 10px;
+    -fx-border-color: #000;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
 
-#card-image {
-    -fx-background-radius: 15;  /* Angoli arrotondati */
-    -fx-background-size: cover;  /* Assicura che l'immagine copra l'intero bottone */
+/* Styles for the first user hand view HBox */
+#firstUserHandView {
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+}
+
+/* Styles for the first player pass button */
+#firstPlayerPass {
+    -fx-background-color: #457b9d;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Styles for the first player name label */
+#firstPlayerNameField {
+    -fx-text-fill: #1d3557;
+    -fx-font-weight: bold;
+}
+
+/* Styles for the second user part pane */
+#secondUserPart {
+    -fx-background-color: #f1faee;
+    -fx-padding: 10px;
+    -fx-border-color: #000;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Styles for the second user hand view HBox */
+#secondUserHandView {
+    -fx-spacing: 10px;
+}
+
+/* Styles for the second player pass button */
+#secondPlayerPass {
+    -fx-background-color: #457b9d;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Styles for the second player name label */
+#secondPlayerNameField {
+    -fx-text-fill: #1d3557;
+    -fx-font-weight: bold;
 }
 
 
+#deck{
+    -fx-background-image: url("MazzoCentrale.png");
+    -fx-background-color: transparent;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+#card-image {
+    -fx-background-radius: 15;  /* Angoli arrotondati */
+    -fx-background-size: cover;  /* Assicura che l'immagine copra l'intero bottone */
+    -fx-background-color: transparent;
+}
 #currentCardView {
-    -fx-background-color: linear-gradient(#ffefba, #ffffff); /* Gradient background */
-    -fx-background-radius: 10; /* Rounded corners */
-    -fx-border-radius: 10; /* Rounded border corners */
-    -fx-border-color: #d1d1d1; /* Border color */
-    -fx-border-width: 2; /* Border width */
+    -fx-background-color: transparent;
     -fx-padding: 10 20 10 20; /* Padding around the text */
-    -fx-font-size: 14px; /* Font size */
-    -fx-font-weight: bold; /* Bold text */
-    -fx-text-fill: #333333; /* Text color */
     -fx-alignment: CENTER; /* Center the text */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2); /* Drop shadow effect */
     -fx-cursor: hand; /* Hand cursor on hover */
+}
+#secondUserHandView {
+     -fx-background-color: #f1faee;
+     -fx-padding: 10px;
+     -fx-border-color: #000;
+     -fx-border-width: 2px;
+     -fx-border-radius: 5px;
+     -fx-background-radius: 5px;
+}
+#firstUserPart {
+
+}
+
+
+#secondUserHandView,#firstUserHandView, #userHandView
+{
+   -fx-background-color: transparent;
+   -fx-border-radius: 10; /* Padding around the text */
+   -fx-alignment: CENTER; /* Center the text */
+   -fx-border-color: #333333
+   -fx-border-width: 3
+   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2); /* Drop shadow effect */
+   -fx-cursor: hand; /* Hand cursor on hover */
+}
+
+#rulePaneOne,#rulePaneTwo{
+    -fx-background-image: url("PARQUET.png");
+}
+#select_pane,#insert_name_single,#insert_name_couple{
+    -fx-background-image: url("GameMode.png");
+}
+#gamePaneSingle,#gamePaneCouple{
+    -fx-background-image: url("PARQUET.png");
+}
+/* Stile base per tutti i pulsanti */
+#startButton,#backButton,#uno,#pass,#unoBot,#passBot,#ruleButtonTwo{
+    -fx-background-color: rgba(255, 255, 255, 0.64);
+    -fx-border-right: 20;
+    -fx-text-fill: #000000;
+    -fx-font-size: 22px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
+}
+#unoTop,#passTop{
+    -fx-background-color: rgba(255, 255, 255, 0.64);
+    -fx-border-right: 20;
+    -fx-text-fill: #000000;
+    -fx-font-size: 22px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
+    -fx-rotate: 180;
+}
+#uno,#pass{
+    -fx-background-color: rgba(255, 255, 255, 0.72);
+    -fx-border-right: 20;
+    -fx-text-fill: #000000;
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
+}
+#start_button_single_mode,#start_button_couple_mode,#ruleButton,#ruleButtonTwo{
+    -fx-background-color: rgba(255, 255, 255, 0.64);
+    -fx-border-right: 20;
+    -fx-text-fill: #000000;
+    -fx-font-size: 18px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
+}
+#start_button_single_mode:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
+#start_button_couple_mode:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
+#ruleButton:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
+#backButton:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
+#startButton:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
+#uno:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
+#pass:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
+#ruleButtonTwo:hover{
+    -fx-background-color: rgba(175, 175, 175, 0.64);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+}
+
+#select_label,#label_insert_single,#label_insert_couple{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 50px;
+    -fx-background-color: rgba(255, 255, 255, 0.21);
+    -fx-background-radius: 40px;
+    -fx-font-family: "Arial Rounded MT Bold";
+}
+#ruleTitle{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 50px;
+    -fx-background-color: rgba(255, 255, 255, 0.21);
+    -fx-background-radius: 40px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-padding: 10px;
+}
+#imageRuleOne{
+    -fx-background-image: url("Image_rule.png");
+    -fx-background-color: transparent;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+#imageRuleTwo{
+    -fx-background-image: url("MazzoCentrale.png");
+    -fx-background-color: transparent;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+#ruleLabel{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-family: "Arial Rounded MT Bold";
+}
+#Name_user,#Name_user1{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 28px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-background-color: rgba(255, 255, 255, 0.21);
+    -fx-background-radius: 20px;
+}
+#Name_user2{
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 28px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-background-color: rgba(255, 255, 255, 0.21);
+    -fx-background-radius: 20px;
+    -fx-rotate: 180;
+}
+#userHandView
+{
+    -fx-border-radius: 10px
+    -fx-border-color: f0f0f0
+}
+
+
+#left_bot,#right_bot,#top_bot{
+    -fx-background-image: url("back.png");
+    -fx-background-color: transparent;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
 }

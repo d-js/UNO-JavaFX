@@ -10,7 +10,6 @@ public class Table
 	private Card currentCard;
 	private Colour currentColor = Colour.BLUE;
 	private Player currentPlayer;
-	private UserPlayer user = new UserPlayer("diego");
 	private List<Player> sitDownPlayer = new LinkedList<>();
 	private UserPlayer User;
 	
@@ -25,14 +24,51 @@ public class Table
 		return INSTANCE;
 	}
 
-
-	public UserPlayer getUserPlayer() {
-		return user;
+	public void addPlayerInTable(Player e)
+	{
+		this.sitDownPlayer.add(e);
 	}
 
-	public void setUser(UserPlayer user) {
-		this.user = user;
+	public UserPlayer getNextUserPlayer() {
+		UserPlayer nextuser = new UserPlayer("error");
+		for(Player e : this.sitDownPlayer)
+		{
+			if(e instanceof UserPlayer){
+				nextuser = (UserPlayer) e;
+
+			}
+		}
+		return nextuser;
 	}
+
+	public UserPlayer getUserPlayerByUsername(String Username)
+	{
+		UserPlayer selected = null;
+		for(Player e : this.sitDownPlayer)
+		{
+			if(e.getUsername().equals(Username))
+			{
+				selected = (UserPlayer) e;
+			}
+		}
+		if(selected == null)
+			System.out.println("non esiste nessun giocatore con questo nome");
+		return selected;
+	}
+
+	public List<UserPlayer> getAllUser()
+	{
+		List<UserPlayer> allUser = new LinkedList<>();
+		this.sitDownPlayer.stream().forEach((e) ->
+		{
+			if(e instanceof UserPlayer){
+				allUser.add((UserPlayer) e);
+			}
+		});
+
+		return allUser;
+	}
+
 
 	public Player getCurrentPlayer() {
 		return this.currentPlayer;
@@ -42,31 +78,15 @@ public class Table
 		return sitDownPlayer;
 	}
 
-	public String getUsername() {
-		return user.getUsername();
-	}
+
 
 	/* Metodo per costruire la lista di giocatori della partita*/
 	public void set_player_list(int numberOfPlayer)
 	{
-
-		// controllo se il giocatore ha inserito un nome utente
-
-
 		while(numberOfPlayer > 0)
 		{
 			this.sitDownPlayer.add(new BotPlayer("bot" + numberOfPlayer));
 			numberOfPlayer--;
-		}
-
-		if(this.user.getUsername() != null)
-		{
-			this.sitDownPlayer.add(this.user);
-		}
-		// altrimenti aggiungo un utente chiamata 'user'
-		else
-		{
-			this.sitDownPlayer.add(new UserPlayer("user"));
 		}
 	}
 	
@@ -86,17 +106,10 @@ public class Table
 		}
 	}
 
-
 	public Card getCurrentCard() {
 		return currentCard;
 	}
 
-	/* Metodo per impostare il nome nel caso lo volesse fare l'utente*/
-	public void set_username(String username)
-	{
-		this.user = new UserPlayer(username);
-	}
-	
 	/* Costruisce i mazzi */
 	public void set_deck()
 	{

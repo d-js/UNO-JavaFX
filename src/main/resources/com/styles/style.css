@@ -24,6 +24,66 @@
     -fx-scale-y: 1.05;
 }
 
+#firstUserPart {
+    -fx-background-color: #f1faee;
+    -fx-padding: 10px;
+    -fx-border-color: #000;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Styles for the first user hand view HBox */
+#firstUserHandView {
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+}
+
+/* Styles for the first player pass button */
+#firstPlayerPass {
+    -fx-background-color: #457b9d;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Styles for the first player name label */
+#firstPlayerNameField {
+    -fx-text-fill: #1d3557;
+    -fx-font-weight: bold;
+}
+
+/* Styles for the second user part pane */
+#secondUserPart {
+    -fx-background-color: #f1faee;
+    -fx-padding: 10px;
+    -fx-border-color: #000;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Styles for the second user hand view HBox */
+#secondUserHandView {
+    -fx-spacing: 10px;
+}
+
+/* Styles for the second player pass button */
+#secondPlayerPass {
+    -fx-background-color: #457b9d;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Styles for the second player name label */
+#secondPlayerNameField {
+    -fx-text-fill: #1d3557;
+    -fx-font-weight: bold;
+}
+
 
 #deck{
     -fx-background-image: url("MazzoCentrale.png");
@@ -46,6 +106,29 @@
     -fx-alignment: CENTER; /* Center the text */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2); /* Drop shadow effect */
     -fx-cursor: hand; /* Hand cursor on hover */
+}
+#secondUserHandView {
+     -fx-background-color: #f1faee;
+     -fx-padding: 10px;
+     -fx-border-color: #000;
+     -fx-border-width: 2px;
+     -fx-border-radius: 5px;
+     -fx-background-radius: 5px;
+}
+#firstUserPart {
+
+}
+
+
+#secondUserHandView,#firstUserHandView, #userHandView
+{
+   -fx-background-color: transparent;
+   -fx-border-radius: 10; /* Padding around the text */
+   -fx-alignment: CENTER; /* Center the text */
+   -fx-border-color: #333333
+   -fx-border-width: 3
+   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2); /* Drop shadow effect */
+   -fx-cursor: hand; /* Hand cursor on hover */
 }
 
 #rulePaneOne,#rulePaneTwo{
@@ -191,6 +274,13 @@
     -fx-background-radius: 20px;
     -fx-rotate: 180;
 }
+#userHandView
+{
+    -fx-border-radius: 10px
+    -fx-border-color: f0f0f0
+}
+
+
 #left_bot,#right_bot,#top_bot{
     -fx-background-image: url("back.png");
     -fx-background-color: transparent;

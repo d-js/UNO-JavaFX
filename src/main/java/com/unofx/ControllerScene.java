@@ -27,9 +27,9 @@ public class ControllerScene implements Initializable{
     @FXML
     private TextField playerNameField;
     @FXML
-    private TextField playerNameField1;
+    private TextField firstPlayerNameField;
     @FXML
-    private TextField playerNameField2;
+    private TextField secondPlayerNameField;
     @FXML
     private Button startButton;
     @FXML
@@ -70,13 +70,14 @@ public class ControllerScene implements Initializable{
 
     @FXML
     public void onStartGame() throws IOException {
-        this.inizializeTable();
-        loadScene("Game_single_mode_pane.fxml");
         String playerName = playerNameField.getText();
-        Table.getInstance().getUserPlayer().setUsername(playerName);
+        UserPlayer user = new UserPlayer(playerName);
+        Table.getInstance().addPlayerInTable(user);
         if (!playerName.isEmpty()) {
             System.out.println("Starting game with player: " + playerName);
             // Implementa la logica per iniziare il gioco
+            this.inizializeTable();
+            loadScene("Game_single_mode_pane.fxml");
         } else {
             System.out.println("Please enter a player name");
         }
@@ -84,23 +85,23 @@ public class ControllerScene implements Initializable{
     }
     @FXML
     public void onStartGameCouple() throws IOException {
-        this.inizializeTable();
-        loadScene("Game_couple_mode_pane.fxml");
-        String playerName1 = playerNameField1.getText();
-        Table.getInstance().getUserPlayer().setUsername(playerName1);
-        if (!playerName1.isEmpty()) {
-            System.out.println("Starting game with player: " + playerName1);
+
+        String playerName1 = firstPlayerNameField.getText();
+        String playerName2 = secondPlayerNameField.getText();
+
+        UserPlayer user = new UserPlayer(playerName1);
+        Table.getInstance().addPlayerInTable(user);
+
+        UserPlayer user1 = new UserPlayer(playerName2);
+        Table.getInstance().addPlayerInTable(user1);
+
+        if (!playerName1.isEmpty() && !playerName2.isEmpty()) {
+            System.out.println("Starting game with player: " + playerName1 + playerName2);
             // Implementa la logica per iniziare il gioco
+            this.inizializeTable();
+            loadScene("Game_couple_mode_pane.fxml");
         } else {
-            System.out.println("Please enter a player name");
-        }
-        String playerName2 = playerNameField2.getText();
-        Table.getInstance().getUserPlayer().setUsername(playerName2);
-        if (!playerName2.isEmpty()) {
-            System.out.println("Starting game with player: " + playerName2);
-            // Implementa la logica per iniziare il gioco
-        } else {
-            System.out.println("Please enter a player name");
+            System.out.println("Please enter all player name");
         }
     }
 
@@ -133,7 +134,7 @@ public class ControllerScene implements Initializable{
             ((ActionCard)e).setColour(Colour.fromValue(new Random().nextInt(3)));
         }
         Table.getInstance().setCurrentCardInformation(e);
-        Table.getInstance().set_player_list(4);
+        Table.getInstance().set_player_list(2);
         Table.getInstance().setCurrentPlayer();
         Table.getInstance().give_start_card();
     }

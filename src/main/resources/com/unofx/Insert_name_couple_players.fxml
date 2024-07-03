@@ -21,8 +21,8 @@
                 <Insets />
             </opaqueInsets>
         </Label>
-        <TextField fx:id="playerNameField1" layoutX="880.0" layoutY="574.0" prefHeight="55.0" prefWidth="200.0" />
-        <TextField fx:id="playerNameField2" layoutX="880.0" layoutY="674.0" prefHeight="55.0" prefWidth="200.0" />
+        <TextField fx:id="firstPlayerNameField" layoutX="880.0" layoutY="574.0" prefHeight="55.0" prefWidth="200.0" />
+        <TextField fx:id="secondPlayerNameField" layoutX="880.0" layoutY="674.0" prefHeight="55.0" prefWidth="200.0" />
         <Button fx:id="startButton" layoutX="680.0" layoutY="785.0" mnemonicParsing="false" onAction="#onStartGameCouple" prefHeight="88.0" prefWidth="146.0" text="START" />
         <Button fx:id="backButton" layoutX="1130.0" layoutY="785.0" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="88.0" prefWidth="146.0" text="BACK" />
     </children>
