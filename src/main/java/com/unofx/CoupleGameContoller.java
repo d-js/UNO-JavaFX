@@ -19,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -27,6 +26,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import io.github.cdimascio.dotenv.Dotenv;
+
 
 public class CoupleGameContoller implements Initializable {
 
@@ -56,10 +56,8 @@ public class CoupleGameContoller implements Initializable {
     @FXML
     private Button secondPlayerPass = new Button();
 
-
     @FXML
     private Button firstPlayerPass = new Button();
-
 
     @FXML
     private Label firstPlayerNameField = new Label();
@@ -80,6 +78,7 @@ public class CoupleGameContoller implements Initializable {
         this.firstUserHandView.setPadding(new Insets(15));
         this.secondUserHandView.setPadding(new Insets(15));
         //TODO ripartire da qui
+
         this.firstPlayerNameField.setText(Table.getInstance().getAllUser().get(0).getUsername());
         this.secondPlayerNameField.setText(Table.getInstance().getAllUser().get(1).getUsername());
         this.firstUserHandView.setAccessibleText(this.firstPlayerNameField.getText());
@@ -87,14 +86,18 @@ public class CoupleGameContoller implements Initializable {
         //((Label)this.firstUserHandView.getChildren().get(2)).getText();
         this.firstUserHandView.setPadding(new Insets(15));
         this.secondUserHandView.setPadding(new Insets(15));
+
         Platform.runLater(() -> {
+
+            this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
+            //System.out.println(this.firstPlayerNameField.getText());
+            //System.out.println(this.secondPlayerNameField.getText());
             this.updateCurrentUserHand(this.firstPlayerNameField.getText());
             this.updateCurrentUserHand(this.secondPlayerNameField.getText());
-            this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
+
+            // Inizia la partita
             this.cicleBotTurns();
         });
-
-        // Inizia la partita
     }
 
     // TODO problema di alcuni metodi, non funzionano con l'user
@@ -206,7 +209,6 @@ public class CoupleGameContoller implements Initializable {
     public void updateCurrentUserHand(String username)
     {
         Platform.runLater(() -> {
-            System.out.println(username);
             List<String> nameCardList = Table.getInstance().getUserPlayerByUsername(username).getHand().stream().map(Card::getName).collect(Collectors.toList());
             // TODO OTTIMIZZAZIONE fare sottrazione con la lista in questo oggetto per ottenere le carte che bisogna aggiungere
             //List<String> nameCardList = updated_cardlist.stream().map(Card::getName).collect(Collectors.toList());
@@ -214,7 +216,7 @@ public class CoupleGameContoller implements Initializable {
             // controllo che utente sta giocando e in base a cio aggiorno la vista
             if(username.equals(this.firstPlayerNameField.getText()))
                 this.updateHand(this.firstUserHandView, nameCardList);
-            else
+            else if(username.equals(this.secondPlayerNameField.getText()))
                 this.updateHand(this.secondUserHandView, nameCardList);
         });
     }
@@ -226,7 +228,7 @@ public class CoupleGameContoller implements Initializable {
 
             for (String cardName : nameCardList) {
                 try {
-                    this.draw(this.generate_imagePath(cardName), Table.getInstance().getCurrentPlayer().getUsername());
+                    this.draw(this.generate_imagePath(cardName), userHand.getAccessibleText());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -295,12 +297,6 @@ public class CoupleGameContoller implements Initializable {
     // Rendi usabili le carte che puo giocare, all'utente
     public void showCurrentUserHand()
     {
-        Platform.runLater(() -> {
-
-
-        });
-
-
         if(Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
         {
             Platform.runLater(() -> {
@@ -331,8 +327,7 @@ public class CoupleGameContoller implements Initializable {
     // metodo che controlla se l'user puo giocare la carta
     private boolean playable(Button n)
     {
-        return Table.getInstance().getUserPlayerByUsername("diego").isPlayable(n.getAccessibleText());
-
+        return Table.getInstance().getUserPlayerByUsername(Table.getInstance().getNextUserPlayer().getUsername()).isPlayable(n.getAccessibleText());
     }
 
 
@@ -372,7 +367,7 @@ public class CoupleGameContoller implements Initializable {
     }
 
 
-    public void draw(String cardPath, String username) throws IOException
+    public void             draw(String cardPath, String username) throws IOException
     {
 
         // Crea il bottone per aggiungere altri bottoni
@@ -471,6 +466,7 @@ public class CoupleGameContoller implements Initializable {
                 current.playCard(addButton.getAccessibleText());
 
             }
+
             if(Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
                 this.firstPlayerNameField.getChildrenUnmodifiable().remove(addButton);
             else if (Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
@@ -481,18 +477,18 @@ public class CoupleGameContoller implements Initializable {
 
         });
 
-        if(Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+        if(username.equals(this.firstPlayerNameField.getText()))
         {
             this.firstUserHandView.getChildren().add(addButton);
             addButton.setDisable(!this.playable(addButton));
             this.firstPlayerPass.setDisable(false);
         }
 
-        else if (Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+        else if (username.equals(this.secondPlayerNameField.getText()))
         {
-            this.firstUserHandView.getChildren().add(addButton);
+            this.secondUserHandView.getChildren().add(addButton);
             addButton.setDisable(!this.playable(addButton));
-            this.firstPlayerPass.setDisable(false);
+            this.secondPlayerPass.setDisable(false);
         }
 
     }

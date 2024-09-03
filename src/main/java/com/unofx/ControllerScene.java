@@ -1,6 +1,7 @@
 package com.unofx;
 
 import com.unofx.model.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -76,7 +77,7 @@ public class ControllerScene implements Initializable{
         if (!playerName.isEmpty()) {
             System.out.println("Starting game with player: " + playerName);
             // Implementa la logica per iniziare il gioco
-            this.inizializeTable();
+            this.inizializeTable("SinglePlayer");
             loadScene("Game_single_mode_pane.fxml");
         } else {
             System.out.println("Please enter a player name");
@@ -98,11 +99,13 @@ public class ControllerScene implements Initializable{
         if (!playerName1.isEmpty() && !playerName2.isEmpty()) {
             System.out.println("Starting game with player: " + playerName1 + playerName2);
             // Implementa la logica per iniziare il gioco
-            this.inizializeTable();
-            loadScene("Game_couple_mode_pane.fxml");
+            this.inizializeTable("Couple");
+            System.out.println(Table.getInstance().getAllUser().get(0).getUsername() + " e " + Table.getInstance().getAllUser().get(1).getUsername() );
+            Platform.runLater(() -> loadScene("Game_couple_mode_pane.fxml"));
         } else {
             System.out.println("Please enter all player name");
         }
+        loadScene("Game_couple_mode_pane.fxml");
     }
 
     private void loadScene(String fxmlFile) {
@@ -124,20 +127,29 @@ public class ControllerScene implements Initializable{
         }
     }
 
-    public void inizializeTable() throws IOException
+    public void inizializeTable(String gamemode) throws IOException
     {
-        // TODO valutare se spostare il possibile nel table
-        Table.getInstance().set_deck();
-        Card e = Table.getInstance().deck.set_initial_card();
-        if(e.getColor() == Colour.BLACK)
-        {
-            ((ActionCard)e).setColour(Colour.fromValue(new Random().nextInt(3)));
-        }
-        Table.getInstance().setCurrentCardInformation(e);
-        Table.getInstance().set_player_list(2);
-        Table.getInstance().setCurrentPlayer();
-        Table.getInstance().give_start_card();
+        Platform.runLater(() -> {
+            // TODO valutare se spostare il possibile nel table
+            Table.getInstance().set_deck();
+            Card e = Table.getInstance().deck.set_initial_card();
+            if(e.getColor() == Colour.BLACK)
+            {
+                ((ActionCard)e).setColour(Colour.fromValue(new Random().nextInt(3)));
+            }
+            Table.getInstance().setCurrentCardInformation(e);
+            if(gamemode.equals("SinglePlayer"))
+                Table.getInstance().set_player_list(3);
+            else if (gamemode.equals("Couple"))
+                Table.getInstance().set_player_list(2);
+            Table.getInstance().setCurrentPlayer();
+            Table.getInstance().give_start_card();
+
+        });
     }
+
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){}
