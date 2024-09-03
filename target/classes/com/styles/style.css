@@ -125,8 +125,8 @@
    -fx-background-color: transparent;
    -fx-border-radius: 10; /* Padding around the text */
    -fx-alignment: CENTER; /* Center the text */
-   -fx-border-color: #333333
-   -fx-border-width: 3
+   -fx-border-color: #333333;
+   -fx-border-width: 3;
    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2); /* Drop shadow effect */
    -fx-cursor: hand; /* Hand cursor on hover */
 }
@@ -254,6 +254,16 @@
     -fx-border-width: 0;
     -fx-padding: 0;
 }
+#imageRuleThree{
+    -fx-background-image: url("allcard.png");
+    -fx-background-color: transparent;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
 #ruleLabel{
     -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
@@ -276,7 +286,7 @@
 }
 #userHandView
 {
-    -fx-border-radius: 10px
+    -fx-border-radius: 10px;
     -fx-border-color: f0f0f0
 }
 
