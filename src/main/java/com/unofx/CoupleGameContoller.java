@@ -42,10 +42,10 @@ public class CoupleGameContoller implements Initializable {
     private Pane currentCardView = new Pane();
 
     @FXML
-    private HBox firstUserHandView = new HBox();
+    private Pane firstUserHandView = new Pane();
 
     @FXML
-    private HBox secondUserHandView = new HBox();
+    private Pane secondUserHandView = new Pane();
 
     @FXML
     private Button deck = new Button();
