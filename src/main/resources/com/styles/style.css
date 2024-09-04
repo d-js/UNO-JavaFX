@@ -24,17 +24,21 @@
     -fx-scale-y: 1.05;
 }
 
-#firstUserPart {
-    -fx-background-color: #f1faee;
+#firstUserPart{
+    -fx-background-color: transparent;
     -fx-padding: 10px;
-    -fx-border-color: #000;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
 }
 
+#secondUserPart{
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
 /* Styles for the first user hand view HBox */
 #firstUserHandView {
+    -fx-spacing: 10px;
+    -fx-alignment: center;
+}
+#secondUserHandView {
     -fx-spacing: 10px;
     -fx-alignment: center;
 }
@@ -115,10 +119,6 @@
      -fx-border-radius: 5px;
      -fx-background-radius: 5px;
 }
-#firstUserPart {
-
-}
-
 
 #secondUserHandView,#firstUserHandView, #userHandView
 {
@@ -137,7 +137,7 @@
 #select_pane,#insert_name_single,#insert_name_couple{
     -fx-background-image: url("GameMode.png");
 }
-#gamePaneSingle,#gamePaneCouple{
+#gamePaneSingle,#gamePaneCouple,#gamePaneDuel{
     -fx-background-image: url("PARQUET.png");
 }
 /* Stile base per tutti i pulsanti */
@@ -269,14 +269,14 @@
     -fx-font-size: 20px;
     -fx-font-family: "Arial Rounded MT Bold";
 }
-#Name_user,#Name_user1{
+#Name_user,#Name_user1,#Name_user_duel{
     -fx-text-fill: #ffffff;
     -fx-font-size: 28px;
     -fx-font-family: "Arial Rounded MT Bold";
     -fx-background-color: rgba(255, 255, 255, 0.21);
     -fx-background-radius: 20px;
 }
-#Name_user2{
+#Name_user2,#Name_user21,#Name_user_duel2{
     -fx-text-fill: #ffffff;
     -fx-font-size: 28px;
     -fx-font-family: "Arial Rounded MT Bold";
