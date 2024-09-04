@@ -50,6 +50,11 @@ public class ControllerScene implements Initializable{
     }
 
     @FXML
+    public void on_start_duel_mode() {
+        loadScene("Insert_name_duel_players.fxml");
+    }
+
+    @FXML
     public void on_start_couple_mode() {
         loadScene("Insert_name_couple_players.fxml");
     }
@@ -77,7 +82,7 @@ public class ControllerScene implements Initializable{
         if (!playerName.isEmpty()) {
             System.out.println("Starting game with player: " + playerName);
             // Implementa la logica per iniziare il gioco
-            this.inizializeTable("SinglePlayer");
+            this.inizializeTable("Single");
             loadScene("Game_single_mode_pane.fxml");
         } else {
             System.out.println("Please enter a player name");
@@ -106,6 +111,22 @@ public class ControllerScene implements Initializable{
             System.out.println("Please enter all player name");
         }
         loadScene("Game_couple_mode_pane.fxml");
+    }
+
+    @FXML
+    public void onDuelStart() throws IOException {
+
+        String playerName = playerNameField.getText();
+        UserPlayer user = new UserPlayer(playerName);
+        Table.getInstance().addPlayerInTable(user);
+        if (!playerName.isEmpty()) {
+            System.out.println("Starting game with player: " + playerName);
+            // Implementa la logica per iniziare il gioco
+            this.inizializeTable("Duel");
+            loadScene("Game_duel_mode_pane.fxml");
+        } else {
+            System.out.println("Please enter a player name");
+        }
     }
 
     private void loadScene(String fxmlFile) {
@@ -138,10 +159,10 @@ public class ControllerScene implements Initializable{
                 ((ActionCard)e).setColour(Colour.fromValue(new Random().nextInt(3)));
             }
             Table.getInstance().setCurrentCardInformation(e);
-            if(gamemode.equals("SinglePlayer"))
+            if(gamemode.equals("Single"))
                 Table.getInstance().set_player_list(3);
-            else if (gamemode.equals("Couple"))
-                Table.getInstance().set_player_list(2);
+            else if (gamemode.equals("Duel"))
+                Table.getInstance().set_player_list(1);
             Table.getInstance().setCurrentPlayer();
             Table.getInstance().give_start_card();
 

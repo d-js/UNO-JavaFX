@@ -86,7 +86,8 @@ public class UserPlayer implements Player
 
 	public boolean isPlayable(String path)
 	{
-		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).collect(Collectors.toList());
+		System.out.println(path);
+		List<Card> l = this.hand.stream().filter(e -> path.toLowerCase().contains(e.getName())).collect(Collectors.toList());
 
 		Card e = l.get(0);
 		return this.isCardValid(e);

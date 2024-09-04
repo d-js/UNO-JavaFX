@@ -7,7 +7,7 @@
 
 <?import javafx.scene.layout.Pane?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.HBox?>
+
 <?import javafx.scene.layout.VBox?>
 <AnchorPane fx:id="gamePaneCouple" fx:controller="com.unofx.CoupleGameContoller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
