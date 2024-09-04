@@ -15,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -92,8 +91,8 @@ public class CoupleGameContoller implements Initializable {
             this.setCurrentCardImage(this.generate_imagePath(Table.getInstance().getCurrentCard().getName()));
             //System.out.println(this.firstPlayerNameField.getText());
             //System.out.println(this.secondPlayerNameField.getText());
-            this.updateCurrentUserHand(this.firstPlayerNameField.getText());
-            this.updateCurrentUserHand(this.secondPlayerNameField.getText());
+            this.updateCurrentUserHand(this.firstPlayerNameField.getText(), true);
+            this.updateCurrentUserHand(this.secondPlayerNameField.getText(), true);
 
             // Inizia la partita
             this.cicleBotTurns();
@@ -140,7 +139,7 @@ public class CoupleGameContoller implements Initializable {
             if (!(Table.getInstance().getCurrentPlayer() instanceof BotPlayer))
             {
                 Platform.runLater(() -> {
-                    this.updateCurrentUserHand(Table.getInstance().getCurrentPlayer().getUsername());
+                    this.updateCurrentUserHand(Table.getInstance().getCurrentPlayer().getUsername(), false);
                     this.showCurrentUserHand();
                 });
             }
@@ -202,11 +201,11 @@ public class CoupleGameContoller implements Initializable {
         Card e = Table.getInstance().deck.drawOut();
         Table.getInstance().getCurrentPlayer().drawCard(e);
         this.deck.setDisable(true);
-        draw(generate_imagePath(e.getName()), Table.getInstance().getCurrentPlayer().getUsername());
+        draw(generate_imagePath(e.getName()), Table.getInstance().getCurrentPlayer().getUsername(), false);
     }
 
 
-    public void updateCurrentUserHand(String username)
+    public void updateCurrentUserHand(String username, Boolean inizialize)
     {
         Platform.runLater(() -> {
             List<String> nameCardList = Table.getInstance().getUserPlayerByUsername(username).getHand().stream().map(Card::getName).collect(Collectors.toList());
@@ -215,20 +214,20 @@ public class CoupleGameContoller implements Initializable {
 
             // controllo che utente sta giocando e in base a cio aggiorno la vista
             if(username.equals(this.firstPlayerNameField.getText()))
-                this.updateHand(this.firstUserHandView, nameCardList);
+                this.updateHand(this.firstUserHandView, nameCardList, inizialize);
             else if(username.equals(this.secondPlayerNameField.getText()))
-                this.updateHand(this.secondUserHandView, nameCardList);
+                this.updateHand(this.secondUserHandView, nameCardList, inizialize);
         });
     }
 
-    private void updateHand(Pane userHand, List<String> nameCardList)
+    private void updateHand(Pane userHand, List<String> nameCardList, Boolean inizialize)
     {
         Platform.runLater(() -> {
             userHand.getChildren().clear();
 
             for (String cardName : nameCardList) {
                 try {
-                    this.draw(this.generate_imagePath(cardName), userHand.getAccessibleText());
+                    this.draw(this.generate_imagePath(cardName), userHand.getAccessibleText(), inizialize);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -367,7 +366,7 @@ public class CoupleGameContoller implements Initializable {
     }
 
 
-    public void             draw(String cardPath, String username) throws IOException
+    public void draw(String cardPath, String username, Boolean inizialize) throws IOException
     {
 
         // Crea il bottone per aggiungere altri bottoni
@@ -477,18 +476,39 @@ public class CoupleGameContoller implements Initializable {
 
         });
 
-        if(username.equals(this.firstPlayerNameField.getText()))
-        {
-            this.firstUserHandView.getChildren().add(addButton);
-            addButton.setDisable(!this.playable(addButton));
-            this.firstPlayerPass.setDisable(false);
-        }
+        if(inizialize) {
 
-        else if (username.equals(this.secondPlayerNameField.getText()))
+            if (username.equals(this.firstPlayerNameField.getText()))
+            {
+                this.firstUserHandView.getChildren().add(addButton);
+                this.arrangeButtonsInLine(this.firstUserHandView);
+                addButton.setDisable(!this.playable(addButton));
+                this.firstPlayerPass.setDisable(false);
+            }
+            else if (username.equals(this.secondPlayerNameField.getText()))
+            {
+                this.secondUserHandView.getChildren().add(addButton);
+                this.arrangeButtonsInLine(this.secondUserHandView);
+                addButton.setDisable(!this.playable(addButton));
+                this.secondPlayerPass.setDisable(false);
+            }
+        }
+        else
         {
-            this.secondUserHandView.getChildren().add(addButton);
-            addButton.setDisable(!this.playable(addButton));
-            this.secondPlayerPass.setDisable(false);
+            if (Table.getInstance().getCurrentPlayer().getUsername().equals(this.firstPlayerNameField.getText()))
+            {
+                this.firstUserHandView.getChildren().add(addButton);
+                this.arrangeButtonsInLine(this.firstUserHandView);
+                addButton.setDisable(!this.playable(addButton));
+                this.firstPlayerPass.setDisable(false);
+            }
+            else if (Table.getInstance().getCurrentPlayer().getUsername().equals(this.secondPlayerNameField.getText()))
+            {
+                this.secondUserHandView.getChildren().add(addButton);
+                this.arrangeButtonsInLine(this.secondUserHandView);
+                addButton.setDisable(!this.playable(addButton));
+                this.secondPlayerPass.setDisable(false);
+            }
         }
 
     }
@@ -518,7 +538,7 @@ public class CoupleGameContoller implements Initializable {
         Card e = Table.getInstance().deck.drawOut();
         Table.getInstance().getNextUserPlayer().drawCard(e);
         this.deck.setDisable(true);
-        draw(generate_imagePath(e.getName()), firstUserHandView.getAccessibleText());
+        draw(generate_imagePath(e.getName()), firstUserHandView.getAccessibleText(), false);
     }
 
     public void on_pass(MouseEvent mouseEvent)
