@@ -49,7 +49,7 @@ public class BotPlayer implements Player
 				iterator.remove();
 				if(c.getColor() == Colour.BLACK)
 					((ActionCard)c).setColour(Colour.fromValue(new Random().nextInt(3)));
-				Table.getInstance().play_card(c);
+				Table.getInstance().playCard(c);
 				cardPlayed = true;
 				if(this.getHand().stream().count() == 1)
 					rdn = new Random();
@@ -68,7 +68,7 @@ public class BotPlayer implements Player
 		}
 
 		if (!cardPlayed && i == 1) {
-			Table.getInstance().play_card(null);
+			Table.getInstance().playCard(null);
 		}
 	}
 

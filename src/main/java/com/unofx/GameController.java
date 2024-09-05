@@ -75,45 +75,40 @@ public class GameController implements Initializable {
         // Inizia la partita
     }
 
-    // TODO problema di alcuni metodi, non funzionano con l'user
-    // TODO i blocchi sono permanenti e ritardano di un turno
-    // TODO i +4 e i +2 non hanno effetto sull'utente``
-    // TODO impostare un delay tra la giocata di carte dei bot (last)
-    // TODO ERRORE SPORADICO, a volte quando si gioca una carta non va avanti e aspetta il giocare di un'altra carta
-    //  (forse succede con i cambio giro) forse cambiando giro reimposta il turno corrente di nuovo a me quindi devo giocare un'altra carta
+
+    //TODO sistemare l'output di vittoria
     // TODO a volte non rileva la vittoria dell'utente, (forse quando prima si gioca una carta black)
     // TODO se il gioco inizia con un cambio colore o con un +4 non posso giocare niente (a volte) (serve un runLater?)
-    // TODO c'e' qualche problema con il cambio giro
-    // TODO a volte il gioco si impalla e bisogna chiuderlo, se si riesce e il pc non e' bloccato
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TODO QUANDO SCRIVO A VOLTE POTREBBE ESSERE IN BASE A SE LA CARTA E' QUELLA INIZIALE NEL TAVOLO OPPURE QUELLA GIOCATA DA UN BOT
-    //  dato che per me compare sempre come prima carta
+    // TODO bot vince e non viene avvisato l'utente
     // TASTI UNO E NEXT INVERTITI
-
+    // TODO problema cambio giro, l'ordine con due cambio giro non torna quello di partenza
     // TODO il cambio giro cambia giro ma fa riniziare a giocare a me
     // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
 
 
     public void cicleBotTurns()
     {
+        this.deck.setDisable(true);
         // doppio runlater perche?
-        this.deck.setDisable(false);
+
         Platform.runLater(this::hide_user_hand);
         // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
         cicleBotUntilUser();
-        if (Table.getInstance().control_winner())
+        if (Table.getInstance().controlWinner())
             this.showWinnerAlert();
     }
 
     private void cicleBotUntilUser()
     {
-        if (!Table.getInstance().control_winner())
+        if (!Table.getInstance().controlWinner())
         {
             this.pass.setDisable(true);
             // Controllo se il giocatore corrente è un bot e se la partita non è ancora conclusa
             if (!(Table.getInstance().getCurrentPlayer() instanceof BotPlayer))
             {
+
                 Platform.runLater(() -> {
+                    this.deck.setDisable(false);
                     this.update_view();
                     this.show_user_hand();
                 });
@@ -139,6 +134,10 @@ public class GameController implements Initializable {
     private void updateViewAfterMove()
     {
         Platform.runLater(() -> {
+            if (Table.getInstance().getCurrentCard().getName().equals("Changecolor.png") ||
+                    Table.getInstance().getCurrentCard().getName().equals("Drawfour.png"))
+            {
+            }
             setCurrentCardImage(generate_imagePath(Table.getInstance().getCurrentCard().getName())); // Aggiorna l'immagine della carta corrente
         });
     }
@@ -175,6 +174,7 @@ public class GameController implements Initializable {
         Card e = Table.getInstance().deck.drawOut();
         Table.getInstance().getNextUserPlayer().drawCard(e);
         this.deck.setDisable(true);
+        this.pass.setDisable(false);
         draw(generate_imagePath(e.getName()));
     }
 
@@ -369,25 +369,29 @@ public class GameController implements Initializable {
                 // Mostra il popup e attendi la selezione dell'utente
                 alert.showAndWait().ifPresent(buttonType ->
                 {
-                    if (buttonType.getText() == "BLUE") {
-
+                    if (buttonType.getText() == "BLUE")
+                    {
+                        //addButton.setAccessibleText(this.generate_imagePath("Changecolorblue"));
                         Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
                         ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.BLUE);
 
                     }
-                    else if (buttonType.getText() == "GREEN") {
-
+                    else if (buttonType.getText() == "GREEN")
+                    {
+                        //addButton.setAccessibleText(this.generate_imagePath("Changecolorgreen"));
                         Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
                         ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.GREEN);
 
                     }
                     else if (buttonType.getText() == "YELLOW")
                     {
+                        //addButton.setAccessibleText(this.generate_imagePath("Changecoloryellow"));
                         Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
                         ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.YELLOW);
                     }
                     else if (buttonType.getText() == "RED")
                     {
+                        //addButton.setAccessibleText(this.generate_imagePath("Changecolorred"));
                         Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
                         ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.RED);
 
@@ -403,6 +407,7 @@ public class GameController implements Initializable {
             }
             this.userHandView.getChildren().remove(addButton);
             updateViewAfterMove();
+
             this.cicleBotTurns();
 
         });
@@ -413,7 +418,6 @@ public class GameController implements Initializable {
         this.userHandView.getChildren().add(addButton);
         this.arrangeButtonsInLine(this.userHandView);
         addButton.setDisable(!this.playable(addButton));
-        this.pass.setDisable(false);
 
     }
 
@@ -438,7 +442,7 @@ public class GameController implements Initializable {
 
     public void on_pass(MouseEvent mouseEvent)
     {
-        Table.getInstance().next_turn();
+        Table.getInstance().passTurn();
         this.cicleBotTurns();
     }
 }

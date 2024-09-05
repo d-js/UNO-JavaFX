@@ -1,7 +1,5 @@
 package com.unofx.model;
 
-import com.almasb.fxgl.entity.action.Action;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,7 +34,7 @@ public class UserPlayer implements Player
 		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).collect(Collectors.toList());
 		Card e = l.get(0);
 		this.hand.remove(e);
-		Table.getInstance().play_card(e);
+		Table.getInstance().playCard(e);
 	}
 
 	public boolean isOne() {

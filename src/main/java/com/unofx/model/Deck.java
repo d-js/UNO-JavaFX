@@ -1,7 +1,6 @@
 package com.unofx.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -95,16 +94,11 @@ public class Deck
 		Collections.shuffle(coverDeck);
 	}
 
-	public Card set_initial_card()
+	public Card setInitialCard()
 	{
 		Card e = this.drawOut();
 		this.playCard(e);
 		return e;
-	}
-
-	public Card getLastUncover()
-	{
-		return this.uncoverDeck.get(this.uncoverDeck.size() - 1);
 	}
 
 	public void delete()
@@ -113,7 +107,14 @@ public class Deck
 		this.uncoverDeck.clear();
 	}
 
-	public List<Card> getCoverDeck() {
+
+	public Card getLastUncover()
+	{
+		return this.uncoverDeck.get(this.uncoverDeck.size() - 1);
+	}
+
+	public List<Card> getCoverDeck()
+	{
 		return this.coverDeck;
 	}
 }

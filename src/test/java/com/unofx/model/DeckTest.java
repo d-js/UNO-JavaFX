@@ -19,7 +19,7 @@ class DeckTest {
     }
 
     @Test
-    void set_initial_card() {
+    void setInitialCard() {
     }
 
     @Test
