@@ -21,12 +21,19 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="start_button_duel_mode" styleClass="start_button_couple_mode" ellipsisString="" layoutX="1085.0" layoutY="683.0" mnemonicParsing="false" onAction="#on_start_duel_mode" prefHeight="138.0" prefWidth="184.0" text="ULTIMATE SHOWDOWN">
+      <Button fx:id="start_button_duel_mode" styleClass="start_button_couple_mode" ellipsisString="" layoutX="1085.0" layoutY="683.0" mnemonicParsing="false" onAction="#on_start_duel_mode" prefHeight="138.0" prefWidth="184.0" text="ULTIMATE&#10;&#10;SHOWDOWN">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-
       <Button fx:id="ruleButton" layoutX="885.0" layoutY="683.0" mnemonicParsing="false" onAction="#onRuleGame" prefHeight="138.0" prefWidth="184.0" text="RULE" />
+      <Label fx:id="name_label" layoutX="640.0" layoutY="870.0" text="Created by Diego Cecchini and Palumbo Giovanni">
+         <padding>
+            <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
+         </padding>
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

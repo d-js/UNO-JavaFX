@@ -23,72 +23,6 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
-
-#firstUserPart{
-    -fx-background-color: transparent;
-    -fx-padding: 10px;
-}
-
-#secondUserPart{
-    -fx-background-color: transparent;
-    -fx-padding: 10px;
-}
-/* Styles for the first user hand view HBox */
-#firstUserHandView {
-    -fx-spacing: 10px;
-    -fx-alignment: center;
-}
-#secondUserHandView {
-    -fx-spacing: 10px;
-    -fx-alignment: center;
-}
-
-/* Styles for the first player pass button */
-#firstPlayerPass {
-    -fx-background-color: #457b9d;
-    -fx-text-fill: white;
-    -fx-font-size: 18px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-}
-
-/* Styles for the first player name label */
-#firstPlayerNameField {
-    -fx-text-fill: #1d3557;
-    -fx-font-weight: bold;
-}
-
-/* Styles for the second user part pane */
-#secondUserPart {
-    -fx-background-color: #f1faee;
-    -fx-padding: 10px;
-    -fx-border-color: #000;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-}
-
-/* Styles for the second user hand view HBox */
-#secondUserHandView {
-    -fx-spacing: 10px;
-}
-
-/* Styles for the second player pass button */
-#secondPlayerPass {
-    -fx-background-color: #457b9d;
-    -fx-text-fill: white;
-    -fx-font-size: 18px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-}
-
-/* Styles for the second player name label */
-#secondPlayerNameField {
-    -fx-text-fill: #1d3557;
-    -fx-font-weight: bold;
-}
-
-
 #deck{
     -fx-background-image: url("MazzoCentrale.png");
     -fx-background-color: transparent;
@@ -111,17 +45,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2); /* Drop shadow effect */
     -fx-cursor: hand; /* Hand cursor on hover */
 }
-#secondUserHandView {
-     -fx-background-color: #f1faee;
-     -fx-padding: 10px;
-     -fx-border-color: #000;
-     -fx-border-width: 2px;
-     -fx-border-radius: 5px;
-     -fx-background-radius: 5px;
-}
-
-#secondUserHandView,#firstUserHandView, #userHandView
-{
+#userHandView{
    -fx-background-color: transparent;
    -fx-border-radius: 10; /* Padding around the text */
    -fx-alignment: CENTER; /* Center the text */
@@ -149,22 +73,10 @@
     -fx-padding: 10px 20px;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-family: "Comic Sans MS";
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
 }
-#unoTop,#passTop{
-    -fx-background-color: rgba(255, 255, 255, 0.64);
-    -fx-border-right: 20;
-    -fx-text-fill: #000000;
-    -fx-font-size: 22px;
-    -fx-padding: 10px 20px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
-    -fx-rotate: 180;
-}
-#uno,#pass{
+#pass{
     -fx-background-color: rgba(255, 255, 255, 0.72);
     -fx-border-right: 20;
     -fx-text-fill: #000000;
@@ -172,25 +84,39 @@
     -fx-padding: 10px 20px;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-family: "Comic Sans MS";
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
 }
-#start_button_single_mode,#start_button_couple_mode,#ruleButton,#ruleButtonTwo{
+#uno{
+    -fx-background-color: rgba(255, 0, 0, 0.72);
+    -fx-border-right: 20;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 200px, 200px, 200px, 200px;
+    -fx-background-radius: 200px;
+    -fx-font-family: "Comic Sans MS";
+    -fx-border-color: rgba(255, 255, 255, 0.84);
+    -fx-border-width: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(174, 3, 3, 0.3), 2, 0, 3, 3);
+}
+#start_button_single_mode,#start_button_duel_mode,#ruleButton,#ruleButtonTwo{
     -fx-background-color: rgba(255, 255, 255, 0.64);
+    -fx-text-alignment: center;
     -fx-border-right: 20;
     -fx-text-fill: #000000;
     -fx-font-size: 18px;
-    -fx-padding: 10px 20px;
+    -fx-padding: 5px 15px;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-family: "Comic Sans MS";
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 10, 10);
 }
 #start_button_single_mode:hover{
     -fx-background-color: rgba(175, 175, 175, 0.64);
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
 }
-#start_button_couple_mode:hover{
+#start_button_duel_mode:hover{
     -fx-background-color: rgba(175, 175, 175, 0.64);
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
 }
@@ -207,8 +133,7 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
 }
 #uno:hover{
-    -fx-background-color: rgba(175, 175, 175, 0.64);
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
+    -fx-background-color: rgba(189, 0, 0, 0.64);
 }
 #pass:hover{
     -fx-background-color: rgba(175, 175, 175, 0.64);
@@ -219,19 +144,25 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 10, 10);
 }
 
-#select_label,#label_insert_single,#label_insert_couple{
+#select_label,#label_insert_single{
     -fx-text-fill: #ffffff;
     -fx-font-size: 50px;
     -fx-background-color: rgba(255, 255, 255, 0.21);
     -fx-background-radius: 40px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-family: "Comic Sans MS";
+}
+#name_label{
+    -fx-text-alignment: center;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 20px;
+    -fx-font-family: "Comic Sans MS";
 }
 #ruleTitle{
     -fx-text-fill: #ffffff;
     -fx-font-size: 50px;
     -fx-background-color: rgba(255, 255, 255, 0.21);
     -fx-background-radius: 40px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-family: "Comic Sans MS";
     -fx-padding: 10px;
 }
 #imageRuleOne{
@@ -267,30 +198,27 @@
 #ruleLabel{
     -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-family: "Comic Sans MS";
 }
 #Name_user,#Name_user1,#Name_user_duel{
     -fx-text-fill: #ffffff;
     -fx-font-size: 28px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-family: "Comic Sans MS";
     -fx-background-color: rgba(255, 255, 255, 0.21);
     -fx-background-radius: 20px;
 }
 #Name_user2,#Name_user21,#Name_user_duel2{
     -fx-text-fill: #ffffff;
     -fx-font-size: 28px;
-    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-family: "Comic Sans MS";
     -fx-background-color: rgba(255, 255, 255, 0.21);
     -fx-background-radius: 20px;
     -fx-rotate: 180;
 }
-#userHandView
-{
+#userHandView{
     -fx-border-radius: 10px;
     -fx-border-color: f0f0f0
 }
-
-
 #left_bot,#right_bot,#top_bot{
     -fx-background-image: url("back.png");
     -fx-background-color: transparent;
