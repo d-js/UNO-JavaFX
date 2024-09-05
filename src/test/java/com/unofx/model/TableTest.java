@@ -30,11 +30,11 @@ class TableTest {
     }
 
     @Test
-    void set_player_list() {
+    void setPlayerList() {
     }
 
     @Test
-    void give_start_card() {
+    void giveStartCard() {
     }
 
     @Test
@@ -46,7 +46,7 @@ class TableTest {
     }
 
     @Test
-    void set_deck() {
+    void setDeck() {
     }
 
     @Test
@@ -58,27 +58,27 @@ class TableTest {
     }
 
     @Test
-    void control_winner() {
+    void controlWinner() {
     }
 
     @Test
-    void play_card() {
+    void playCard() {
     }
 
     @Test
-    void lap_change() {
+    void changeLap() {
     }
 
     @Test
-    void block_turn() {
+    void blockNext() {
     }
 
     @Test
-    void next_turn() {
+    void passTurn() {
     }
 
     @Test
-    void control_index() {
+    void controlIndex() {
     }
 
     @Test

@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -152,19 +151,19 @@ public class ControllerScene implements Initializable{
     {
         Platform.runLater(() -> {
             // TODO valutare se spostare il possibile nel table
-            Table.getInstance().set_deck();
-            Card e = Table.getInstance().deck.set_initial_card();
+            Table.getInstance().setDeck();
+            Card e = Table.getInstance().deck.setInitialCard();
             if(e.getColor() == Colour.BLACK)
             {
                 ((ActionCard)e).setColour(Colour.fromValue(new Random().nextInt(3)));
             }
             Table.getInstance().setCurrentCardInformation(e);
             if(gamemode.equals("Single"))
-                Table.getInstance().set_player_list(3);
+                Table.getInstance().setPlayerList(3);
             else if (gamemode.equals("Duel"))
-                Table.getInstance().set_player_list(1);
+                Table.getInstance().setPlayerList(1);
             Table.getInstance().setCurrentPlayer();
-            Table.getInstance().give_start_card();
+            Table.getInstance().giveStartCard();
 
         });
     }

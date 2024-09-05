@@ -98,13 +98,13 @@ public class DuelGameController implements Initializable {
         Platform.runLater(this::hide_user_hand);
         // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
         cicleBotUntilUser();
-        if (Table.getInstance().control_winner())
+        if (Table.getInstance().controlWinner())
             this.showWinnerAlert();
     }
 
     private void cicleBotUntilUser()
     {
-        if (!Table.getInstance().control_winner())
+        if (!Table.getInstance().controlWinner())
         {
             this.pass.setDisable(true);
             // Controllo se il giocatore corrente è un bot e se la partita non è ancora conclusa
@@ -435,7 +435,7 @@ public class DuelGameController implements Initializable {
 
     public void on_pass(MouseEvent mouseEvent)
     {
-        Table.getInstance().next_turn();
+        Table.getInstance().passTurn();
         this.cicleBotTurns();
     }
 }

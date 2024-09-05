@@ -125,13 +125,13 @@ public class CoupleGameContoller implements Initializable {
         Platform.runLater(this::hideAll);
         // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
         cicleBotUntilUser();
-        if (Table.getInstance().control_winner())
+        if (Table.getInstance().controlWinner())
             this.showWinnerAlert();
     }
 
     private void cicleBotUntilUser()
     {
-        if (!Table.getInstance().control_winner())
+        if (!Table.getInstance().controlWinner())
         {
             this.firstPlayerPass.setDisable(true);
             this.secondPlayerPass.setDisable(true);
@@ -543,7 +543,7 @@ public class CoupleGameContoller implements Initializable {
 
     public void on_pass(MouseEvent mouseEvent)
     {
-        Table.getInstance().next_turn();
+        Table.getInstance().passTurn();
         this.cicleBotTurns();
     }
 
