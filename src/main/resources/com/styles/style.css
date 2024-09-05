@@ -195,7 +195,7 @@
     -fx-border-width: 0;
     -fx-padding: 0;
 }
-#ruleLabel{
+#ruleLabel1,#ruleLabel2,#ruleLabel3{
     -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
     -fx-font-family: "Comic Sans MS";
