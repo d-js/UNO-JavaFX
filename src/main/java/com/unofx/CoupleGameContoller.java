@@ -432,28 +432,24 @@ public class CoupleGameContoller implements Initializable {
                 // Mostra il popup e attendi la selezione dell'utente
                 alert.showAndWait().ifPresent(buttonType ->
                 {
-                    
+
                     if (buttonType.getText() == "BLUE") {
-                        
-                        current.playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.BLUE);
+
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
 
                     }
                     else if (buttonType.getText() == "GREEN") {
 
-                        current.playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.GREEN);
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
 
                     }
                     else if (buttonType.getText() == "YELLOW")
                     {
-                        current.playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.YELLOW);
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
                     }
                     else if (buttonType.getText() == "RED")
                     {
-                        current.playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.RED);
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
 
                     }
                 });
@@ -462,7 +458,7 @@ public class CoupleGameContoller implements Initializable {
             }
             else
             {
-                current.playCard(addButton.getAccessibleText());
+                Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
 
             }
 

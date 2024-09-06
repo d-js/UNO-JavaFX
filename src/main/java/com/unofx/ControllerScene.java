@@ -153,10 +153,6 @@ public class ControllerScene implements Initializable{
             // TODO valutare se spostare il possibile nel table
             Table.getInstance().setDeck();
             Card e = Table.getInstance().deck.setInitialCard();
-            if(e.getColor() == Colour.BLACK)
-            {
-                ((ActionCard)e).setColour(Colour.fromValue(new Random().nextInt(3)));
-            }
             Table.getInstance().setCurrentCardInformation(e);
             if(gamemode.equals("Single"))
                 Table.getInstance().setPlayerList(3);
@@ -167,8 +163,6 @@ public class ControllerScene implements Initializable{
 
         });
     }
-
-
 
 
     @Override

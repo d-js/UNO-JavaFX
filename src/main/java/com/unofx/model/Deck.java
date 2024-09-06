@@ -9,7 +9,7 @@ public class Deck
 {
 	//Valutare se sono utili due mazzi creati nella classe mazzo
 	private final List<Card> coverDeck;
-	private final List<Card> uncoverDeck;
+	public final List<Card> uncoverDeck;
 
 
 	//Creazione di un mazzo da gioco
@@ -89,7 +89,7 @@ public class Deck
 		this.uncoverDeck.add(e);
 	}
 	
-	private void shuffle()
+	public void shuffle()
 	{
 		Collections.shuffle(coverDeck);
 	}
@@ -97,7 +97,10 @@ public class Deck
 	public Card setInitialCard()
 	{
 		Card e = this.drawOut();
-		this.playCard(e);
+		if(e instanceof NormalCard)
+			this.playCard(e);
+		else
+			this.setInitialCard();
 		return e;
 	}
 

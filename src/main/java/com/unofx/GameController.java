@@ -81,6 +81,7 @@ public class GameController implements Initializable {
     // TODO se il gioco inizia con un cambio colore o con un +4 non posso giocare niente (a volte) (serve un runLater?)
     // TODO bot vince e non viene avvisato l'utente
     // TASTI UNO E NEXT INVERTITI
+    // TODO la carta che pesco se e' un cambiogiro e' sempre giocabile
     // TODO problema cambio giro, l'ordine con due cambio giro non torna quello di partenza
     // TODO il cambio giro cambia giro ma fa riniziare a giocare a me
     // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
@@ -88,14 +89,16 @@ public class GameController implements Initializable {
 
     public void cicleBotTurns()
     {
+        if (Table.getInstance().controlWinner())
+            this.showWinnerAlert();
+
         this.deck.setDisable(true);
         // doppio runlater perche?
 
         Platform.runLater(this::hide_user_hand);
         // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
         cicleBotUntilUser();
-        if (Table.getInstance().controlWinner())
-            this.showWinnerAlert();
+
     }
 
     private void cicleBotUntilUser()
@@ -116,6 +119,7 @@ public class GameController implements Initializable {
             else
             {
                 this.playBotMovesWithDelay(((BotPlayer) Table.getInstance().getCurrentPlayer()));
+
             }
         }
     }
@@ -134,10 +138,6 @@ public class GameController implements Initializable {
     private void updateViewAfterMove()
     {
         Platform.runLater(() -> {
-            if (Table.getInstance().getCurrentCard().getName().equals("Changecolor.png") ||
-                    Table.getInstance().getCurrentCard().getName().equals("Drawfour.png"))
-            {
-            }
             setCurrentCardImage(generate_imagePath(Table.getInstance().getCurrentCard().getName())); // Aggiorna l'immagine della carta corrente
         });
     }
@@ -146,12 +146,12 @@ public class GameController implements Initializable {
     {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("FINE");
-            alert.setHeaderText("Qualcuno ha vinto");
-            alert.setContentText("Partita conclusa");
+            alert.setTitle("Partita Conclusa.");
+            alert.setHeaderText(Table.getInstance().getCurrentPlayer().getUsername().toUpperCase() + "VINCE!!");
+            alert.setContentText("Press 'Close' to exit the game or 'Menu' to go to initial game screen");
 
-            ButtonType closeButton = new ButtonType("Chiudi gioco", ButtonBar.ButtonData.OK_DONE);
-            ButtonType loadAnotherScreenButton = new ButtonType("continue", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+            ButtonType loadAnotherScreenButton = new ButtonType("Menu", ButtonBar.ButtonData.CANCEL_CLOSE);
             alert.getButtonTypes().setAll(closeButton, loadAnotherScreenButton);
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -369,31 +369,28 @@ public class GameController implements Initializable {
                 // Mostra il popup e attendi la selezione dell'utente
                 alert.showAndWait().ifPresent(buttonType ->
                 {
-                    if (buttonType.getText() == "BLUE")
+                    if (buttonType.getText().equals("BLUE"))
                     {
-                        //addButton.setAccessibleText(this.generate_imagePath("Changecolorblue"));
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.BLUE);
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.BLUE);
+
 
                     }
-                    else if (buttonType.getText() == "GREEN")
+                    else if (buttonType.getText().equals("GREEN"))
                     {
-                        //addButton.setAccessibleText(this.generate_imagePath("Changecolorgreen"));
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.GREEN);
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.GREEN);
+
 
                     }
-                    else if (buttonType.getText() == "YELLOW")
+                    else if (buttonType.getText().equals("YELLOW"))
                     {
-                        //addButton.setAccessibleText(this.generate_imagePath("Changecoloryellow"));
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.YELLOW);
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
+
+
                     }
-                    else if (buttonType.getText() == "RED")
+                    else if (buttonType.getText().equals("RED"))
                     {
-                        //addButton.setAccessibleText(this.generate_imagePath("Changecolorred"));
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.RED);
+
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.RED);
 
                     }
                 });
@@ -402,7 +399,7 @@ public class GameController implements Initializable {
             }
             else
             {
-                Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
+                Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), null);
 
             }
             this.userHandView.getChildren().remove(addButton);

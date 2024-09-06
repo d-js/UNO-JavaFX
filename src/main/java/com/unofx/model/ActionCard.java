@@ -11,7 +11,10 @@ public class ActionCard implements Card
 	public ActionCard(Caction action, Colour c) {
 		this.setAction(action);
 		this.c = c;
-		this.cardName = this.getAction().getAction().toLowerCase() + this.getColor().getColour().toLowerCase();
+		if(!this.getColor().getColour().toLowerCase().equals("black"))
+			this.cardName = this.getAction().getAction().toLowerCase() + this.getColor().getColour().toLowerCase();
+		else
+			this.cardName = this.getAction().getAction().toLowerCase();
 	}
 
 	public Colour getChoice() {

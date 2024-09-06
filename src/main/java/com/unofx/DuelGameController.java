@@ -366,37 +366,31 @@ public class DuelGameController implements Initializable {
                 // Mostra il popup e attendi la selezione dell'utente
                 alert.showAndWait().ifPresent(buttonType ->
                 {
-                    if (buttonType.getText() == "BLUE") {
+                    if (buttonType.getText().equals("BLUE")) {
 
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.BLUE);
-
-                    }
-                    else if (buttonType.getText() == "GREEN") {
-
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.GREEN);
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
 
                     }
-                    else if (buttonType.getText() == "YELLOW")
-                    {
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.YELLOW);
-                    }
-                    else if (buttonType.getText() == "RED")
-                    {
-                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-                        ((ActionCard)Table.getInstance().getCurrentCard()).setColour(Colour.RED);
+                    else if (buttonType.getText().equals("GREEN")) {
+
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
 
                     }
+                    else if (buttonType.getText().equals("YELLOW")) {
+                        Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
+                    }
+                    else if (buttonType.getText().equals("RED")) {
+                            Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), Colour.YELLOW);
+
+                        }
+
                 });
 
 
             }
             else
             {
-                Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText());
-
+                Table.getInstance().getNextUserPlayer().playCard(addButton.getAccessibleText(), null);
             }
             this.userHandView.getChildren().remove(addButton);
             updateViewAfterMove();
