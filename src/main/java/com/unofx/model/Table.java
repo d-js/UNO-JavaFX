@@ -1,5 +1,7 @@
 package com.unofx.model;
 
+import org.controlsfx.control.action.Action;
+
 import java.util.*;
 
 public class Table
@@ -168,19 +170,20 @@ public class Table
 		{
 			// TODO i blocchi sono permanenti e l'utente non pesca le carte
 			// Gestione delle carte di azione
+
 			if (e instanceof ActionCard) {
-				ActionCard actionCard = (ActionCard) e;
-				switch (actionCard.getAction()) {
+				switch (e.getAction()) {
 					case DRAWTWO:
 						nextPlayer().drawCard(deck.drawOut());
 						nextPlayer().drawCard(deck.drawOut());
 						break;
 					case DRAWFOUR:
-						this.currentColor = actionCard.getChoice();
+						this.currentColor = ((ActionCard) e).getChoice();
 						nextPlayer().drawCard(deck.drawOut());
 						nextPlayer().drawCard(deck.drawOut());
 						nextPlayer().drawCard(deck.drawOut());
 						nextPlayer().drawCard(deck.drawOut());
+
 						break;
 					case BLOCKTURN:
 						this.blockNext();
@@ -189,15 +192,33 @@ public class Table
 						changeLap();
 						break;
 					case CHANGECOLOR:
-						this.currentColor = actionCard.getChoice(); // Implementa un metodo per scegliere il colore
+						this.currentColor = ((ActionCard) e).getChoice(); // Implementa un metodo per scegliere il colore
 						break;
-					// Aggiungi altri casi per le altre azioni, se presenti
+
 				}
 			}
+
+
+
 			if(e != null)
 			{
 				deck.playCard(e);
-				setCurrentCardInformation(e);
+				if(this.currentColor != null)
+				{
+					if (e.getAction().equals(Caction.CHANGECOLOR)) {
+                        ActionCard actionCard = new ActionCard(Caction.CHANGECOLOR, this.currentColor);
+						setCurrentCardInformation(actionCard);
+                    }
+					else if(e.getAction().equals(Caction.DRAWFOUR))
+					{
+						ActionCard actionCard = new ActionCard(Caction.DRAWFOUR, this.currentColor);
+						setCurrentCardInformation(actionCard);
+					}
+					else
+					{
+						setCurrentCardInformation(e);
+					}
+				}
 			}
 		}
 
@@ -286,6 +307,14 @@ public class Table
 		}
 		
 		return verified_index;
+	}
+
+
+	public void eraseAll()
+	{
+		this.deck.delete();
+		this.sitDownPlayer.clear();
+
 	}
 
 }

@@ -29,11 +29,20 @@ public class UserPlayer implements Player
 
 	
 	// TODO ricavare la carta in base al path dell'immagine passata
-	public void playCard(String path)
+	public void playCard(String path, Colour choice)
 	{
+		System.out.println(path);
 		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).collect(Collectors.toList());
+
 		Card e = l.get(0);
+		System.out.println(e);
+
+
 		this.hand.remove(e);
+
+		if(choice != null && e instanceof ActionCard)
+			((ActionCard) e).setColour(choice);
+
 		Table.getInstance().playCard(e);
 	}
 
