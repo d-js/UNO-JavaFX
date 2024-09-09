@@ -8,12 +8,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gamePaneDuel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.unofx.GameController">
+<AnchorPane fx:id="gamePaneDuel" fx:controller="com.unofx.DuelGameController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
     <children>
         <Button id="deck" fx:id="deck" layoutX="739.0" layoutY="305.0" mnemonicParsing="false" onMouseClicked="#on_deck_click" prefHeight="396.0" prefWidth="236.0">
             <cursor>
                 <Cursor fx:constant="OPEN_HAND" />
-            </cursor></Button>
+            </cursor>
+        </Button>
         <Pane fx:id="currentCardView" layoutX="990.0" layoutY="405.0" prefHeight="196.0" prefWidth="136.0" />
         <Pane fx:id="top_bot" layoutX="875.0" layoutY="15.0" prefHeight="270" prefWidth="180" />
         <AnchorPane fx:id="userHandView" layoutX="420.0" layoutY="900.0" prefHeight="300.0" prefWidth="1080.0" />
