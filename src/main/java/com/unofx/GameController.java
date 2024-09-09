@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class GameController implements Initializable {
 
@@ -36,8 +35,6 @@ public class GameController implements Initializable {
     private Scene scene;
     private Stage stage;
     private Parent root;
-    //TODO fare file .env (come si usa e dove crearlo)
-    Dotenv dotenv = Dotenv.load();
 
     // Game var
     @FXML
@@ -98,6 +95,8 @@ public class GameController implements Initializable {
         Platform.runLater(this::hide_user_hand);
         // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
         cicleBotUntilUser();
+        if (Table.getInstance().controlWinner())
+            this.showWinnerAlert();
 
     }
 
@@ -119,6 +118,8 @@ public class GameController implements Initializable {
             else
             {
                 this.playBotMovesWithDelay(((BotPlayer) Table.getInstance().getCurrentPlayer()));
+                if (Table.getInstance().controlWinner())
+                    this.showWinnerAlert();
 
             }
         }

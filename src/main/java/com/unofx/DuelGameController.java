@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import io.github.cdimascio.dotenv.Dotenv;
+//import io.github.cdimascio.dotenv.Dotenv;
 
 public class DuelGameController implements Initializable {
 
@@ -34,7 +34,7 @@ public class DuelGameController implements Initializable {
     private Stage stage;
     private Parent root;
     //TODO fare file .env (come si usa e dove crearlo)
-    Dotenv dotenv = Dotenv.load();
+    //Dotenv dotenv = Dotenv.load();
 
     // Game var
     @FXML

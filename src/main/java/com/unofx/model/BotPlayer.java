@@ -3,7 +3,7 @@ package com.unofx.model;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BotPlayer implements Player
+public class  BotPlayer implements Player
 {
 	private String username;
 	private List<Card> hand;

@@ -58,7 +58,7 @@ public class Deck
 	}
 	
 	//Pesca la prima carta del mazzo
-	public Card drawOut()
+	public synchronized Card drawOut()
 	{
 		if(this.coverDeck.isEmpty())
 			this.drawDown();
@@ -96,11 +96,10 @@ public class Deck
 
 	public Card setInitialCard()
 	{
-		Card e = this.drawOut();
-		if(e instanceof NormalCard)
-			this.playCard(e);
-		else
-			this.setInitialCard();
+		Card e = this.coverDeck.stream().filter(c -> c instanceof NormalCard).findFirst().orElseGet(() -> this.setInitialCard());
+
+		this.playCard(e);
+
 		return e;
 	}
 

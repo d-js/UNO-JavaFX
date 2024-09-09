@@ -101,13 +101,13 @@ public class Table
 		for(Player e : this.sitDownPlayer)
 		{
 				e.drawCard(this.deck.drawOut());
+				/*e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
-				e.drawCard(this.deck.drawOut());
-				e.drawCard(this.deck.drawOut());
+				e.drawCard(this.deck.drawOut());*/
 		}
 	}
 
@@ -305,16 +305,31 @@ public class Table
 		{
 			verified_index = 0;
 		}
-		
+
 		return verified_index;
 	}
 
-
+	// TODO mantenere il metodo reset
 	public void eraseAll()
 	{
 		this.deck.delete();
 		this.sitDownPlayer.clear();
 
+	}
+
+	public List<Player> getSitDownPlayer()
+	{
+		return this.sitDownPlayer;
+	}
+
+	public void reset()
+	{
+		this.sitDownPlayer.clear();
+
+		this.currentColor = null;
+		this.currentPlayer = null;
+		Table.CurrentIndexPlayer = 0;
+		Table.INSTANCE = null;
 	}
 
 }
