@@ -329,7 +329,6 @@ public class TableImpl implements Table
 	public void reset()
 	{
 		this.sitDownPlayer.clear();
-		this.deck.delete();
 		this.currentColor = null;
 		this.currentPlayer = null;
 		TableImpl.CurrentIndexPlayer = 0;

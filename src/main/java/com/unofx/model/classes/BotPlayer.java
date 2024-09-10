@@ -69,9 +69,7 @@ public class  BotPlayer implements Player
 		if (!cardPlayed && i == 0) {
 			this.drawCard(TableImpl.getInstance().deck.drawOut());
 			this.playCard(1);
-		}
-
-		if (!cardPlayed && i == 1) {
+		}else if (!cardPlayed && i == 1) {
 			TableImpl.getInstance().playCard(null);
 		}
 	}
