@@ -23,7 +23,7 @@ public class TableImplTest {
     @BeforeEach
     public void setup() {
 
-        tableImpl.reset(); // Reset the table before each test
+        tableImpl.reset();
         tableImpl = TableImpl.getInstance();
         player1 = new UserPlayer("Player1");
         player2 = new UserPlayer("Player2");
@@ -50,7 +50,7 @@ public class TableImplTest {
 
     @Test
     public void testSetPlayerList() {
-        tableImpl.setPlayerList(2); // Add 2 bots
+        tableImpl.setPlayerList(2);
         assertEquals(2, tableImpl.getSitDownPlayer().size(), "There should be 2 bot players added");
         assertTrue(tableImpl.getSitDownPlayer().get(0) instanceof BotPlayer, "The first player should be a bot");
         assertTrue(tableImpl.getSitDownPlayer().get(1) instanceof BotPlayer, "The second player should be a bot");
@@ -71,7 +71,7 @@ public class TableImplTest {
     public void testGiveStartCard() {
         tableImpl.addPlayerInTable(player1);
         tableImpl.addPlayerInTable(player2);
-        tableImpl.setDeck(); // Setup the deck
+        tableImpl.setDeck();
         tableImpl.giveStartCard();
         assertEquals(8, player1.getHand().size(), "Player1 should have 8 cards");
         assertEquals(8, player2.getHand().size(), "Player2 should have 8 cards");
@@ -89,7 +89,6 @@ public class TableImplTest {
         tableImpl.addPlayerInTable(player1);
         tableImpl.addPlayerInTable(player2);
 
-        // Simulate player1 winning (empty hand)
         player1.getHand().clear();
 
         assertTrue(tableImpl.controlWinner(), "Player1 should be the winner because their hand is empty");
@@ -122,16 +121,14 @@ public class TableImplTest {
 
         assertTrue(player2.is_blocked(), "Player2 should be blocked");
 
-        tableImpl.passTurn(); // Player1 -> Player2 (blocked)
+        tableImpl.passTurn();
         assertEquals(bot1, tableImpl.getCurrentPlayer(), "Bot1 should be the current player after Player2 is blocked");
 
-        // Ensure Player2 is no longer blocked after turn pass
         assertFalse(player2.is_blocked(), "Player2 should no longer be blocked after passing turn");
     }
 
     @Test
     public void testPlayCardAction_DrawTwo() {
-        // Assumiamo che Deck, Card, ActionCard e Caction siano correttamente implementate.
         tableImpl.addPlayerInTable(player1);
         tableImpl.addPlayerInTable(player2);
         tableImpl.setDeck();
@@ -145,5 +142,4 @@ public class TableImplTest {
         assertEquals(initialHandSize + 2, player2.getHand().size(), "Player2 should draw 2 cards after DRAWTWO action");
     }
 
-    // Altri test per altre carte azione come DRAWFOUR, CHANGECOLOR, etc., possono essere aggiunti qui.
 }

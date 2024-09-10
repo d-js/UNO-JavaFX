@@ -22,7 +22,8 @@ public class UserPlayerTest {
     private TableImpl tableImpl = TableImpl.getInstance();
 
     @BeforeEach
-    public void setUp() {
+    public void setUp()
+    {
         TableImpl.getInstance().reset();
         userPlayer = new UserPlayer("TestUser");
 
@@ -38,39 +39,38 @@ public class UserPlayerTest {
     }
 
     @Test
-    public void testGetUsername() {
+    public void testGetUsername()
+    {
         assertEquals("TestUser", userPlayer.getUsername());
     }
 
     @Test
-    public void testSetUsername() {
+    public void testSetUsername()
+    {
         userPlayer.setUsername("NewUser");
         assertEquals("NewUser", userPlayer.getUsername());
     }
 
     @Test
-    public void testDrawCard() {
-
+    public void testDrawCard()
+    {
         userPlayer.drawCard(this.normalCard);
         assertTrue(userPlayer.getHand().contains(normalCard));
     }
 
     @Test
-    public void testPlayCard() {
-
+    public void testPlayCard()
+    {
         userPlayer.drawCard(normalCard);
         assertTrue(userPlayer.getHand().contains(normalCard));
-
-
         tableImpl.playCard(new NormalCard(com.unofx.model.enums.Number.THREE, Colour.RED));
-
-
         userPlayer.playCard("Fivered.png", null);
         assertFalse(userPlayer.getHand().contains(normalCard));
     }
 
     @Test
-    public void testSetBlock() {
+    public void testSetBlock()
+    {
         userPlayer.setBlock();
         assertTrue(userPlayer.is_blocked());
     }
@@ -79,22 +79,26 @@ public class UserPlayerTest {
     public void testRemoveBlock() {
         userPlayer.setBlock();
         userPlayer.removeBlock();
+
         assertFalse(userPlayer.is_blocked());
     }
 
     @Test
-    public void testGetInfoHand() {
+    public void testGetInfoHand()
+    {
         userPlayer.drawCard(normalCard);
         userPlayer.drawCard(actionCard);
 
         List<String> handInfo = userPlayer.get_info_hand();
         assertEquals(2, handInfo.size());
         assertEquals("fivered", handInfo.get(0));
+
         assertEquals("drawtwored", handInfo.get(1));
     }
 
     @Test
-    public void testIsOneTrue() {
+    public void testIsOneTrue()
+    {
         userPlayer.setOneTrue();
         assertTrue(userPlayer.isOne());
     }
@@ -102,54 +106,52 @@ public class UserPlayerTest {
     @Test
     public void testIsOneFalse() {
         userPlayer.setOneFalse();
+
         assertFalse(userPlayer.isOne());
     }
 
     @Test
-    public void testIsPlayable() {
-
+    public void testIsPlayable()
+    {
         userPlayer.drawCard(normalCard);
-        tableImpl.playCard(new NormalCard(com.unofx.model.enums.Number.SEVEN, Colour.RED));
-
-
+        tableImpl.playCard(new NormalCard(Number.SEVEN, Colour.RED));
         boolean result = userPlayer.isPlayable("Fivered.png");
         assertTrue(result);
     }
 
     @Test
-    public void testIsCardValid_NormalCardVsNormalCard() {
+    public void testIsCardValid_NormalCardVsNormalCard()
+    {
 
-        NormalCard currentCard = new NormalCard(com.unofx.model.enums.Number.SEVEN, Colour.RED);
+        NormalCard currentCard = new NormalCard(Number.SEVEN, Colour.RED);
         tableImpl.playCard(currentCard);
-
 
         assertTrue(userPlayer.isCardValid(normalCard));
     }
 
     @Test
-    public void testIsCardValid_ActionCardVsNormalCard() {
+    public void testIsCardValid_ActionCardVsNormalCard()
+    {
 
         NormalCard currentCard = new NormalCard(Number.THREE, Colour.RED);
         tableImpl.playCard(currentCard);
-
-
         assertTrue(userPlayer.isCardValid(actionCard));
     }
 
     @Test
-    public void testIsCardValid_ActionCardVsActionCard() {
+    public void testIsCardValid_ActionCardVsActionCard()
+    {
 
         ActionCard currentActionCard = new ActionCard(Caction.DRAWTWO, Colour.RED);
         tableImpl.playCard(currentActionCard);
-
-
         assertTrue(userPlayer.isCardValid(actionCard));
     }
 
     @Test
-    public void testCapitalize() {
-        assertEquals("Hello", UserPlayer.capitalize("hello"));
-        assertEquals("World", UserPlayer.capitalize("world"));
+    public void testCapitalize()
+    {
+        assertEquals("Ciao", UserPlayer.capitalize("ciao"));
+        assertEquals("Uno", UserPlayer.capitalize("uno"));
         assertEquals("", UserPlayer.capitalize(""));
         assertNull(UserPlayer.capitalize(null));
     }

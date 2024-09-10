@@ -41,7 +41,7 @@ public class DeckTest {
     public void testDrawOutMovesToUncoverDeckWhenEmpty() {
         // Svuotiamo il mazzo coperto
         while (!deck.getCoverDeck().isEmpty()) {
-            deck.drawOut();
+            deck.playCard(deck.drawOut());
         }
 
         // Ora copriamo di nuovo con drawDown e peschiamo una carta

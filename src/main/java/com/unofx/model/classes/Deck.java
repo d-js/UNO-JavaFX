@@ -63,12 +63,13 @@ public class Deck
 	}
 	
 	//Pesca la prima carta del mazzo
-	public synchronized Card drawOut()
+	public synchronized Card  drawOut()
 	{
 		if(this.coverDeck.isEmpty())
 			this.drawDown();
 
-		if(this.coverDeck.stream().findFirst().isPresent()) {
+		if(this.coverDeck.stream().findFirst().isPresent())
+		{
 			Card e = this.coverDeck.stream().findFirst().get();
 			coverDeck.remove(e);
 			return (e);

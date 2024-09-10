@@ -19,7 +19,8 @@ class BotPlayerTest {
     private TableImpl tableImpl = TableImpl.getInstance();
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
         tableImpl.reset();
         botPlayer = new BotPlayer("Bot");
         tableImpl = TableImpl.getInstance();
@@ -30,20 +31,24 @@ class BotPlayerTest {
     }
 
     @Test
-    void testGetUsername() {
+    void testGetUsername()
+    {
         assertEquals("Bot", botPlayer.getUsername());
     }
 
     @Test
-    void testDrawCard() {
+    void testDrawCard()
+    {
         Card card = new NormalCard(com.unofx.model.enums.Number.SEVEN, Colour.RED);
         botPlayer.drawCard(card);
+
         assertEquals(1, botPlayer.getHand().size());
         assertEquals("sevenred", botPlayer.getHand().get(0).getName());
     }
 
     @Test
-    void testPlayCardValid() {
+    void testPlayCardValid()
+    {
         // Setup una carta nel tavolo
         TableImpl.getInstance().setCurrentCardInformation(new NormalCard(com.unofx.model.enums.Number.FIVE, Colour.RED));
 
@@ -59,7 +64,8 @@ class BotPlayerTest {
     }
 
     @Test
-    void testPlayCardInvalidThenDraw() {
+    void testPlayCardInvalidThenDraw()
+    {
         // Setup una carta nel tavolo
         NormalCard currentCard = new NormalCard(com.unofx.model.enums.Number.FIVE, Colour.RED);
         tableImpl.setCurrentCardInformation(currentCard);
@@ -76,7 +82,8 @@ class BotPlayerTest {
     }
 
     @Test
-    void testSetAndGetOne() {
+    void testSetAndGetOne()
+    {
         assertFalse(botPlayer.isOne());
 
         botPlayer.setOneTrue();
@@ -87,7 +94,8 @@ class BotPlayerTest {
     }
 
     @Test
-    void testBlock() {
+    void testBlock()
+    {
         assertFalse(botPlayer.is_blocked());
 
         botPlayer.setBlock();
@@ -98,15 +106,16 @@ class BotPlayerTest {
     }
 
     @Test
-    void testIsCardValidNormalCardAgainstNormalCard() {
+    void testIsCardValidNormalCardAgainstNormalCard()
+    {
         NormalCard cardToPlay = new NormalCard(com.unofx.model.enums.Number.FIVE, Colour.RED);
         TableImpl.getInstance().setCurrentCardInformation(new NormalCard(com.unofx.model.enums.Number.SEVEN, Colour.RED));
-
         assertTrue(botPlayer.isCardValid(cardToPlay));
     }
 
     @Test
-    void testIsCardValidActionCardAgainstNormalCard() {
+    void testIsCardValidActionCardAgainstNormalCard()
+    {
         ActionCard cardToPlay = new ActionCard(Caction.DRAWFOUR, Colour.BLACK);
         TableImpl.getInstance().setCurrentCardInformation(new NormalCard(com.unofx.model.enums.Number.SEVEN, Colour.RED));
 
@@ -114,13 +123,12 @@ class BotPlayerTest {
     }
 
     @Test
-    void testGetInfoHand() {
+    void testGetInfoHand()
+    {
         Card card1 = new NormalCard(Number.FIVE, Colour.RED);
         Card card2 = new ActionCard(Caction.CHANGECOLOR, Colour.BLACK);
-
         botPlayer.drawCard(card1);
         botPlayer.drawCard(card2);
-
         List<String> handInfo = botPlayer.get_info_hand();
         assertEquals(2, handInfo.size());
         assertTrue(handInfo.contains("fivered"));
