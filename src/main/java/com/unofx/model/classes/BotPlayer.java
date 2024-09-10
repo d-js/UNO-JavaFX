@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 public class  BotPlayer implements Player
 {
-	private String username;
-	private List<Card> hand;
+	private final String username;
+	private final List<Card> hand;
 	public boolean block;
 	private Random rdn;
 	private boolean one = false;
@@ -55,7 +55,7 @@ public class  BotPlayer implements Player
 					((ActionCard)c).setChoice(Colour.fromValue(new Random().nextInt(3)));
 				TableImpl.getInstance().playCard(c);
 				cardPlayed = true;
-				if(this.getHand().stream().count() == 1)
+				if(this.getHand().size() == 1)
 					rdn = new Random();
 				int condition = rdn.nextInt(5);
 					if(condition % 2 == 0 || condition % 3 == 0)
@@ -72,73 +72,6 @@ public class  BotPlayer implements Player
 		}else if (!cardPlayed && i == 1) {
 			TableImpl.getInstance().playCard(null);
 		}
-	}
-
-	public Boolean isCardValid(Card cardToPlay) {
-
-		// Gestione dei casi di input non validi
-		if (cardToPlay == null || TableImpl.getInstance().getCurrentCard() == null) {
-			return false;
-		}
-
-		if (cardToPlay instanceof NormalCard && TableImpl.getInstance().getCurrentCard() instanceof NormalCard)
-		{
-			return isNormalCardValidAgainstNormalCard((NormalCard) cardToPlay, (NormalCard) TableImpl.getInstance().getCurrentCard());
-		}
-		else if (cardToPlay instanceof ActionCard && TableImpl.getInstance().getCurrentCard() instanceof ActionCard)
-		{
-			return isActionCardValidAgainstActionCard((ActionCard) cardToPlay, (ActionCard) TableImpl.getInstance().getCurrentCard());
-		}
-		else if (cardToPlay instanceof NormalCard && TableImpl.getInstance().getCurrentCard() instanceof ActionCard)
-		{
-			return isNormalCardValidAgainstActionCard((NormalCard) cardToPlay, (ActionCard) TableImpl.getInstance().getCurrentCard());
-		}
-		else if (cardToPlay instanceof ActionCard && TableImpl.getInstance().getCurrentCard() instanceof NormalCard)
-		{
-			return isActionCardValidAgainstNormalCard((ActionCard) cardToPlay, (NormalCard) TableImpl.getInstance().getCurrentCard());
-		}
-
-		return false; // Caso non gestito
-	}
-
-	private Boolean isActionCardValidAgainstNormalCard(ActionCard cardToPlay, NormalCard currentCard)
-	{
-		if((cardToPlay.getColor() == Colour.BLACK) ||
-				(cardToPlay.getColor() == currentCard.getColor()))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private Boolean isNormalCardValidAgainstActionCard(NormalCard cardToPlay, ActionCard currentCard)
-	{
-		if((cardToPlay.getColor() == currentCard.getColor()) ||
-				(currentCard.getColor() == Colour.BLACK && (currentCard.getChoice() == cardToPlay.getColor())))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private Boolean isActionCardValidAgainstActionCard(ActionCard cardToPlay, ActionCard currentCard)
-	{
-		if((cardToPlay.getColor() == Colour.BLACK && currentCard.getColor() != Colour.BLACK) ||
-				(cardToPlay.getColor() != Colour.BLACK && ((cardToPlay.getAction() == currentCard.getAction()) ||
-						(cardToPlay.getColor() == currentCard.getColor())) ||
-						(cardToPlay.getColor() == currentCard.getChoice())))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private Boolean isNormalCardValidAgainstNormalCard(NormalCard cardToPlay, NormalCard currentCard)
-	{
-		if(cardToPlay.getNumber() == currentCard.getNumber() || cardToPlay.getColor() == currentCard.getColor())
-			return true;
-
-		return false;
 	}
 
 

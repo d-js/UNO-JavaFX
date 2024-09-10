@@ -1,5 +1,4 @@
 package com.unofx.model.interfaces;
-import com.unofx.model.enums.Colour;
 import com.unofx.model.classes.UserPlayer;
 
 import java.util.List;
@@ -33,9 +32,6 @@ public interface Table
     // Distribuisce le carte iniziali ai giocatori
     void giveStartCard();
 
-    // Restituisce il colore corrente della partita
-    Colour getCurrentColor();
-
     // Restituisce la carta corrente sul tavolo
     Card getCurrentCard();
 
@@ -55,7 +51,7 @@ public interface Table
     void playCard(Card e);
 
     // Controlla se un giocatore ha solo una carta rimanente
-    boolean controlIfOneCard();
+    void controlIfOneCard();
 
     // Cambia il giro dei giocatori (inverte l'ordine)
     void changeLap();

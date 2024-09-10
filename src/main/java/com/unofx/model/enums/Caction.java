@@ -8,7 +8,7 @@ public enum Caction {
 	DRAWFOUR("CHANGECOLORFOUR"),
 	DRAWTWO("DRAWTWO");
 
-	private String action;
+	private final String action;
 	Caction(String action)
 	{
 		this.action = action;

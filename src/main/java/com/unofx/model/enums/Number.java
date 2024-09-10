@@ -12,7 +12,7 @@ public enum Number {
     EIGHT("EIGHT"),
     NINE("NINE");
 
-    private String number;
+    private final String number;
     Number(String number)
     {
         this.number = number;

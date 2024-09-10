@@ -22,8 +22,6 @@ public class ControllerScene implements Initializable{
     @FXML
     private Button start_button_single_mode;
     @FXML
-    private Button start_button_couple_mode;
-    @FXML
     private Button backButton;
     @FXML
     private TextField playerNameField;
@@ -36,9 +34,6 @@ public class ControllerScene implements Initializable{
     protected static Scene scene;
     protected static Stage stage;
     protected static Parent root;
-
-
-    private String previousFXML;
 
     @FXML
     public void on_start_single_mode() {
@@ -67,7 +62,7 @@ public class ControllerScene implements Initializable{
     }
 
     @FXML
-    public void onStartGame() throws IOException {
+    public void onStartGame() {
         String playerName = playerNameField.getText();
         UserPlayer user = new UserPlayer(playerName);
         TableImpl.getInstance().addPlayerInTable(user);
@@ -84,7 +79,7 @@ public class ControllerScene implements Initializable{
 
 
     @FXML
-    public void onDuelStart() throws IOException {
+    public void onDuelStart() {
 
         String playerName = playerNameField.getText();
         UserPlayer user = new UserPlayer(playerName);
@@ -102,14 +97,13 @@ public class ControllerScene implements Initializable{
     private void loadScene(String fxmlFile) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            this.root = loader.load();
+            root = loader.load();
             //Parent root = loader.load();
-            this.stage = (Stage) (start_button_single_mode != null ? start_button_single_mode.getScene().getWindow() :
-                                    (start_button_couple_mode != null ? start_button_couple_mode.getScene().getWindow() :
+            stage = (Stage) (start_button_single_mode != null ? start_button_single_mode.getScene().getWindow() :
                                         (startButton != null ? startButton.getScene().getWindow() :
                                             (ruleButton != null ? ruleButton.getScene().getWindow() :
-                                                (ruleButtonTwo!= null ? ruleButtonTwo.getScene().getWindow() : backButton.getScene().getWindow())))));
-            this.scene = new Scene(root);
+                                                (ruleButtonTwo!= null ? ruleButtonTwo.getScene().getWindow() : backButton.getScene().getWindow()))));
+            scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -118,7 +112,7 @@ public class ControllerScene implements Initializable{
         }
     }
 
-    public void inizializeTable(String gamemode) throws IOException
+    public void inizializeTable(String gamemode)
     {
         Platform.runLater(() -> {
             TableImpl.getInstance().setDeck();

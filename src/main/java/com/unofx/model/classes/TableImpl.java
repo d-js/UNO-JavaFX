@@ -18,7 +18,7 @@ public class TableImpl implements Table
 	private Card currentCard;
 	private Colour currentColor;
 	private Player currentPlayer;
-	private List<Player> sitDownPlayer = new LinkedList<>();
+	private final List<Player> sitDownPlayer = new LinkedList<>();
 
 
 
@@ -71,7 +71,7 @@ public class TableImpl implements Table
 	public List<UserPlayer> getAllUser()
 	{
 		List<UserPlayer> allUser = new LinkedList<>();
-		this.sitDownPlayer.stream().forEach((e) ->
+		this.sitDownPlayer.forEach((e) ->
 		{
 			if(e instanceof UserPlayer){
 				allUser.add((UserPlayer) e);
@@ -113,10 +113,6 @@ public class TableImpl implements Table
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 		}
-	}
-
-	public Colour getCurrentColor() {
-		return currentColor;
 	}
 
 	public Card getCurrentCard() {
@@ -246,15 +242,14 @@ public class TableImpl implements Table
 	}
 
 
-	public boolean controlIfOneCard()
+	public void controlIfOneCard()
 	{
-		if(this.getCurrentPlayer().getHand().stream().count() == 1 &&
+		if(this.getCurrentPlayer().getHand().size() == 1 &&
 			!this.getCurrentPlayer().isOne())
 		{
 			this.getCurrentPlayer().drawCard(this.deck.drawOut());
 			this.getCurrentPlayer().drawCard(this.deck.drawOut());
 		}
-		return false;
 	}
 
 

@@ -5,14 +5,13 @@ import com.unofx.model.enums.Colour;
 
 public interface Card
 {
-	public Colour getColor();
+	Colour getColor();
 
-	public String getName();
+	String getName();
 
 	default Caction getAction()
 	{
-		Caction c = Caction.DRAWTWO;
-		return c;
+        return Caction.DRAWTWO;
 	}
 
 

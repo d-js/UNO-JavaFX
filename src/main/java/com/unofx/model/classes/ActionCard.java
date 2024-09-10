@@ -6,9 +6,9 @@ import com.unofx.model.interfaces.Card;
 
 public class ActionCard implements Card
 {
-	private String cardName;
+	private final String cardName;
 	private Caction action;
-	private Colour c;
+	private final Colour c;
 	private Colour choice;
 	
 

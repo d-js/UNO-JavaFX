@@ -5,12 +5,12 @@ import com.unofx.model.interfaces.Card;
 import com.unofx.model.interfaces.Player;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 public class UserPlayer implements Player
 {
 	private String username;
-	private List<Card> hand;
+	private final List<Card> hand;
 	public boolean block;
 	private boolean one = false;
 	
@@ -34,7 +34,7 @@ public class UserPlayer implements Player
 	
 	public void playCard(String path, Colour choice)
 	{
-		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).collect(Collectors.toList());
+		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).toList();
 
 		Card e = l.get(0);
 		System.out.println(e);
@@ -95,7 +95,7 @@ public class UserPlayer implements Player
 
 	public boolean isPlayable(String path)
 	{
-		List<Card> l = this.hand.stream().filter(e -> path.toLowerCase().contains(e.getName())).collect(Collectors.toList());
+		List<Card> l = this.hand.stream().filter(e -> path.toLowerCase().contains(e.getName())).toList();
 
 		Card e = l.get(0);
 		return this.isCardValid(e);
@@ -113,75 +113,7 @@ public class UserPlayer implements Player
 		String restOfString = str.substring(1);
 
 		// Return the new string with the first character capitalized
-		return String.valueOf(firstLetter) + restOfString;
-	}
-
-
-	public Boolean isCardValid(Card cardToPlay)
-	{
-		// Gestione dei casi di input non validi
-		if (cardToPlay == null || TableImpl.getInstance().getCurrentCard() == null) {
-			return false;
-		}
-
-		if (cardToPlay instanceof NormalCard && TableImpl.getInstance().getCurrentCard() instanceof NormalCard)
-		{
-			return isNormalCardValidAgainstNormalCard((NormalCard) cardToPlay, (NormalCard) TableImpl.getInstance().getCurrentCard());
-		}
-		else if (cardToPlay instanceof ActionCard && TableImpl.getInstance().getCurrentCard() instanceof ActionCard)
-		{
-			return isActionCardValidAgainstActionCard((ActionCard) cardToPlay, (ActionCard) TableImpl.getInstance().getCurrentCard());
-		}
-		else if (cardToPlay instanceof NormalCard && TableImpl.getInstance().getCurrentCard() instanceof ActionCard)
-		{
-			return isNormalCardValidAgainstActionCard((NormalCard) cardToPlay, (ActionCard) TableImpl.getInstance().getCurrentCard());
-		}
-		else if (cardToPlay instanceof ActionCard && TableImpl.getInstance().getCurrentCard() instanceof NormalCard)
-		{
-			return isActionCardValidAgainstNormalCard((ActionCard) cardToPlay, (NormalCard) TableImpl.getInstance().getCurrentCard());
-		}
-
-		return false;
-	}
-
-	private Boolean isActionCardValidAgainstNormalCard(ActionCard cardToPlay, NormalCard currentCard)
-	{
-		if((cardToPlay.getColor() == Colour.BLACK) ||
-				(cardToPlay.getColor() == currentCard.getColor()))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private Boolean isNormalCardValidAgainstActionCard(NormalCard cardToPlay, ActionCard currentCard)
-	{
-		if((cardToPlay.getColor() == currentCard.getColor()) ||
-				(currentCard.getColor() == Colour.BLACK && (currentCard.getChoice() == cardToPlay.getColor())))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private Boolean isActionCardValidAgainstActionCard(ActionCard cardToPlay, ActionCard currentCard)
-	{
-		if((cardToPlay.getColor() == Colour.BLACK && currentCard.getColor() != Colour.BLACK) ||
-				(cardToPlay.getColor() != Colour.BLACK && ((cardToPlay.getAction() == currentCard.getAction()) ||
-						(cardToPlay.getColor() == currentCard.getColor())) ||
-						(cardToPlay.getColor() == currentCard.getChoice())))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private Boolean isNormalCardValidAgainstNormalCard(NormalCard cardToPlay, NormalCard currentCard)
-	{
-		if(cardToPlay.getNumber() == currentCard.getNumber() || cardToPlay.getColor() == currentCard.getColor())
-			return true;
-
-		return false;
+		return (firstLetter) + restOfString;
 	}
 
 }

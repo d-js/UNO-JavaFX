@@ -102,7 +102,7 @@ public class Deck
 
 	public Card setInitialCard()
 	{
-		Card e = this.coverDeck.stream().filter(c -> c instanceof NormalCard).findFirst().orElseGet(() -> this.setInitialCard());
+		Card e = this.coverDeck.stream().filter(c -> c instanceof NormalCard).findFirst().orElseGet(this::setInitialCard);
 
 		this.coverDeck.remove(e);
 		this.uncoverDeck.add(e);

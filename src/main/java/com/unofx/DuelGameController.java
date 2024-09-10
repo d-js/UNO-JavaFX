@@ -14,7 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,8 +22,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -35,12 +32,7 @@ import java.util.stream.Collectors;
 public class DuelGameController implements Initializable {
 
     public Pane top_bot;
-    public Pane right_bot;
-    public Pane left_bot;
-    // View scene var
-    private Scene scene;
     private Stage stage;
-    private Parent root;
 
     // Game var
     @FXML
@@ -64,9 +56,8 @@ public class DuelGameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        this.scene = ControllerScene.scene;
+        // View scene var
         this.stage = ControllerScene.stage;
-        this.root = ControllerScene.root;
         this.userHandView.setPadding(new Insets(10));
         Platform.runLater(() -> {
             this.update_view();
@@ -232,7 +223,7 @@ public class DuelGameController implements Initializable {
         Platform.runLater(() -> {
             for (Node n : this.userHandView.getChildren()) {
                 if (n instanceof Button) {
-                    n.setDisable(!this.playable((Button)n));
+                    n.setDisable(this.inNotPlayable((Button) n));
                 }
                 else
                     n.setDisable(true);
@@ -241,9 +232,9 @@ public class DuelGameController implements Initializable {
     }
 
     // metodo che controlla se l'user puo giocare la carta
-    private boolean playable(Button n)
+    private boolean inNotPlayable(Button n)
     {
-        return TableImpl.getInstance().getUserPlayer().isPlayable(n.getAccessibleText());
+        return !TableImpl.getInstance().getUserPlayer().isPlayable(n.getAccessibleText());
 
     }
 
@@ -375,7 +366,7 @@ public class DuelGameController implements Initializable {
 
         this.userHandView.getChildren().add(addButton);
         this.arrangeButtonsInLine(this.userHandView);
-        addButton.setDisable(!this.playable(addButton));
+        addButton.setDisable(this.inNotPlayable(addButton));
 
     }
 

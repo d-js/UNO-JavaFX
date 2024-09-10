@@ -6,7 +6,7 @@ import com.unofx.model.interfaces.Card;
 
 public class NormalCard implements Card {
 
-	private String cardName;
+	private final String cardName;
 	private com.unofx.model.enums.Number num;
 	private Colour c;
 
