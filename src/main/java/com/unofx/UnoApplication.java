@@ -9,16 +9,13 @@ import java.io.IOException;
 
 public class UnoApplication extends Application {
 
-    private Stage stage;
-
     @Override
     public void start(Stage primaryStage) throws IOException {
-        this.stage = primaryStage; // Inizializzazione dello stage
         FXMLLoader fxmlLoader = new FXMLLoader(UnoApplication.class.getResource("Select_game_mode.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("UNO");
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setTitle("UNO");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

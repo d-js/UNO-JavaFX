@@ -14,7 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,9 +37,7 @@ public class GameController implements Initializable {
     public Pane right_bot;
     public Pane left_bot;
     // View scene var
-    private Scene scene;
     private Stage stage;
-    private Parent root;
 
     // Game var
     @FXML
@@ -64,9 +61,7 @@ public class GameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        this.scene = ControllerScene.scene;
         this.stage = ControllerScene.stage;
-        this.root = ControllerScene.root;
         this.userHandView.setPadding(new Insets(10));
         Platform.runLater(() -> {
             this.update_view();
@@ -75,7 +70,6 @@ public class GameController implements Initializable {
             this.cicleBotTurns();
         });
 
-        // Inizia la partita
     }
 
 
@@ -232,7 +226,7 @@ public class GameController implements Initializable {
         Platform.runLater(() -> {
             for (Node n : this.userHandView.getChildren()) {
                 if (n instanceof Button) {
-                    n.setDisable(!this.playable((Button)n));
+                    n.setDisable(this.isNotPlayable((Button) n));
                 }
                 else
                     n.setDisable(true);
@@ -241,9 +235,9 @@ public class GameController implements Initializable {
     }
 
     // metodo che controlla se l'user puo giocare la carta
-    private boolean playable(Button n)
+    private boolean isNotPlayable(Button n)
     {
-        return TableImpl.getInstance().getUserPlayer().isPlayable(n.getAccessibleText());
+        return !TableImpl.getInstance().getUserPlayer().isPlayable(n.getAccessibleText());
 
     }
 
@@ -375,7 +369,7 @@ public class GameController implements Initializable {
 
         this.userHandView.getChildren().add(addButton);
         this.arrangeButtonsInLine(this.userHandView);
-        addButton.setDisable(!this.playable(addButton));
+        addButton.setDisable(this.isNotPlayable(addButton));
 
     }
 

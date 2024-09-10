@@ -35,15 +35,19 @@ public class ControllerScene implements Initializable{
     protected static Stage stage;
     protected static Parent root;
 
+
     @FXML
     public void on_start_single_mode() {
+        GameState.getInstance().setChoosenMode("Single");
         loadScene("Insert_name_single_players.fxml");
     }
 
     @FXML
     public void on_start_duel_mode() {
-        loadScene("Insert_name_duel_players.fxml");
+        GameState.getInstance().setChoosenMode("Duel");
+        loadScene("Insert_name_single_players.fxml");
     }
+
 
 
     @FXML
@@ -66,33 +70,23 @@ public class ControllerScene implements Initializable{
         String playerName = playerNameField.getText();
         UserPlayer user = new UserPlayer(playerName);
         TableImpl.getInstance().addPlayerInTable(user);
+
         if (!playerName.isEmpty()) {
             System.out.println("Starting game with player: " + playerName);
-            // Implementa la logica per iniziare il gioco
-            this.inizializeTable("Single");
-            loadScene("Game_single_mode_pane.fxml");
-        } else {
-            System.out.println("Please enter a player name");
-        }
+            String choosenMode = GameState.getInstance().getChoosenMode();  // Recupero la modalità di gioco
 
-    }
-
-
-    @FXML
-    public void onDuelStart() {
-
-        String playerName = playerNameField.getText();
-        UserPlayer user = new UserPlayer(playerName);
-        TableImpl.getInstance().addPlayerInTable(user);
-        if (!playerName.isEmpty()) {
-            System.out.println("Starting game with player: " + playerName);
-            // Implementa la logica per iniziare il gioco
-            this.inizializeTable("Duel");
-            loadScene("Game_duel_mode_pane.fxml");
+            if (choosenMode.equals("Single")) {
+                inizializeTable("Single");
+                loadScene("Game_single_mode_pane.fxml");
+            } else if (choosenMode.equals("Duel")) {
+                inizializeTable("Duel");
+                loadScene("Game_duel_mode_pane.fxml");
+            }
         } else {
             System.out.println("Please enter a player name");
         }
     }
+
 
     private void loadScene(String fxmlFile) {
         try {
@@ -103,6 +97,8 @@ public class ControllerScene implements Initializable{
                                         (startButton != null ? startButton.getScene().getWindow() :
                                             (ruleButton != null ? ruleButton.getScene().getWindow() :
                                                 (ruleButtonTwo!= null ? ruleButtonTwo.getScene().getWindow() : backButton.getScene().getWindow()))));
+
+
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -111,6 +107,7 @@ public class ControllerScene implements Initializable{
             e.printStackTrace();
         }
     }
+
 
     public void inizializeTable(String gamemode)
     {
