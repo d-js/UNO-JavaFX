@@ -51,10 +51,6 @@ public class ActionCard implements Card
 		return this.cardName;
 	}
 
-	public void setName(String s) {
-		this.cardName = s;
-	}
-
 	private void setAction(Caction action) {
 		this.action = action;
 	}

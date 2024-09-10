@@ -22,18 +22,18 @@ public class NormalCard implements Card {
 		return this.cardName;
 	}
 
-	public void setName(String s) {
-		this.cardName = s;
-	}
 	public com.unofx.model.enums.Number getNumber() {
 		return num;
 	}
+
 	private void setNumber(Number num) {
 		this.num = num;
 	}
+
 	public Colour getColor() {
 		return c;
 	}
+
 	private void setColor(Colour c) {
 		this.c = c;
 	}
