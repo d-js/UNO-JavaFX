@@ -1,27 +1,31 @@
-package com.unofx.model;
+package com.unofx.model.classes;
 
-import org.controlsfx.control.action.Action;
+import com.unofx.model.enums.Caction;
+import com.unofx.model.enums.Colour;
+import com.unofx.model.interfaces.Card;
+import com.unofx.model.interfaces.Player;
+import com.unofx.model.interfaces.Table;
 
 import java.util.*;
 
-public class Table
+public class TableImpl implements Table
 {
 
 
-	private static Table INSTANCE = null;
+	private static TableImpl INSTANCE = null;
 	private static int CurrentIndexPlayer = 0;
 	public Deck deck;
 	private Card currentCard;
-	private Colour currentColor = Colour.BLUE;
+	private Colour currentColor;
 	private Player currentPlayer;
 	private List<Player> sitDownPlayer = new LinkedList<>();
 
 
 
 	// Ritorno l'istanza della classe Table
-	public static synchronized Table getInstance() {
+	public static synchronized TableImpl getInstance() {
 		if(INSTANCE == null) {
-			INSTANCE = new Table();
+			INSTANCE = new TableImpl();
 		}
 
 		return INSTANCE;
@@ -34,16 +38,16 @@ public class Table
 	}
 
 
-	public UserPlayer getNextUserPlayer() {
-		UserPlayer nextuser = new UserPlayer("error");
+	public UserPlayer getUserPlayer() {
+		UserPlayer user = new UserPlayer("error");
 		for(Player e : this.sitDownPlayer)
 		{
 			if(e instanceof UserPlayer){
-				nextuser = (UserPlayer) e;
+				user = (UserPlayer) e;
 
 			}
 		}
-		return nextuser;
+		return user;
 	}
 
 
@@ -101,14 +105,18 @@ public class Table
 		for(Player e : this.sitDownPlayer)
 		{
 				e.drawCard(this.deck.drawOut());
-				/*e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
 				e.drawCard(this.deck.drawOut());
-				e.drawCard(this.deck.drawOut());*/
+				e.drawCard(this.deck.drawOut());
+				e.drawCard(this.deck.drawOut());
 		}
+	}
+
+	public Colour getCurrentColor() {
+		return currentColor;
 	}
 
 	public Card getCurrentCard() {
@@ -131,7 +139,10 @@ public class Table
 	public void setCurrentCardInformation(Card currentCard)
 	{
 		this.currentCard = currentCard;
-		this.currentColor = currentCard.getColor();
+		if (currentCard instanceof ActionCard && ((ActionCard) currentCard).getChoice() != null)
+			this.currentColor = ((ActionCard) currentCard).getChoice();
+		else
+			this.currentColor = currentCard.getColor();
 	}
 
 
@@ -162,13 +173,12 @@ public class Table
 
 		System.out.println("La mano rimanente di " + this.currentPlayer.getUsername() + this.currentPlayer.get_info_hand());
 
-		// Controllo se il player è bloccato
+		// Controllo se il player e' bloccato
 		if (this.currentPlayer.is_blocked()) {
 			this.currentPlayer.removeBlock();
 		}
 		else
 		{
-			// TODO i blocchi sono permanenti e l'utente non pesca le carte
 			// Gestione delle carte di azione
 
 			if (e instanceof ActionCard) {
@@ -199,19 +209,18 @@ public class Table
 			}
 
 
-
 			if(e != null)
 			{
 				deck.playCard(e);
 				if(this.currentColor != null)
 				{
 					if (e.getAction().equals(Caction.CHANGECOLOR)) {
-                        ActionCard actionCard = new ActionCard(Caction.CHANGECOLOR, this.currentColor);
+						ActionCard actionCard = new ActionCard(Caction.CHANGECOLOR, Colour.BLACK, this.currentColor);
 						setCurrentCardInformation(actionCard);
-                    }
+					}
 					else if(e.getAction().equals(Caction.DRAWFOUR))
 					{
-						ActionCard actionCard = new ActionCard(Caction.DRAWFOUR, this.currentColor);
+						ActionCard actionCard = new ActionCard(Caction.DRAWFOUR, Colour.BLACK, this.currentColor);
 						setCurrentCardInformation(actionCard);
 					}
 					else
@@ -252,9 +261,11 @@ public class Table
 	/* Cambia giro, inverte l'ordine dei giocatori nella lista*/
 	public void changeLap()
 	{
-		Player e = this.sitDownPlayer.get(Table.CurrentIndexPlayer);
+		Player e = this.sitDownPlayer.get(TableImpl.CurrentIndexPlayer);
 		Collections.reverse(this.sitDownPlayer);
-		Table.CurrentIndexPlayer = this.sitDownPlayer.indexOf(e);
+
+		if(this.sitDownPlayer.size() > 2)
+			TableImpl.CurrentIndexPlayer = this.sitDownPlayer.indexOf(e);
 	}
 
 	/* Blocca il turno del giocatore successivo*/
@@ -270,7 +281,7 @@ public class Table
 		List<Player> blocked_players = new ArrayList<>();
 		if(!this.sitDownPlayer.isEmpty())
 		{
-			int nextPlayerIndex = (Table.CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
+			int nextPlayerIndex = (TableImpl.CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
 
 			while (this.sitDownPlayer.get(nextPlayerIndex).is_blocked()) {
 				blocked_players.add(this.sitDownPlayer.get(nextPlayerIndex));
@@ -283,8 +294,8 @@ public class Table
 				e.removeBlock();
 			}
 
-			Table.CurrentIndexPlayer = nextPlayerIndex; // Imposta l'indice del nuovo giocatore corrente
-			this.currentPlayer = this.sitDownPlayer.get(Table.CurrentIndexPlayer); // Imposta il nuovo giocatore corrente
+			TableImpl.CurrentIndexPlayer = nextPlayerIndex; // Imposta l'indice del nuovo giocatore corrente
+			this.currentPlayer = this.sitDownPlayer.get(TableImpl.CurrentIndexPlayer); // Imposta il nuovo giocatore corrente
 		}
 		else
 		{
@@ -309,13 +320,6 @@ public class Table
 		return verified_index;
 	}
 
-	// TODO mantenere il metodo reset
-	public void eraseAll()
-	{
-		this.deck.delete();
-		this.sitDownPlayer.clear();
-
-	}
 
 	public List<Player> getSitDownPlayer()
 	{
@@ -325,11 +329,11 @@ public class Table
 	public void reset()
 	{
 		this.sitDownPlayer.clear();
-
+		this.deck.delete();
 		this.currentColor = null;
 		this.currentPlayer = null;
-		Table.CurrentIndexPlayer = 0;
-		Table.INSTANCE = null;
+		TableImpl.CurrentIndexPlayer = 0;
+		TableImpl.INSTANCE = null;
 	}
 
 }

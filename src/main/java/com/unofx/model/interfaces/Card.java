@@ -1,4 +1,7 @@
-package com.unofx.model;
+package com.unofx.model.interfaces;
+
+import com.unofx.model.enums.Caction;
+import com.unofx.model.enums.Colour;
 
 public interface Card
 {

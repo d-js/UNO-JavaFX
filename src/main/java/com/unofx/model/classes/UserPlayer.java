@@ -1,9 +1,13 @@
-package com.unofx.model;
+package com.unofx.model.classes;
+
+import com.unofx.model.enums.Colour;
+import com.unofx.model.interfaces.Card;
+import com.unofx.model.interfaces.Player;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class UserPlayer implements Player 
+public class UserPlayer implements Player
 {
 	private String username;
 	private List<Card> hand;
@@ -28,10 +32,8 @@ public class UserPlayer implements Player
 	}
 
 	
-	// TODO ricavare la carta in base al path dell'immagine passata
 	public void playCard(String path, Colour choice)
 	{
-		System.out.println(path);
 		List<Card> l = this.hand.stream().filter(e -> path.contains(capitalize(e.getName()))).collect(Collectors.toList());
 
 		Card e = l.get(0);
@@ -41,9 +43,9 @@ public class UserPlayer implements Player
 		this.hand.remove(e);
 
 		if(choice != null && e instanceof ActionCard)
-			((ActionCard) e).setColour(choice);
+			((ActionCard) e).setChoice(choice);
 
-		Table.getInstance().playCard(e);
+		TableImpl.getInstance().playCard(e);
 	}
 
 	public boolean isOne() {
@@ -93,7 +95,6 @@ public class UserPlayer implements Player
 
 	public boolean isPlayable(String path)
 	{
-		System.out.println(path);
 		List<Card> l = this.hand.stream().filter(e -> path.toLowerCase().contains(e.getName())).collect(Collectors.toList());
 
 		Card e = l.get(0);
@@ -118,27 +119,26 @@ public class UserPlayer implements Player
 
 	public Boolean isCardValid(Card cardToPlay)
 	{
-		// TODO errore nella gestione delle carte action non black su action non black
 		// Gestione dei casi di input non validi
-		if (cardToPlay == null || Table.getInstance().getCurrentCard() == null) {
+		if (cardToPlay == null || TableImpl.getInstance().getCurrentCard() == null) {
 			return false;
 		}
 
-		if (cardToPlay instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof NormalCard)
+		if (cardToPlay instanceof NormalCard && TableImpl.getInstance().getCurrentCard() instanceof NormalCard)
 		{
-			return isNormalCardValidAgainstNormalCard((NormalCard) cardToPlay, (NormalCard) Table.getInstance().getCurrentCard());
+			return isNormalCardValidAgainstNormalCard((NormalCard) cardToPlay, (NormalCard) TableImpl.getInstance().getCurrentCard());
 		}
-		else if (cardToPlay instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof ActionCard)
+		else if (cardToPlay instanceof ActionCard && TableImpl.getInstance().getCurrentCard() instanceof ActionCard)
 		{
-			return isActionCardValidAgainstActionCard((ActionCard) cardToPlay, (ActionCard) Table.getInstance().getCurrentCard());
+			return isActionCardValidAgainstActionCard((ActionCard) cardToPlay, (ActionCard) TableImpl.getInstance().getCurrentCard());
 		}
-		else if (cardToPlay instanceof NormalCard && Table.getInstance().getCurrentCard() instanceof ActionCard)
+		else if (cardToPlay instanceof NormalCard && TableImpl.getInstance().getCurrentCard() instanceof ActionCard)
 		{
-			return isNormalCardValidAgainstActionCard((NormalCard) cardToPlay, (ActionCard) Table.getInstance().getCurrentCard());
+			return isNormalCardValidAgainstActionCard((NormalCard) cardToPlay, (ActionCard) TableImpl.getInstance().getCurrentCard());
 		}
-		else if (cardToPlay instanceof ActionCard && Table.getInstance().getCurrentCard() instanceof NormalCard)
+		else if (cardToPlay instanceof ActionCard && TableImpl.getInstance().getCurrentCard() instanceof NormalCard)
 		{
-			return isActionCardValidAgainstNormalCard((ActionCard) cardToPlay, (NormalCard) Table.getInstance().getCurrentCard());
+			return isActionCardValidAgainstNormalCard((ActionCard) cardToPlay, (NormalCard) TableImpl.getInstance().getCurrentCard());
 		}
 
 		return false;

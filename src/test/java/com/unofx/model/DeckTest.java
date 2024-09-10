@@ -3,6 +3,11 @@ package com.unofx.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+import com.unofx.model.classes.Deck;
+import com.unofx.model.classes.NormalCard;
+import com.unofx.model.enums.Colour;
+import com.unofx.model.enums.Number;
+import com.unofx.model.interfaces.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

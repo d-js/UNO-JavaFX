@@ -1,6 +1,8 @@
 package com.unofx;
 
-import com.unofx.model.*;
+import com.unofx.model.classes.TableImpl;
+import com.unofx.model.classes.UserPlayer;
+import com.unofx.model.interfaces.Card;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class ControllerScene implements Initializable{
@@ -26,10 +27,6 @@ public class ControllerScene implements Initializable{
     private Button backButton;
     @FXML
     private TextField playerNameField;
-    @FXML
-    private TextField firstPlayerNameField;
-    @FXML
-    private TextField secondPlayerNameField;
     @FXML
     private Button startButton;
     @FXML
@@ -53,10 +50,6 @@ public class ControllerScene implements Initializable{
         loadScene("Insert_name_duel_players.fxml");
     }
 
-    @FXML
-    public void on_start_couple_mode() {
-        loadScene("Insert_name_couple_players.fxml");
-    }
 
     @FXML
     public void onBackButtonClicked() {
@@ -77,7 +70,7 @@ public class ControllerScene implements Initializable{
     public void onStartGame() throws IOException {
         String playerName = playerNameField.getText();
         UserPlayer user = new UserPlayer(playerName);
-        Table.getInstance().addPlayerInTable(user);
+        TableImpl.getInstance().addPlayerInTable(user);
         if (!playerName.isEmpty()) {
             System.out.println("Starting game with player: " + playerName);
             // Implementa la logica per iniziare il gioco
@@ -88,36 +81,14 @@ public class ControllerScene implements Initializable{
         }
 
     }
-    @FXML
-    public void onStartGameCouple() throws IOException {
 
-        String playerName1 = firstPlayerNameField.getText();
-        String playerName2 = secondPlayerNameField.getText();
-
-        UserPlayer user = new UserPlayer(playerName1);
-        Table.getInstance().addPlayerInTable(user);
-
-        UserPlayer user1 = new UserPlayer(playerName2);
-        Table.getInstance().addPlayerInTable(user1);
-
-        if (!playerName1.isEmpty() && !playerName2.isEmpty()) {
-            System.out.println("Starting game with player: " + playerName1 + playerName2);
-            // Implementa la logica per iniziare il gioco
-            this.inizializeTable("Couple");
-            System.out.println(Table.getInstance().getAllUser().get(0).getUsername() + " e " + Table.getInstance().getAllUser().get(1).getUsername() );
-            Platform.runLater(() -> loadScene("Game_couple_mode_pane.fxml"));
-        } else {
-            System.out.println("Please enter all player name");
-        }
-        loadScene("Game_couple_mode_pane.fxml");
-    }
 
     @FXML
     public void onDuelStart() throws IOException {
 
         String playerName = playerNameField.getText();
         UserPlayer user = new UserPlayer(playerName);
-        Table.getInstance().addPlayerInTable(user);
+        TableImpl.getInstance().addPlayerInTable(user);
         if (!playerName.isEmpty()) {
             System.out.println("Starting game with player: " + playerName);
             // Implementa la logica per iniziare il gioco
@@ -150,16 +121,15 @@ public class ControllerScene implements Initializable{
     public void inizializeTable(String gamemode) throws IOException
     {
         Platform.runLater(() -> {
-            // TODO valutare se spostare il possibile nel table
-            Table.getInstance().setDeck();
-            Card e = Table.getInstance().deck.setInitialCard();
-            Table.getInstance().setCurrentCardInformation(e);
+            TableImpl.getInstance().setDeck();
+                Card e = TableImpl.getInstance().deck.setInitialCard();
+            TableImpl.getInstance().setCurrentCardInformation(e);
             if(gamemode.equals("Single"))
-                Table.getInstance().setPlayerList(3);
+                TableImpl.getInstance().setPlayerList(3);
             else if (gamemode.equals("Duel"))
-                Table.getInstance().setPlayerList(1);
-            Table.getInstance().setCurrentPlayer();
-            Table.getInstance().giveStartCard();
+                TableImpl.getInstance().setPlayerList(1);
+            TableImpl.getInstance().setCurrentPlayer();
+            TableImpl.getInstance().giveStartCard();
 
         });
     }

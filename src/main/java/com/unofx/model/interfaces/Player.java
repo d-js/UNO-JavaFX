@@ -1,4 +1,4 @@
-package com.unofx.model;
+package com.unofx.model.interfaces;
 
 import java.util.List;
 

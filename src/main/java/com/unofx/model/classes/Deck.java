@@ -1,4 +1,9 @@
-package com.unofx.model;
+package com.unofx.model.classes;
+
+import com.unofx.model.enums.Caction;
+import com.unofx.model.enums.Colour;
+import com.unofx.model.enums.Number;
+import com.unofx.model.interfaces.Card;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +33,7 @@ public class Deck
 		{
 		    if(c != Colour.BLACK)
 		    {
-				coverDeck.add(new NormalCard(Number.ZERO,c));
+				coverDeck.add(new NormalCard(com.unofx.model.enums.Number.ZERO,c));
 
 				coverDeck.add(new ActionCard(Caction.BLOCKTURN,c));
 				coverDeck.add(new ActionCard(Caction.BLOCKTURN,c));
@@ -37,7 +42,7 @@ public class Deck
 				coverDeck.add(new ActionCard(Caction.DRAWTWO,c));
 				coverDeck.add(new ActionCard(Caction.DRAWTWO,c));
 
-    		    for(Number e : Number.values())
+    		    for(com.unofx.model.enums.Number e : com.unofx.model.enums.Number.values())
     		    {
 					if(e != Number.ZERO) {
 						coverDeck.add(new NormalCard(e, c));
@@ -98,7 +103,8 @@ public class Deck
 	{
 		Card e = this.coverDeck.stream().filter(c -> c instanceof NormalCard).findFirst().orElseGet(() -> this.setInitialCard());
 
-		this.playCard(e);
+		this.coverDeck.remove(e);
+		this.uncoverDeck.add(e);
 
 		return e;
 	}

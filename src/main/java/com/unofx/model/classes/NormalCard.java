@@ -1,15 +1,17 @@
-package com.unofx.model;
+package com.unofx.model.classes;
 
-import javafx.beans.value.ObservableNumberValue;
+import com.unofx.model.enums.Colour;
+import com.unofx.model.enums.Number;
+import com.unofx.model.interfaces.Card;
 
 public class NormalCard implements Card {
 
 	private String cardName;
-	private Number num;
+	private com.unofx.model.enums.Number num;
 	private Colour c;
 
 	
-	public NormalCard(Number num, Colour c) {
+	public NormalCard(com.unofx.model.enums.Number num, Colour c) {
 		setNumber(num);
 		setColor(c);
 		this.cardName = num.getNumberString().toLowerCase() + this.getColor().getColour().toLowerCase();
@@ -23,7 +25,7 @@ public class NormalCard implements Card {
 	public void setName(String s) {
 		this.cardName = s;
 	}
-	public Number getNumber() {
+	public com.unofx.model.enums.Number getNumber() {
 		return num;
 	}
 	private void setNumber(Number num) {

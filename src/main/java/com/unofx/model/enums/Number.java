@@ -1,4 +1,4 @@
-package com.unofx.model;
+package com.unofx.model.enums;
 
 public enum Number {
     ZERO("ZERO"),

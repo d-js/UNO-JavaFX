@@ -2,7 +2,13 @@ package com.unofx.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.unofx.model.*;
+import com.unofx.model.classes.ActionCard;
+import com.unofx.model.classes.NormalCard;
+import com.unofx.model.classes.TableImpl;
+import com.unofx.model.classes.UserPlayer;
+import com.unofx.model.enums.Caction;
+import com.unofx.model.enums.Colour;
+import com.unofx.model.enums.Number;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,21 +19,21 @@ public class UserPlayerTest {
     private UserPlayer userPlayer;
     private NormalCard normalCard;
     private ActionCard actionCard;
-    private Table table = Table.getInstance();
+    private TableImpl tableImpl = TableImpl.getInstance();
 
     @BeforeEach
     public void setUp() {
-        Table.getInstance().reset();
+        TableImpl.getInstance().reset();
         userPlayer = new UserPlayer("TestUser");
 
-        normalCard = new NormalCard(Number.FIVE, Colour.RED);
+        normalCard = new NormalCard(com.unofx.model.enums.Number.FIVE, Colour.RED);
         actionCard = new ActionCard(Caction.DRAWTWO, Colour.RED);
 
-        table = Table.getInstance();
-        Table.getInstance().addPlayerInTable(userPlayer);
-        Table.getInstance().setCurrentPlayer();
-        Table.getInstance().setCurrentCardInformation(normalCard);
-        Table.getInstance().setDeck();
+        tableImpl = TableImpl.getInstance();
+        TableImpl.getInstance().addPlayerInTable(userPlayer);
+        TableImpl.getInstance().setCurrentPlayer();
+        TableImpl.getInstance().setCurrentCardInformation(normalCard);
+        TableImpl.getInstance().setDeck();
 
     }
 
@@ -56,7 +62,7 @@ public class UserPlayerTest {
         assertTrue(userPlayer.getHand().contains(normalCard));
 
 
-        table.playCard(new NormalCard(Number.THREE, Colour.RED));
+        tableImpl.playCard(new NormalCard(com.unofx.model.enums.Number.THREE, Colour.RED));
 
 
         userPlayer.playCard("Fivered.png", null);
@@ -103,7 +109,7 @@ public class UserPlayerTest {
     public void testIsPlayable() {
 
         userPlayer.drawCard(normalCard);
-        table.playCard(new NormalCard(Number.SEVEN, Colour.RED));
+        tableImpl.playCard(new NormalCard(com.unofx.model.enums.Number.SEVEN, Colour.RED));
 
 
         boolean result = userPlayer.isPlayable("Fivered.png");
@@ -113,8 +119,8 @@ public class UserPlayerTest {
     @Test
     public void testIsCardValid_NormalCardVsNormalCard() {
 
-        NormalCard currentCard = new NormalCard(Number.SEVEN, Colour.RED);
-        table.playCard(currentCard);
+        NormalCard currentCard = new NormalCard(com.unofx.model.enums.Number.SEVEN, Colour.RED);
+        tableImpl.playCard(currentCard);
 
 
         assertTrue(userPlayer.isCardValid(normalCard));
@@ -124,7 +130,7 @@ public class UserPlayerTest {
     public void testIsCardValid_ActionCardVsNormalCard() {
 
         NormalCard currentCard = new NormalCard(Number.THREE, Colour.RED);
-        table.playCard(currentCard);
+        tableImpl.playCard(currentCard);
 
 
         assertTrue(userPlayer.isCardValid(actionCard));
@@ -134,7 +140,7 @@ public class UserPlayerTest {
     public void testIsCardValid_ActionCardVsActionCard() {
 
         ActionCard currentActionCard = new ActionCard(Caction.DRAWTWO, Colour.RED);
-        table.playCard(currentActionCard);
+        tableImpl.playCard(currentActionCard);
 
 
         assertTrue(userPlayer.isCardValid(actionCard));
