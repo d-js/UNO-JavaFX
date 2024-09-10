@@ -24,7 +24,7 @@
     -fx-scale-y: 1.05;
 }
 #deck{
-    -fx-background-image: url("MazzoCentrale.png");
+    -fx-background-image: url("images/MazzoCentrale.png");
     -fx-background-color: transparent;
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
@@ -56,13 +56,13 @@
 }
 
 #rulePaneOne,#rulePaneTwo{
-    -fx-background-image: url("PARQUET.png");
+    -fx-background-image: url("images/PARQUET.png");
 }
 #select_pane,#insert_name_single,#insert_name_couple{
-    -fx-background-image: url("GameMode.png");
+    -fx-background-image: url("images/GameMode.png");
 }
 #gamePaneSingle,#gamePaneCouple,#gamePaneDuel{
-    -fx-background-image: url("PARQUET.png");
+    -fx-background-image: url("images/PARQUET.png");
 }
 /* Stile base per tutti i pulsanti */
 #startButton,#backButton,#uno,#pass,#unoBot,#passBot,#ruleButtonTwo{
@@ -166,7 +166,7 @@
     -fx-padding: 10px;
 }
 #imageRuleOne{
-    -fx-background-image: url("Image_rule.png");
+    -fx-background-image: url("images/Image_rule.png");
     -fx-background-color: transparent;
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
@@ -176,7 +176,7 @@
     -fx-padding: 0;
 }
 #imageRuleTwo{
-    -fx-background-image: url("MazzoCentrale.png");
+    -fx-background-image: url("images/MazzoCentrale.png");
     -fx-background-color: transparent;
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
@@ -186,7 +186,7 @@
     -fx-padding: 0;
 }
 #imageRuleThree{
-    -fx-background-image: url("allcard.png");
+    -fx-background-image: url("images/allcard.png");
     -fx-background-color: transparent;
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
@@ -220,7 +220,7 @@
     -fx-border-color: f0f0f0
 }
 #left_bot,#right_bot,#top_bot{
-    -fx-background-image: url("back.png");
+    -fx-background-image: url("images/back.png");
     -fx-background-color: transparent;
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
