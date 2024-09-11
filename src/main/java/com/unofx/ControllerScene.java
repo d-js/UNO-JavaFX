@@ -44,7 +44,6 @@ public class ControllerScene implements Initializable{
     private AudioClip buttonClickSound;
     static Dotenv dot = Dotenv.load();
     private static final String SOUND_FILE_BUTTON = Objects.requireNonNull(UnoApplication.class.getResource(dot.get("BUTTON_SOUND"))).toExternalForm();
-    private static final String SOUND_GIVE_CARD = Objects.requireNonNull(UnoApplication.class.getResource(dot.get("SHUFFLE_SOUND"))).toExternalForm();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

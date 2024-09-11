@@ -27,7 +27,10 @@
                 <Insets left="100.0" right="100.0" />
             </padding>
         </Label>
-        <Button fx:id="uno" layoutX="250.0" layoutY="900.0" mnemonicParsing="false" onMouseClicked="#on_one_card" prefHeight="120.0" prefWidth="120.0" text="UNO" />
+        <Button fx:id="uno" layoutX="250.0" layoutY="900.0" mnemonicParsing="false" onMouseClicked="#on_one_card" prefHeight="120.0" prefWidth="120.0" text="UNO">
+        <cursor>
+            <Cursor fx:constant="HAND"/>
+        </cursor></Button>
         <Button fx:id="pass" layoutX="420.0" layoutY="787.0" mnemonicParsing="false" onMouseClicked="#on_pass" prefHeight="70.0" prefWidth="120.0" text="NEXT" />
     </children>
 </AnchorPane>
