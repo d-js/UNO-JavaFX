@@ -59,14 +59,16 @@ public class GameController implements Initializable {
     @FXML
     private Label Name_user = new Label();
 
-    Dotenv dotenv = Dotenv.load();
+    Dotenv dot = Dotenv.load();
 
-    private final String imagesPath = dotenv.get("IMAGES_PATH");
+    private final String imagesPath = dot.get("IMAGES_PATH");
+    private final AudioClip buttonAudio = new AudioClip(Objects.requireNonNull(UnoApplication.class.getResource(dot.get("BUTTON_SOUND"))).toExternalForm());
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-
+        this.buttonAudio.setVolume(0.75);
         this.stage = ControllerScene.stage;
         this.userHandView.setPadding(new Insets(10));
         Platform.runLater(() -> {
@@ -172,13 +174,14 @@ public class GameController implements Initializable {
     @FXML
     public void on_one_card()
     {
+        this.buttonAudio.play();
         TableImpl.getInstance().getUserPlayer().setOneTrue();
     }
 
     @FXML
     public void on_deck_click() throws IOException
     {
-        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource(dotenv.get("CARD_SOUND"))).toExternalForm();
+        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource(dot.get("CARD_SOUND"))).toExternalForm();
         AudioClip clickSound = new AudioClip(audioFilePath);
 
         clickSound.play();
@@ -285,7 +288,7 @@ public class GameController implements Initializable {
         addButton.setPrefWidth(200.0/1.5);
         addButton.getStyleClass().add("card-button");
 
-        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource(dotenv.get("CARD_SOUND"))).toExternalForm();
+        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource(dot.get("CARD_SOUND"))).toExternalForm();
         AudioClip clickSound = new AudioClip(audioFilePath);
 
         clickSound.setVolume(0.60);
@@ -406,6 +409,7 @@ public class GameController implements Initializable {
 
     public void on_pass()
     {
+        this.buttonAudio.play();
         TableImpl.getInstance().passTurn();
         this.cicleBotTurns();
     }
