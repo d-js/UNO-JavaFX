@@ -26,7 +26,7 @@ public class Deck
 	}
 
 
-	//generazione mazzo di carte (DA RIVEDERE / OTTIMIZZARE)
+	//generazione mazzo di carte
 	private void setGameDeck()
 	{
 		for(Colour c : Colour.values())
