@@ -105,14 +105,8 @@ public class UserPlayer implements Player
 		if (str == null || str.isEmpty()) {
 			return str;
 		}
-
-		// Get the first character of the input string and convert it to uppercase
 		char firstLetter = Character.toUpperCase(str.charAt(0));
-
-		// Get the rest of the string
 		String restOfString = str.substring(1);
-
-		// Return the new string with the first character capitalized
 		return (firstLetter) + restOfString;
 	}
 
