@@ -3,6 +3,7 @@ package com.unofx;
 import com.unofx.model.classes.TableImpl;
 import com.unofx.model.classes.UserPlayer;
 import com.unofx.model.interfaces.Card;
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -41,8 +42,9 @@ public class ControllerScene implements Initializable{
     protected static Stage stage;
     protected static Parent root;
     private AudioClip buttonClickSound;
-    private static final String SOUND_FILE_BUTTON = Objects.requireNonNull(UnoApplication.class.getResource("/com/music/pressButton.wav")).toExternalForm();
-    private static final String SOUND_FILE_CARD = Objects.requireNonNull(UnoApplication.class.getResource("/com/music/giveStartCard.wav")).toExternalForm();
+    static Dotenv dot = Dotenv.load();
+    private static final String SOUND_FILE_BUTTON = Objects.requireNonNull(UnoApplication.class.getResource(dot.get("BUTTON_SOUND"))).toExternalForm();
+    private static final String SOUND_GIVE_CARD = Objects.requireNonNull(UnoApplication.class.getResource(dot.get("SHUFFLE_SOUND"))).toExternalForm();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -123,17 +125,14 @@ public class ControllerScene implements Initializable{
         TableImpl.getInstance().addPlayerInTable(user);
 
         if (!playerName.isEmpty()) {
-            buttonClickSound = new AudioClip(SOUND_FILE_CARD);
             System.out.println("Starting game with player: " + playerName);
             String choosenMode = GameState.getInstance().getChoosenMode();  // Recupero la modalità di gioco
 
             if (choosenMode.equals("Single")) {
                 inizializeTable("Single");
-                this.buttonClickSound.play();
                 loadScene("Game_single_mode_pane.fxml");
             } else if (choosenMode.equals("Duel")) {
                 inizializeTable("Duel");
-                this.buttonClickSound.play();
                 loadScene("Game_duel_mode_pane.fxml");
             }
         } else {

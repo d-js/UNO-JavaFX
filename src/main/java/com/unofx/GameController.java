@@ -32,6 +32,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import io.github.cdimascio.dotenv.Dotenv;
+
 
 public class GameController implements Initializable {
 
@@ -57,12 +59,14 @@ public class GameController implements Initializable {
     @FXML
     private Label Name_user = new Label();
 
-    //private String imagesPath = dotenv.get("IMAGES_PATH");    //  scommentare prima del push
-    private final String imagesPath   =   "src/main/resources/com/cardImages/";
+    Dotenv dotenv = Dotenv.load();
+
+    private final String imagesPath = dotenv.get("IMAGES_PATH");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+
         this.stage = ControllerScene.stage;
         this.userHandView.setPadding(new Insets(10));
         Platform.runLater(() -> {
@@ -77,16 +81,12 @@ public class GameController implements Initializable {
 
     public void cicleBotTurns()
     {
-
-
         this.deck.setDisable(true);
         // doppio runlater perche?
 
         Platform.runLater(this::hide_user_hand);
         // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
         cicleBotUntilUser();
-
-
 
     }
 
@@ -178,6 +178,10 @@ public class GameController implements Initializable {
     @FXML
     public void on_deck_click() throws IOException
     {
+        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource(dotenv.get("CARD_SOUND"))).toExternalForm();
+        AudioClip clickSound = new AudioClip(audioFilePath);
+
+        clickSound.play();
         Card e = TableImpl.getInstance().deck.drawOut();
         TableImpl.getInstance().getUserPlayer().drawCard(e);
         this.deck.setDisable(true);
@@ -281,7 +285,7 @@ public class GameController implements Initializable {
         addButton.setPrefWidth(200.0/1.5);
         addButton.getStyleClass().add("card-button");
 
-        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource("/com/music/playingcardaudio.wav")).toExternalForm();
+        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource(dotenv.get("CARD_SOUND"))).toExternalForm();
         AudioClip clickSound = new AudioClip(audioFilePath);
 
         clickSound.setVolume(0.60);

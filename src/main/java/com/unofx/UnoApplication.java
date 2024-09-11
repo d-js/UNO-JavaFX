@@ -1,5 +1,6 @@
 package com.unofx;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,7 +19,8 @@ public class UnoApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException
     {
-        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource("/com/music/lofichillmusic50.wav")).toExternalForm(); // Assicurati di usare il percorso corretto del file
+        Dotenv dot = Dotenv.load();
+        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource(dot.get("SOUNDTRACK_SOUND"))).toExternalForm(); // Assicurati di usare il percorso corretto del file
 
         Media media = new Media(audioFilePath);
 

@@ -11,8 +11,9 @@ module com.unofx {
     //requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires jdk.compiler;
-    requires java.dotenv;
+    //requires java.dotenv;
     requires javafx.media;
+    requires io.github.cdimascio.dotenv.java;
 
     opens com.unofx to javafx.fxml;
     exports com.unofx;
