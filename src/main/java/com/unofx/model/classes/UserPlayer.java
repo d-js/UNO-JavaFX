@@ -18,7 +18,7 @@ public class UserPlayer implements Player
 	{
 		this.block = false;
 		this.username = username;
-		this.hand = new LinkedList<>(); //meglio fare una linkedlist, in questo modo quando si elimina una carte le carte si riassegnano automaticamente l'indice corretto
+		this.hand = new LinkedList<>();
 	}
 
 	@Override
