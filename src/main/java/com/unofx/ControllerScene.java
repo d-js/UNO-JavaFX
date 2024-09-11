@@ -4,6 +4,8 @@ import com.unofx.model.classes.TableImpl;
 import com.unofx.model.classes.UserPlayer;
 import com.unofx.model.interfaces.Card;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,16 +13,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ControllerScene implements Initializable{
 
     @FXML
     private Button start_button_single_mode;
+    @FXML
+    private Button start_button_duel_mode;
     @FXML
     private Button backButton;
     @FXML
@@ -34,7 +40,52 @@ public class ControllerScene implements Initializable{
     protected static Scene scene;
     protected static Stage stage;
     protected static Parent root;
+    private AudioClip buttonClickSound;
+    private static final String SOUND_FILE_BUTTON = Objects.requireNonNull(UnoApplication.class.getResource("/com/music/pressButton.wav")).toExternalForm();
+    private static final String SOUND_FILE_CARD = Objects.requireNonNull(UnoApplication.class.getResource("/com/music/giveStartCard.wav")).toExternalForm();
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Inizializza l'AudioClip con il suono
+        buttonClickSound = new AudioClip(SOUND_FILE_BUTTON);
+        buttonClickSound.setVolume(0.75);
+
+        // Aggiungi il suono del click a ogni bottone, solo se non sono nulli
+        if (startButton != null) {
+            addClickSound(startButton);
+        }
+        if (ruleButton != null) {
+            addClickSound(ruleButton);
+        }
+        if (backButton != null) {
+            addClickSound(backButton);
+        }
+        if (start_button_single_mode != null) {
+            addClickSound(start_button_single_mode);
+        }
+        if (ruleButtonTwo != null) {
+            addClickSound(ruleButtonTwo);
+        }
+        if (start_button_duel_mode != null) {
+            addClickSound(start_button_duel_mode);
+        }
+    }
+
+    // Metodo per aggiungere il suono del click a un bottone
+    private void addClickSound(Button button) {
+        if (button != null) {
+            // Salva l'azione esistente
+            EventHandler<ActionEvent> existingAction = button.getOnAction();
+
+            // Imposta un nuovo gestore dell'evento che esegue il suono e poi l'azione esistente
+            button.setOnAction(event -> {
+                buttonClickSound.play();
+                if (existingAction != null) {
+                    existingAction.handle(event);
+                }
+            });
+        }
+    }
 
     @FXML
     public void on_start_single_mode() {
@@ -72,14 +123,17 @@ public class ControllerScene implements Initializable{
         TableImpl.getInstance().addPlayerInTable(user);
 
         if (!playerName.isEmpty()) {
+            buttonClickSound = new AudioClip(SOUND_FILE_CARD);
             System.out.println("Starting game with player: " + playerName);
             String choosenMode = GameState.getInstance().getChoosenMode();  // Recupero la modalità di gioco
 
             if (choosenMode.equals("Single")) {
                 inizializeTable("Single");
+                this.buttonClickSound.play();
                 loadScene("Game_single_mode_pane.fxml");
             } else if (choosenMode.equals("Duel")) {
                 inizializeTable("Duel");
+                this.buttonClickSound.play();
                 loadScene("Game_duel_mode_pane.fxml");
             }
         } else {
@@ -94,9 +148,9 @@ public class ControllerScene implements Initializable{
             root = loader.load();
             //Parent root = loader.load();
             stage = (Stage) (start_button_single_mode != null ? start_button_single_mode.getScene().getWindow() :
-                                        (startButton != null ? startButton.getScene().getWindow() :
-                                            (ruleButton != null ? ruleButton.getScene().getWindow() :
-                                                (ruleButtonTwo!= null ? ruleButtonTwo.getScene().getWindow() : backButton.getScene().getWindow()))));
+                    (startButton != null ? startButton.getScene().getWindow() :
+                            (ruleButton != null ? ruleButton.getScene().getWindow() :
+                                    (ruleButtonTwo!= null ? ruleButtonTwo.getScene().getWindow() : backButton.getScene().getWindow()))));
 
 
             scene = new Scene(root);
@@ -113,7 +167,7 @@ public class ControllerScene implements Initializable{
     {
         Platform.runLater(() -> {
             TableImpl.getInstance().setDeck();
-                Card e = TableImpl.getInstance().deck.setInitialCard();
+            Card e = TableImpl.getInstance().deck.setInitialCard();
             TableImpl.getInstance().setCurrentCardInformation(e);
             if(gamemode.equals("Single"))
                 TableImpl.getInstance().setPlayerList(3);
@@ -125,7 +179,4 @@ public class ControllerScene implements Initializable{
         });
     }
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle){}
 }

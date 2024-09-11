@@ -18,7 +18,7 @@
         <Pane fx:id="currentCardView" layoutX="990.0" layoutY="405.0" prefHeight="196.0" prefWidth="136.0" />
         <Pane fx:id="top_bot" layoutX="875.0" layoutY="15.0" prefHeight="270" prefWidth="180" />
         <AnchorPane fx:id="userHandView" layoutX="420.0" layoutY="900.0" prefHeight="300.0" prefWidth="1080.0" />
-        <Label fx:id="Name_user_duel" layoutX="739.0" layoutY="787.0" prefHeight="70.0" text="Name">
+        <Label fx:id="Name_user" layoutX="739.0" layoutY="787.0" prefHeight="70.0" text="Name">
             <font>
                 <Font size="24.0" />
             </font>

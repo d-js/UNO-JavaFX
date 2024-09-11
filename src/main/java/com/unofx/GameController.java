@@ -20,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -27,6 +28,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -279,6 +281,11 @@ public class GameController implements Initializable {
         addButton.setPrefWidth(200.0/1.5);
         addButton.getStyleClass().add("card-button");
 
+        String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource("/com/music/playingcardaudio.wav")).toExternalForm();
+        AudioClip clickSound = new AudioClip(audioFilePath);
+
+        clickSound.setVolume(0.60);
+
         // Gestore MOUSE_ENTERED
         addButton.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> {
             // Sposta il bottone in una nuova posizione Z (all'inizio della lista dei figli)
@@ -358,6 +365,7 @@ public class GameController implements Initializable {
 
             }
             this.userHandView.getChildren().remove(addButton);
+            clickSound.play();
             updateViewAfterMove();
 
             this.cicleBotTurns();

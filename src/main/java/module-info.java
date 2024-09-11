@@ -12,6 +12,7 @@ module com.unofx {
     requires com.almasb.fxgl.all;
     requires jdk.compiler;
     requires java.dotenv;
+    requires javafx.media;
 
     opens com.unofx to javafx.fxml;
     exports com.unofx;
