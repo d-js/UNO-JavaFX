@@ -52,7 +52,10 @@ public class  BotPlayer implements Player
 			if (this.isCardValid(c)) {
 				iterator.remove();
 				if(c.getColor() == Colour.BLACK)
-					((ActionCard)c).setChoice(Colour.fromValue(new Random().nextInt(3)));
+				{
+					((ActionCard)c).setChoice(Colour.fromValue(new Random().nextInt(4)));
+					System.out.println(((ActionCard)c).getChoice());
+				}
 				TableImpl.getInstance().playCard(c);
 				cardPlayed = true;
 				if(this.getHand().size() == 1)
