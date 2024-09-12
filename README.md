@@ -10,8 +10,9 @@ This project is a digitization of the original board game, made in javafx.
 ```bash
 git clone https://github.com/d-js/unoFX.git
 ```
-
-## Usage
+- **Follow** the instructions and, finally, the project will be ready to run
+  
+## Instruction
 
 - Create a file ```.env``` in project folder like this :
 
