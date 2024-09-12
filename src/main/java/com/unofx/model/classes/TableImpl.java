@@ -31,6 +31,8 @@ public class TableImpl implements Table
 		return INSTANCE;
 	}
 
+	private TableImpl() {}
+
 
 	public void addPlayerInTable(Player e)
 	{
