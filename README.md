@@ -13,7 +13,7 @@ git clone https://github.com/d-js/unoFX.git
 
 ## Usage
 
-- Create a file named ```.env``` in project folder like this :
+- Create a file ```.env``` in project folder like this :
 
 ```bash
 
