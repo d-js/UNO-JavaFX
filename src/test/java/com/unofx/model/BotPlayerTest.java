@@ -99,13 +99,13 @@ class BotPlayerTest {
     @Test
     void testBlock()
     {
-        assertFalse(botPlayer.is_blocked());
+        assertFalse(botPlayer.isBlocked());
 
         botPlayer.setBlock();
-        assertTrue(botPlayer.is_blocked());
+        assertTrue(botPlayer.isBlocked());
 
         botPlayer.removeBlock();
-        assertFalse(botPlayer.is_blocked());
+        assertFalse(botPlayer.isBlocked());
     }
 
     @Test
@@ -132,7 +132,7 @@ class BotPlayerTest {
         Card card2 = new ActionCard(Caction.CHANGECOLOR, Colour.BLACK);
         botPlayer.drawCard(card1);
         botPlayer.drawCard(card2);
-        List<String> handInfo = botPlayer.get_info_hand();
+        List<String> handInfo = botPlayer.getInfoHand();
         assertEquals(2, handInfo.size());
         assertTrue(handInfo.contains("fivered"));
         assertTrue(handInfo.contains("changecolor"));

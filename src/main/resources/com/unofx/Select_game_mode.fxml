@@ -16,12 +16,12 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Button fx:id="start_button_single_mode" styleClass="start_button_single_mode" ellipsisString="" layoutX="685.0" layoutY="683.0" mnemonicParsing="false" onAction="#on_start_single_mode" prefHeight="138.0" prefWidth="184.0"  text="TRIPLE ARENA">
+      <Button fx:id="start_button_single_mode" styleClass="start_button_single_mode" ellipsisString="" layoutX="685.0" layoutY="683.0" mnemonicParsing="false" onAction="#onStartSingleMode" prefHeight="138.0" prefWidth="184.0" text="TRIPLE ARENA">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="start_button_duel_mode" styleClass="start_button_couple_mode" ellipsisString="" layoutX="1085.0" layoutY="683.0" mnemonicParsing="false" onAction="#on_start_duel_mode" prefHeight="138.0" prefWidth="184.0" text="ULTIMATE&#10;&#10;SHOWDOWN">
+      <Button fx:id="start_button_duel_mode" styleClass="start_button_couple_mode" ellipsisString="" layoutX="1085.0" layoutY="683.0" mnemonicParsing="false" onAction="#onStartDuelMode" prefHeight="138.0" prefWidth="184.0" text="ULTIMATE&#10;&#10;SHOWDOWN">
          <font>
             <Font size="18.0" />
          </font>

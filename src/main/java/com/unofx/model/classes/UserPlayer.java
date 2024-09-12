@@ -68,7 +68,7 @@ public class UserPlayer implements Player
 		this.block = true;
 	}
 	
-	public boolean is_blocked()
+	public boolean isBlocked()
 	{
 		return this.block;
 	}
@@ -78,7 +78,7 @@ public class UserPlayer implements Player
 	}
 
 
-	public List<String> get_info_hand()
+	public List<String> getInfoHand()
 	{
 		List<String> hand_info = new ArrayList<>();
 		this.hand.forEach(e -> hand_info.add(e.getName()));

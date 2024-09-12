@@ -72,7 +72,7 @@ public class UserPlayerTest {
     public void testSetBlock()
     {
         userPlayer.setBlock();
-        assertTrue(userPlayer.is_blocked());
+        assertTrue(userPlayer.isBlocked());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class UserPlayerTest {
         userPlayer.setBlock();
         userPlayer.removeBlock();
 
-        assertFalse(userPlayer.is_blocked());
+        assertFalse(userPlayer.isBlocked());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class UserPlayerTest {
         userPlayer.drawCard(normalCard);
         userPlayer.drawCard(actionCard);
 
-        List<String> handInfo = userPlayer.get_info_hand();
+        List<String> handInfo = userPlayer.getInfoHand();
         assertEquals(2, handInfo.size());
         assertEquals("fivered", handInfo.get(0));
 

@@ -167,10 +167,10 @@ public class TableImpl implements Table
 			System.out.println(this.currentPlayer.getUsername() + " gioca " + e.getName());
 		}
 
-		System.out.println("La mano rimanente di " + this.currentPlayer.getUsername() + this.currentPlayer.get_info_hand());
+		System.out.println("La mano rimanente di " + this.currentPlayer.getUsername() + this.currentPlayer.getInfoHand());
 
 		// Controllo se il player e' bloccato
-		if (this.currentPlayer.is_blocked()) {
+		if (this.currentPlayer.isBlocked()) {
 			this.currentPlayer.removeBlock();
 		}
 		else
@@ -278,7 +278,7 @@ public class TableImpl implements Table
 		{
 			int nextPlayerIndex = (TableImpl.CurrentIndexPlayer + 1) % this.sitDownPlayer.size(); // Calcola l'indice del prossimo giocatore
 
-			while (this.sitDownPlayer.get(nextPlayerIndex).is_blocked()) {
+			while (this.sitDownPlayer.get(nextPlayerIndex).isBlocked()) {
 				blocked_players.add(this.sitDownPlayer.get(nextPlayerIndex));
 				nextPlayerIndex = (nextPlayerIndex + 1) % this.sitDownPlayer.size(); // Avanza fino a trovare un giocatore non bloccato
 			}

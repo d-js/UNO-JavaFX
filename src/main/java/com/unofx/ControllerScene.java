@@ -89,13 +89,13 @@ public class ControllerScene implements Initializable{
     }
 
     @FXML
-    public void on_start_single_mode() {
+    public void onStartSingleMode() {
         GameState.getInstance().setChoosenMode("Single");
         loadScene("Insert_name_single_players.fxml");
     }
 
     @FXML
-    public void on_start_duel_mode() {
+    public void onStartDuelMode() {
         GameState.getInstance().setChoosenMode("Duel");
         loadScene("Insert_name_single_players.fxml");
     }

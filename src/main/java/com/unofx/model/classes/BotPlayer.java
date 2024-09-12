@@ -91,7 +91,7 @@ public class  BotPlayer implements Player
 		this.block = true;
 	}
 
-	public boolean is_blocked()
+	public boolean isBlocked()
 	{
 		return this.block;
 	}
@@ -101,7 +101,7 @@ public class  BotPlayer implements Player
 	}
 
 	@Override
-	public List<String> get_info_hand() {
+	public List<String> getInfoHand() {
 
 		return this.hand.stream().map(Card::getName).collect(Collectors.toList());
 	}

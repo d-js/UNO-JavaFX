@@ -72,8 +72,8 @@ public class GameController implements Initializable {
         this.stage = ControllerScene.stage;
         this.userHandView.setPadding(new Insets(10));
         Platform.runLater(() -> {
-            this.update_view();
-            this.setCurrentCardImage(this.generate_imagePath(TableImpl.getInstance().getCurrentCard().getName()));
+            this.updateView();
+            this.setCurrentCardImage(this.generateImagePath(TableImpl.getInstance().getCurrentCard().getName()));
             this.Name_user.setText("Players name: "+ TableImpl.getInstance().getUserPlayer().getUsername());
             this.cicleBotTurns();
         });
@@ -86,7 +86,7 @@ public class GameController implements Initializable {
         this.deck.setDisable(true);
         // doppio runlater perche?
 
-        Platform.runLater(this::hide_user_hand);
+        Platform.runLater(this::hideUserHand);
         // Il controllo per l'utente e' fatto dalla vista, quello per i bot e' fatto nel loro metodo
         cicleBotUntilUser();
 
@@ -103,8 +103,8 @@ public class GameController implements Initializable {
 
                 Platform.runLater(() -> {
                     this.deck.setDisable(false);
-                    this.update_view();
-                    this.show_user_hand();
+                    this.updateView();
+                    this.showUserHand();
                 });
             }
             else
@@ -133,7 +133,7 @@ public class GameController implements Initializable {
     private void updateViewAfterMove()
     {
         Platform.runLater(() -> {
-            setCurrentCardImage(generate_imagePath(TableImpl.getInstance().getCurrentCard().getName())); // Aggiorna l'immagine della carta corrente
+            setCurrentCardImage(generateImagePath(TableImpl.getInstance().getCurrentCard().getName())); // Aggiorna l'immagine della carta corrente
         });
     }
 
@@ -172,14 +172,14 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public void on_one_card()
+    public void onOneCard()
     {
         this.buttonAudio.play();
         TableImpl.getInstance().getUserPlayer().setOneTrue();
     }
 
     @FXML
-    public void on_deck_click() throws IOException
+    public void onDeckClick() throws IOException
     {
         String audioFilePath = Objects.requireNonNull(UnoApplication.class.getResource(dot.get("CARD_SOUND"))).toExternalForm();
         AudioClip clickSound = new AudioClip(audioFilePath);
@@ -189,10 +189,10 @@ public class GameController implements Initializable {
         TableImpl.getInstance().getUserPlayer().drawCard(e);
         this.deck.setDisable(true);
         this.pass.setDisable(false);
-        draw(generate_imagePath(e.getName()));
+        draw(generateImagePath(e.getName()));
     }
 
-    public void update_view()
+    public void updateView()
     {
         Platform.runLater(() -> {
 
@@ -208,7 +208,7 @@ public class GameController implements Initializable {
 
             for (String cardName : nameCardList) {
                 try {
-                    this.draw(this.generate_imagePath(cardName));
+                    this.draw(this.generateImagePath(cardName));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -217,7 +217,7 @@ public class GameController implements Initializable {
     }
 
 
-    public void hide_user_hand()
+    public void hideUserHand()
     {
         Platform.runLater(() -> {
             for (Node n : this.userHandView.getChildren()) {
@@ -230,7 +230,7 @@ public class GameController implements Initializable {
 
 
     // Rendi usabili le carte che puo giocare, all'utente
-    public void show_user_hand()
+    public void showUserHand()
     {
         Platform.runLater(() -> {
             for (Node n : this.userHandView.getChildren()) {
@@ -262,7 +262,7 @@ public class GameController implements Initializable {
         this.currentCardView.getChildren().add(iw);
     }
 
-    public String generate_imagePath(String cardName)
+    public String generateImagePath(String cardName)
     {
         cardName = cardName.replaceFirst(cardName.substring(0, 1), cardName.substring(0, 1).toUpperCase());
         //System.out.println(this.imagesPath);
@@ -407,12 +407,11 @@ public class GameController implements Initializable {
         }
     }
 
-    public void on_pass()
+    public void onPass()
     {
         this.buttonAudio.play();
         TableImpl.getInstance().passTurn();
         this.cicleBotTurns();
     }
-
 
 }

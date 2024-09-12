@@ -17,11 +17,11 @@ public interface Player {
     
     void setBlock();
 
-	boolean is_blocked();
+	boolean isBlocked();
 
     void removeBlock();
 
-    List<String> get_info_hand();
+    List<String> getInfoHand();
 
     void setOneTrue();
 

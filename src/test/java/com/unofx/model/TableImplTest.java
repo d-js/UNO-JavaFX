@@ -119,12 +119,12 @@ public class TableImplTest {
         tableImpl.setCurrentPlayer();
         tableImpl.blockNext();
 
-        assertTrue(player2.is_blocked(), "Player2 should be blocked");
+        assertTrue(player2.isBlocked(), "Player2 should be blocked");
 
         tableImpl.passTurn();
         assertEquals(bot1, tableImpl.getCurrentPlayer(), "Bot1 should be the current player after Player2 is blocked");
 
-        assertFalse(player2.is_blocked(), "Player2 should no longer be blocked after passing turn");
+        assertFalse(player2.isBlocked(), "Player2 should no longer be blocked after passing turn");
     }
 
     @Test
